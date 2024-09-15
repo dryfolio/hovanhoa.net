@@ -11,7 +11,7 @@ const HASHNODE_API = "https://gql.hashnode.com";
 
 const DESCRIPTION = (
     <>
-        Hey there! 👋 I&apos;m Hoà. <br/>
+        Hey there! 👋 I&apos;m Hòa. <br/>
         <br/> Software Engineer with 2+ years of experience.
         I am confident in my knowledge of software development concepts,
         industry best practices, and modern software technologies.
