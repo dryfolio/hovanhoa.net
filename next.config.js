@@ -5,19 +5,19 @@ const nextConfig = {
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: 'suhailkakar-com.vercel.app',
+                hostname: 'hovanhoa.vercel.app',
             },
         ],
     }, 
-    redirects: async () => {
-        return [
-            {
-                source: '/the-complete-developers-guide-to-eigenlayers-avs',
-                destination: '/the-complete-developers-guide-to-avs',
-                permanent: true,
-            },
-        ];
-    }
+    // redirects: async () => {
+    //     return [
+    //         {
+    //             source: '/the-complete-developers-guide-to-eigenlayers-avs',
+    //             destination: '/the-complete-developers-guide-to-avs',
+    //             permanent: true,
+    //         },
+    //     ];
+    // }
 
 };
 

@@ -3,7 +3,7 @@ import { resolve } from "path";
 
  const GET_POST = `
 query Publication {
-  publication(host: "suhailkakar.hashnode.dev") {
+  publication(host: "hovanhoa.hashnode.dev") {
     isTeam
     title
     posts(first: 20) {
@@ -39,7 +39,7 @@ async function getPosts() {
 
 async function generateSitemap() {
   const posts = await getPosts();
-  const baseUrl = "https://suhailkakar.com";
+  const baseUrl = "https://hovanhoa.net";
 
   const staticPages = [
     { path: "", changefreq: "always", priority: 1.0 },

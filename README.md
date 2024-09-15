@@ -1,4 +1,4 @@
-# suhailkakar.com
+# hovanhoa.net
 
 ![image](/public/github-banner.png)
 
@@ -15,8 +15,8 @@ Built with Next.js, TypeScript, and Tailwind CSS.
 This application requires Node.js v18+
 
 ```bash
-git clone https://github.com/suhailkakar/suhailkakar.com.git
-cd suhailkakar.com
+git clone https://github.com/hovanhoa/hovanhoa.net.git
+cd hovanhoa.net
 npm install
 npm run dev
 ```

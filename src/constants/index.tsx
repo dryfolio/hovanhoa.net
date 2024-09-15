@@ -1,17 +1,17 @@
 import Link from "next/link";
 
-const NAME = "Suhail Kakar";
-const BASE_URL = "https://suhailkakar.com";
-const TWITTER = "suhailkakar";
-const GITHUB = "suhailkakar";
-const IMAGE = "/suhail.png";
+const NAME = "hovanhoa";
+const BASE_URL = "https://hovanhoa.net";
+const TWITTER = "_hovanhoa_";
+const GITHUB = "hovanhoa";
+const IMAGE = "/avatar.png";
 const OG_IMAGE_BG = "/og-bg.png";
-const HOST = "suhailkakar.hashnode.dev";
+const HOST = "hovanhoa.hashnode.dev";
 const HASHNODE_API = "https://gql.hashnode.com";
 
 const DESCRIPTION = (
   <>
-    Hey there! 👋 I&apos;m Suhail. <br />
+    Hey there! 👋 I&apos;m Hoà Hồ. <br />
     <br /> I work in tech, from web to mobile to blockchain and everything in
     between. Currently, i work in{" "}
     <Link
@@ -32,7 +32,7 @@ const DESCRIPTION = (
     <br /> <br />
     I&apos;m very active on{" "}
     <Link
-      href={"https://twitter.com/suhailkakar"}
+      href={"https://twitter.com/_hovanhoa_"}
       target="_blank"
       className="text-sky-600"
     >

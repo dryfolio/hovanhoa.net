@@ -13,10 +13,10 @@ export const metadata: Metadata = {
     default: NAME,
     template: `%s | ${NAME}`,
   },
-  description: "Developer and writer.",
+  description: "Software Engineer.",
   openGraph: {
     title: NAME,
-    description: "Developer and writer.",
+    description: "Software Engineer.",
     url: BASE_URL,
     siteName: NAME,
     locale: "en_US",
