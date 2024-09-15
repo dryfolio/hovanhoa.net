@@ -10,36 +10,68 @@ const HOST = "hovanhoa.hashnode.dev";
 const HASHNODE_API = "https://gql.hashnode.com";
 
 const DESCRIPTION = (
-  <>
-    Hey there! 👋 I&apos;m Hoà Hồ. <br />
-    <br /> I work in tech, from web to mobile to blockchain and everything in
-    between. Currently, i work in{" "}
-    <Link
-      href={"https://livepeer.org"}
-      target="_blank"
-      className="text-green-600"
-    >
-      Livepeer Inc.
-    </Link>{" "}
-    and i&apos;m also building a decentralized social media platform;{" "}
-    <Link
-      href={"https://twitter.com/literis_io"}
-      target="_blank"
-      className="text-orange-600"
-    >
-      Literis
-    </Link>{" "}
-    <br /> <br />
-    I&apos;m very active on{" "}
-    <Link
-      href={"https://twitter.com/_hovanhoa_"}
-      target="_blank"
-      className="text-sky-600"
-    >
-      Twitter
-    </Link>
-    . Don&apos;t be shy, say hi
-  </>
+    <>
+        Hey there! 👋 I&apos;m Hoà. <br/>
+        <br/> Software Engineer with 2+ years of experience.
+        I am confident in my knowledge of software development concepts,
+        industry best practices, and modern software technologies.
+
+        <br/>
+        <br/>
+        Tech stacks:{" "}
+        <Link
+          href={"https://go.dev/"}
+          target="_blank"
+          className="text-sky-600"
+        >
+          Golang
+        </Link>{" "}
+        <Link
+            href={"https://www.python.org/"}
+            target="_blank"
+            className="text-sky-600"
+        >
+            Python
+        </Link>{" "}
+        <Link
+            href={"https://www.postgresql.org/"}
+            target="_blank"
+            className="text-sky-600"
+        >
+            PostgreSQL
+        </Link>{" "}
+        <Link
+            href={"https://www.mongodb.com/"}
+            target="_blank"
+            className="text-sky-600"
+        >
+            MongoDB
+        </Link>{" "}
+        <Link
+            href={"https://aws.amazon.com/"}
+            target="_blank"
+            className="text-sky-600"
+        >
+            AWS
+        </Link>{" "}
+        <Link
+            href={"https://cloud.google.com/"}
+            target="_blank"
+            className="text-sky-600"
+        >
+            GCP
+        </Link>
+        <br/> <br/>
+        I&apos;m very active on{" "}
+        <Link
+            href={"https://twitter.com/_hovanhoa_"}
+            target="_blank"
+            className="text-sky-600"
+        >
+            Twitter
+        </Link>
+        . Don&apos;t be shy, say hi
+    </>
 );
 
 export {
