@@ -1,4 +1,4 @@
-import { GITHUB, TWITTER } from "@/constants";
+import { GITHUB, LINKEDIN } from "@/constants";
 import Link from "next/link";
 import React from "react";
 
@@ -14,18 +14,18 @@ export default function Navbar() {
             Home
           </Link>
           <Link
-            className="hover:text-slate-900 transition duration-300 ease-in-out"
-            target="_blank"
-            href={`https://twitter.com/${TWITTER}`}
+              className="hover:text-slate-900 transition duration-300 ease-in-out"
+              target="_blank"
+              href={`https://github.com/${GITHUB}`}
           >
-            Twitter
+            GitHub
           </Link>
           <Link
             className="hover:text-slate-900 transition duration-300 ease-in-out"
             target="_blank"
-            href={`https://github.com/${GITHUB}`}
+            href={`https://www.linkedin.com/in/${LINKEDIN}`}
           >
-            GitHub
+            Linkedin
           </Link>
         </ul>
       </nav>

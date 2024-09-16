@@ -3,6 +3,7 @@ import Link from "next/link";
 const NAME = "hovanhoa";
 const BASE_URL = "https://hovanhoa.net";
 const TWITTER = "_hovanhoa_";
+const LINKEDIN = "hovanhoa"
 const GITHUB = "hovanhoa";
 const IMAGE = "/avatar.png";
 const OG_IMAGE_BG = "/og-bg.jpg";
@@ -18,42 +19,42 @@ const DESCRIPTION = (
 
         <br/>
         <br/>
-        Tech stacks:{" "}
+        Tech stacks:&nbsp;&nbsp;
         <Link
           href={"https://go.dev/"}
           target="_blank"
           className="text-sky-600"
         >
           Golang
-        </Link>{" "}
+        </Link>&nbsp;&nbsp;
         <Link
             href={"https://www.python.org/"}
             target="_blank"
             className="text-sky-600"
         >
             Python
-        </Link>{" "}
+        </Link>&nbsp;&nbsp;
         <Link
             href={"https://www.postgresql.org/"}
             target="_blank"
             className="text-sky-600"
         >
             PostgreSQL
-        </Link>{" "}
+        </Link>&nbsp;&nbsp;
         <Link
             href={"https://www.mongodb.com/"}
             target="_blank"
             className="text-sky-600"
         >
             MongoDB
-        </Link>{" "}
+        </Link>&nbsp;&nbsp;
         <Link
             href={"https://aws.amazon.com/"}
             target="_blank"
             className="text-sky-600"
         >
             AWS
-        </Link>{" "}
+        </Link>&nbsp;&nbsp;
         <Link
             href={"https://cloud.google.com/"}
             target="_blank"
@@ -62,21 +63,13 @@ const DESCRIPTION = (
             GCP
         </Link>
         <br/> <br/>
-        I&apos;m very active on{" "}
-        <Link
-            href={"https://twitter.com/_hovanhoa_"}
-            target="_blank"
-            className="text-sky-600"
-        >
-            Twitter
-        </Link>
-        . Don&apos;t be shy, say hi
     </>
 );
 
 export {
   NAME,
   TWITTER,
+  LINKEDIN,
   GITHUB,
   IMAGE,
   DESCRIPTION,

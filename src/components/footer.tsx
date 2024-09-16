@@ -1,5 +1,4 @@
 import Link from "next/link";
-import {GITHUB, TWITTER} from "@/constants";
 import React from "react";
 
 export function Footer() {
