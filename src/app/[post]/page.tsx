@@ -9,6 +9,7 @@ import { type Tag, type Post } from "@/lib/types";
 import { Metadata } from "next";
 import Image from "next/image";
 import React from "react";
+import Link from "next/link";
 import {Footer} from "@/components/footer";
 
 export async function generateMetadata({
@@ -96,13 +97,17 @@ export default async function Page({ params }: { params: { post: string } }) {
         />
         <section className="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 overflow-hidden">
           <div className="items-center flex justify-between mb-6">
-            <Image
-                src={IMAGE}
-                alt={NAME}
-                className="h-12 w-12 rounded-full"
-                height={100}
-                width={100}
-            />
+            <Link
+                href="/"
+            >
+              <Image
+                  src={IMAGE}
+                  alt={NAME}
+                  className="h-12 w-12 rounded-full"
+                  height={100}
+                  width={100}
+              />
+            </Link>
             <Navbar/>
           </div>
           <h1 className="text-xl sm:text-3xl font-bold">{post.title}</h1>
