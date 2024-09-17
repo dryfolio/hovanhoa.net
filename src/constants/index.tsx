@@ -19,42 +19,42 @@ const DESCRIPTION = (
 
         <br/>
         <br/>
-        Tech stacks:&nbsp;&nbsp;
+        Tech stacks:{" "}
         <Link
           href={"https://go.dev/"}
           target="_blank"
           className="text-sky-600"
         >
           Golang
-        </Link>&nbsp;&nbsp;
+        </Link>{" "}
         <Link
             href={"https://www.python.org/"}
             target="_blank"
             className="text-sky-600"
         >
             Python
-        </Link>&nbsp;&nbsp;
+        </Link>{" "}
         <Link
             href={"https://www.postgresql.org/"}
             target="_blank"
             className="text-sky-600"
         >
             PostgreSQL
-        </Link>&nbsp;&nbsp;
+        </Link>{" "}
         <Link
             href={"https://www.mongodb.com/"}
             target="_blank"
             className="text-sky-600"
         >
             MongoDB
-        </Link>&nbsp;&nbsp;
+        </Link>{" "}
         <Link
             href={"https://aws.amazon.com/"}
             target="_blank"
             className="text-sky-600"
         >
             AWS
-        </Link>&nbsp;&nbsp;
+        </Link>{" "}
         <Link
             href={"https://cloud.google.com/"}
             target="_blank"

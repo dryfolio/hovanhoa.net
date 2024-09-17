@@ -34,8 +34,6 @@ async function getPosts(
 export default async function Home() {
   const { posts } = await getPosts();
 
-  console.log("posts", posts);
-
   return (
       <main className="min-h-screen relative">
           <div className="py-8 md:py-12 pb-0 px-4 sm:px-6 lg:pl-52 mb-8 md:mb-0">
