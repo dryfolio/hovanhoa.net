@@ -17,9 +17,6 @@ async function getPosts(
     },
     cache: "no-store",
     body: JSON.stringify({ query: GET_POST }),
-    next: {
-      revalidate: 1,
-    },
   });
 
   const { data } = await res.json();
