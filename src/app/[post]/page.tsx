@@ -11,6 +11,7 @@ import Image from "next/image";
 import React from "react";
 import Link from "next/link";
 import {Footer} from "@/components/footer";
+import NotFound from "@/app/not-found";
 
 export async function generateMetadata({
   params,
@@ -72,12 +73,16 @@ export default async function Page({ params }: { params: { post: string } }) {
 
   const post = await getPost(postSlug);
 
+  if (!post) {
+    return <NotFound />;
+  }
+
   return (
-    <>
-      <main className="min-h-screen relative pt-8">
-        <script
-            type="application/ld+json"
-            suppressHydrationWarning
+      <>
+        <main className="min-h-screen relative pt-8">
+          <script
+              type="application/ld+json"
+              suppressHydrationWarning
             dangerouslySetInnerHTML={{
               __html: JSON.stringify({
                 "@context": "https://schema.org",
