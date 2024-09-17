@@ -9,6 +9,7 @@ const IMAGE = "/avatar.png";
 const OG_IMAGE_BG = "/og-bg.jpg";
 const HOST = "hovanhoa.hashnode.dev";
 const HASHNODE_API = "https://gql.hashnode.com";
+const ROLE = "Software Engineer";
 
 const DESCRIPTION = (
     <>
@@ -77,4 +78,5 @@ export {
   HASHNODE_API,
   OG_IMAGE_BG,
   BASE_URL,
+  ROLE,
 };
