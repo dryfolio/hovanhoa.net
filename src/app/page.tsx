@@ -23,8 +23,6 @@ async function getPosts(
 
   const posts = data.publication.posts.edges.map((edge: any) => edge.node);
 
-  console.log(posts);
-
   return {
     posts,
   };
@@ -32,6 +30,9 @@ async function getPosts(
 
 export default async function Home() {
   const { posts } = await getPosts();
+
+  console.log("posts", posts);
+
 
   return (
       <main className="min-h-screen relative">
