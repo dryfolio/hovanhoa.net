@@ -15,7 +15,6 @@ async function getPosts(
     headers: {
       "Content-Type": "application/json",
     },
-    cache: "no-store",
     body: JSON.stringify({ query: GET_POST }),
     next: {
       revalidate: 1,
