@@ -15,7 +15,7 @@ export default function Badge({
       case "Docker":
         return "bg-sky-100 text-sky-800 border-sky-200";
       case "Web Development":
-        return "bg-sky-100 text-sky-800 border-sky-200";
+        return "bg-green-100 text-green-800 border-green-20";
       case "General Programming":
         return "bg-green-100 text-green-800 border-green-200";
       case "Web3":
