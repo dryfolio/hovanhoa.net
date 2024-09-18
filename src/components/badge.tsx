@@ -16,9 +16,9 @@ export default function Badge({
         return "bg-sky-100 text-sky-800 border-sky-200";
       case "Web Development":
         return "bg-green-100 text-green-800 border-green-20";
-      case "General Programming":
-        return "bg-green-100 text-green-800 border-green-200";
-      case "Web3":
+      case "distributed system":
+        return "bg-pink-200 text-pink-800 border-pink-200";
+      case "snowflake":
         return "bg-purple-100 text-purple-800 border-purple-200";
       case "System Design":
         return "bg-yellow-100 text-yellow-800 border-yellow-200";
