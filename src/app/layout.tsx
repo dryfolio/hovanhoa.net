@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { BASE_URL, NAME } from "@/constants";
 import { Analytics } from "@vercel/analytics/react";
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -45,6 +46,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
+    <head>
+      <GoogleAnalytics />
+    </head>
       <body className={inter.className}>
         {children}
       </body>
