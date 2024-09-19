@@ -9,6 +9,9 @@ import { type Tag, type Post } from "@/lib/types";
 import { Metadata } from "next";
 import Image from "next/image";
 import React from "react";
+import Link from "next/link";
+import {Footer} from "@/components/footer";
+import NotFound from "@/app/not-found";
 
 export async function generateMetadata({
   params,
@@ -70,6 +73,10 @@ export default async function Page({ params }: { params: { post: string } }) {
 
   const post = await getPost(postSlug);
 
+  if (!post) {
+    return <NotFound />;
+  }
+
   return (
     <>
       <main className="min-h-screen relative pt-8">
@@ -96,14 +103,18 @@ export default async function Page({ params }: { params: { post: string } }) {
         />
         <section className="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 overflow-hidden">
           <div className="items-center flex justify-between mb-6">
-            <Image
-              src={IMAGE}
-              alt={NAME}
-              className="h-12 w-12 rounded-full"
-              height={100}
-              width={100}
-            />
-            <Navbar />
+            <Link
+                href="/"
+            >
+              <Image
+                  src={IMAGE}
+                  alt={NAME}
+                  className="h-12 w-12 rounded-full"
+                  height={100}
+                  width={100}
+              />
+            </Link>
+            <Navbar/>
           </div>
           <h1 className="text-xl sm:text-3xl font-bold">{post.title}</h1>
           <p className="my-2 text-sm leading-7 text-slate-500  ">
@@ -111,11 +122,11 @@ export default async function Page({ params }: { params: { post: string } }) {
             {post.readTimeInMinutes} min read
           </p>
           {post.tags.map((tag: Tag) => (
-            <Badge
-              label={tag.name}
-              key={tag.name}
-              className={"absolute -top-6 right-0 md:static mb-2 mr-4"}
-            />
+              <Badge
+                  label={tag.name}
+                  key={tag.name}
+                  className={"absolute -top-6 right-0 md:static mb-2 mr-4"}
+              />
           ))}
           <div className="relative my-2">
             <ImagePreview title={post.title} imageURL={post.coverImage.url} />
@@ -123,13 +134,16 @@ export default async function Page({ params }: { params: { post: string } }) {
           </div>
           <article className="text-sm leading-7 text-slate-500 prose max-w-none my-4">
             <div
-              className="prose max-w-none"
-              dangerouslySetInnerHTML={{ __html: post.content.html }}
+                className="prose max-w-none"
+                dangerouslySetInnerHTML={{__html: post.content.html}}
             ></div>
           </article>
         </section>
-        <div className="top-60 left-20 h-full w-full fixed lg:block hidden">
-          <TableOfContent items={post.features.tableOfContents.items} />
+        <div className="top-60 left-20 h-full w-1/5 lg:block fixed lg">
+          <TableOfContent items={post.features.tableOfContents.items}/>
+        </div>
+        <div className="py-8 md:py-12 pb-0 px-4 sm:px-6 lg:pl-52 mb-8 md:mb-0">
+          <Footer/>
         </div>
       </main>
     </>

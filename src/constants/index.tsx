@@ -3,11 +3,13 @@ import Link from "next/link";
 const NAME = "hovanhoa";
 const BASE_URL = "https://hovanhoa.net";
 const TWITTER = "_hovanhoa_";
+const LINKEDIN = "hovanhoa"
 const GITHUB = "hovanhoa";
 const IMAGE = "/avatar.png";
 const OG_IMAGE_BG = "/og-bg.jpg";
 const HOST = "hovanhoa.hashnode.dev";
 const HASHNODE_API = "https://gql.hashnode.com";
+const ROLE = "Software Engineer";
 
 const DESCRIPTION = (
     <>
@@ -61,21 +63,13 @@ const DESCRIPTION = (
             GCP
         </Link>
         <br/> <br/>
-        I&apos;m very active on{" "}
-        <Link
-            href={"https://twitter.com/_hovanhoa_"}
-            target="_blank"
-            className="text-sky-600"
-        >
-            Twitter
-        </Link>
-        . Don&apos;t be shy, say hi
     </>
 );
 
 export {
   NAME,
   TWITTER,
+  LINKEDIN,
   GITHUB,
   IMAGE,
   DESCRIPTION,
@@ -83,4 +77,5 @@ export {
   HASHNODE_API,
   OG_IMAGE_BG,
   BASE_URL,
+  ROLE,
 };

@@ -1,4 +1,4 @@
-import { DESCRIPTION, IMAGE, NAME, TWITTER } from "@/constants";
+import { DESCRIPTION, IMAGE, NAME, TWITTER, ROLE } from "@/constants";
 import Image from "next/image";
 
 export default function Hero() {
@@ -17,7 +17,7 @@ export default function Hero() {
           </div>
           <div className="flex flex-col items-start">
             <h1 className="text-2xl font-semibold  text-slate-700">{NAME}</h1>
-            <p className=" text-base  text-slate-400">@{TWITTER}</p>
+            <p className=" text-base  text-slate-400">{ROLE}</p>
           </div>
         </div>
         <p className="mt-4 text-base leading-7 text-slate-600">{DESCRIPTION}</p>
