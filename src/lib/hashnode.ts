@@ -42,19 +42,19 @@ export const HashNode = {
         }
     },
 
-    getArticleBySlug: async (slug: string): Promise<any> => {
-        try {
-            return await client.query({
-                query: GET_ARTICLE_BY_POST,
-                variables: {
-                    host: process.env.NEXT_PUBLIC_HASHNODE_HOST!,
-                    slug,
-                },
-                fetchPolicy: "no-cache",
-            });
-        } catch (error) {
-            console.error("HELLO", error);
-            return error;
-        }
-    },
+    // getArticleBySlug: async (slug: string): Promise<any> => {
+    //     try {
+    //         return await client.query({
+    //             query: GET_ARTICLE_BY_POST,
+    //             variables: {
+    //                 host: process.env.NEXT_PUBLIC_HASHNODE_HOST!,
+    //                 slug,
+    //             },
+    //             fetchPolicy: "no-cache",
+    //         });
+    //     } catch (error) {
+    //         console.error("HELLO", error);
+    //         return error;
+    //     }
+    // },
 };
