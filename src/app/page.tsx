@@ -1,39 +1,12 @@
 import Hero from "@/components/hero";
 import Navbar from "@/components/nav";
 import PostTile from "@/components/post-tile";
-import { HASHNODE_API } from "@/constants";
-import { GET_POST } from "@/lib/gql";
 import { type PostExcerpt } from "@/lib/types";
 import Link from "next/link";
 import {Footer} from "@/components/footer";
 import { unstable_noStore as noStore } from "next/cache";
 import {HashNode} from "@/lib/hashnode";
 
-
-async function getPosts(
-  cursor?: string
-): Promise<{ posts: PostExcerpt[]; endCursor?: string }> {
-    noStore()
-  const res = await fetch(HASHNODE_API, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    cache: "no-cache",
-    body: JSON.stringify({ query: GET_POST }),
-    next: {
-      revalidate: 1,
-    },
-  });
-
-  const { data } = await res.json();
-
-  const posts = data.publication.posts.edges.map((edge: any) => edge.node);
-
-  return {
-    posts,
-  };
-}
 
 export default async function Home() {
     noStore()

@@ -92,7 +92,6 @@ export default async function Page({ params }: { params: { post: string } }) {
               dateModified: post.publishedAt,
               description: post.brief,
               image: post?.coverImage?.url,
-              // image: `https://hovanhoa.net/og?title=${post.title}`,
               url: `${BASE_URL}/${postSlug}`,
               author: {
                 "@type": "Person",
