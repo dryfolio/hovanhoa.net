@@ -1,6 +1,7 @@
 import client from "./apollo-client";
 import {GET_ARTICLE_BY_POINTER, GET_ARTICLE_BY_POST, GET_ARTICLES} from "./queries";
 
+
 export const HashNode = {
     getArticles: async ({
                             pageSize,
@@ -21,7 +22,7 @@ export const HashNode = {
             });
             return res
         } catch (error) {
-            console.error("HELLO", error);
+            console.error("[ERROR]", error);
             return error;
         }
     },
@@ -37,24 +38,26 @@ export const HashNode = {
                 fetchPolicy: "no-cache",
             });
         } catch (error) {
-            console.error("HELLO", error);
+            console.error("[ERROR]", error);
             return error;
         }
     },
 
-    // getArticleBySlug: async (slug: string): Promise<any> => {
-    //     try {
-    //         return await client.query({
-    //             query: GET_ARTICLE_BY_POST,
-    //             variables: {
-    //                 host: process.env.NEXT_PUBLIC_HASHNODE_HOST!,
-    //                 slug,
-    //             },
-    //             fetchPolicy: "no-cache",
-    //         });
-    //     } catch (error) {
-    //         console.error("HELLO", error);
-    //         return error;
-    //     }
-    // },
+    getArticleBySlug: async (slug: string): Promise<any> => {
+        try {
+            const res = await client.query({
+                query: GET_ARTICLE_BY_POST,
+                variables: {
+                    host: process.env.NEXT_PUBLIC_HASHNODE_HOST!,
+                    slug,
+                },
+                fetchPolicy: "no-cache",
+            });
+
+            return res?.data?.publication?.post
+        } catch (error) {
+            console.error("[ERROR]", error);
+            return error;
+        }
+    },
 };
