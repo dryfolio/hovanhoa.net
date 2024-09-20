@@ -1,58 +1,56 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import { BASE_URL, NAME } from "@/constants";
-import { Analytics } from "@vercel/analytics/react";
-import GoogleAnalytics from '@/components/GoogleAnalytics';
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+import { BASE_URL, NAME } from '@/constants'
+import { Analytics } from '@vercel/analytics/react'
+import GoogleAnalytics from '@/components/GoogleAnalytics'
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  metadataBase: new URL(BASE_URL),
-  title: {
-    default: NAME,
-    template: `%s | ${NAME}`,
-  },
-  description: "Software Engineer.",
-  openGraph: {
-    title: NAME,
-    description: "Software Engineer.",
-    url: BASE_URL,
-    siteName: NAME,
-    locale: "en_US",
-    type: "website",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
+    metadataBase: new URL(BASE_URL),
+    title: {
+        default: NAME,
+        template: `%s | ${NAME}`,
     },
-  },
-  twitter: {
-    title: NAME,
-    card: "summary_large_image",
-  },
-};
+    description: 'Software Engineer.',
+    openGraph: {
+        title: NAME,
+        description: 'Software Engineer.',
+        url: BASE_URL,
+        siteName: NAME,
+        locale: 'en_US',
+        type: 'website',
+    },
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+            index: true,
+            follow: true,
+            'max-video-preview': -1,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+        },
+    },
+    twitter: {
+        title: NAME,
+        card: 'summary_large_image',
+    },
+}
 
 export default function RootLayout({
-  children,
+    children,
 }: {
-  children: React.ReactNode;
+    children: React.ReactNode
 }) {
-  return (
-    <html lang="en" className="scroll-smooth">
-    <head>
-      <GoogleAnalytics />
-    </head>
-      <body className={inter.className}>
-        {children}
-      </body>
-      <Analytics />
-    </html>
-  );
+    return (
+        <html lang="en" className="scroll-smooth">
+            <head>
+                <GoogleAnalytics />
+            </head>
+            <body className={inter.className}>{children}</body>
+            <Analytics />
+        </html>
+    )
 }
