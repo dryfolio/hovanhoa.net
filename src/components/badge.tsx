@@ -16,6 +16,8 @@ export default function Badge({
                 return 'bg-sky-100 text-sky-800 border-sky-200'
             case 'Web Development':
                 return 'bg-green-100 text-green-800 border-green-20'
+            case "cap-theorem":
+                return 'bg-lime-100 text-lime-800 border-lime-20'
             case 'distributed system':
                 return 'bg-pink-200 text-pink-800 border-pink-200'
             case 'snowflake':
