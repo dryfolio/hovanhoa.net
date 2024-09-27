@@ -28,7 +28,6 @@ export default async function Home() {
                         href={`/${post.slug}`}
                         prefetch={false}
                         key={post.id}
-                        replace
                     >
                         <PostTile key={post.id} post={post} />
                     </Link>
