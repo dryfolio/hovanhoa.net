@@ -66,10 +66,8 @@ const DESCRIPTION = (
         <Link href={'https://github.com/hovanhoa'} target="_blank" className="text-sky-600">
             Github
         </Link>{' '} and <Link href={'https://linkedin.com/in/hovanhoa'} target="_blank" className="text-sky-600">
-        Linkedin
-    </Link>!
-
-
+            Linkedin
+        </Link>!
     </>
 )
 
