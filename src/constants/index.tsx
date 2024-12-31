@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const NAME = 'hovanhoa'
 const BASE_URL = 'https://hovanhoa.net'
@@ -15,12 +16,12 @@ const ROLE = 'Software Engineer'
 
 const DESCRIPTION = (
     <>
-        Hey there! 👋 I&apos;m Hòa. <br />
-        <br /> Software Engineer with 2+ years of experience. I am confident in
+        Hey there! 👋 I&apos;m Hòa. <br/>
+        <br/> Software Engineer with 2+ years of experience. I am confident in
         my knowledge of software development concepts, industry best practices,
         and modern software technologies.
-        <br />
-        <br />
+        <br/>
+        <br/>
         Tech stacks:{' '}
         <Link href={'https://go.dev/'} target="_blank" className="text-sky-600">
             Golang
@@ -60,7 +61,15 @@ const DESCRIPTION = (
         >
             GCP
         </Link>
-        <br /> <br />
+        <br/> <br/>
+        Feel free to connect with me on {' '}
+        <Link href={'https://github.com/hovanhoa'} target="_blank" className="text-sky-600">
+            Github
+        </Link>{' '} and <Link href={'https://linkedin.com/in/hovanhoa'} target="_blank" className="text-sky-600">
+        Linkedin
+    </Link>!
+
+
     </>
 )
 
