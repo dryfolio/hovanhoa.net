@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 const NAME = 'hovanhoa'
 const BASE_URL = 'https://hovanhoa.net'
