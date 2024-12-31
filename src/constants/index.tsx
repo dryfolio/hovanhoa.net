@@ -6,6 +6,8 @@ const TWITTER = '_hovanhoa_'
 const LINKEDIN = 'hovanhoa'
 const GITHUB = 'hovanhoa'
 const IMAGE = '/avatar.png'
+const INSIGHT_URL = 'https://insight.hovanhoa.net'
+const GALLERY_URL = 'https://gallery.hovanhoa.net'
 const OG_IMAGE_BG = '/og-bg.jpg'
 const HOST = 'hovanhoa.hashnode.dev'
 const HASHNODE_API = 'https://gql.hashnode.com'
@@ -70,6 +72,8 @@ export {
     IMAGE,
     DESCRIPTION,
     HOST,
+    INSIGHT_URL,
+    GALLERY_URL,
     HASHNODE_API,
     OG_IMAGE_BG,
     BASE_URL,
