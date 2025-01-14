@@ -45,7 +45,6 @@ export default function PostTile({ post }: { post: PostExcerpt }) {
                         title={post.title}
                         imageURL={post.coverImage?.url}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-b from-transparent  to-[#ffffff90] rounded-2xl" />
                 </div>
             </div>
         </article>

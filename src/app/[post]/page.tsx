@@ -79,7 +79,6 @@ export default async function Page({ params }: { params: { post: string } }) {
                             title={post.title}
                             imageURL={post?.coverImage?.url}
                         />
-                        <div className="absolute inset-0 bg-gradient-to-b from-transparent  to-[#ffffff90] rounded-2xl" />
                     </div>
                     <article className="text-sm leading-7 text-slate-500 prose max-w-none my-4">
                         <div
