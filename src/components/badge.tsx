@@ -24,7 +24,7 @@ export default function Badge({
                 return 'bg-red-100 text-red-800 border-red-20'
             case 'distributed system':
                 return 'bg-pink-200 text-pink-800 border-pink-200'
-            case 'snowflake':
+            case 'life':
                 return 'bg-purple-100 text-purple-800 border-purple-200'
             case 'System Design':
                 return 'bg-yellow-100 text-yellow-800 border-yellow-200'
