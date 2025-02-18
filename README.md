@@ -1,32 +1,50 @@
 # hovanhoa.net
 
-Built with Next.js, TypeScript, and Tailwind CSS.
+Welcome to hovanhoa.net, a personal portfolio website built with Next.js, TypeScript, and Tailwind CSS.
 
-- Framework: Next.js
-- Language: TypeScript
-- Styling: Tailwind CSS
-- Deployment: Vercel
-- CMS: Hashnode Headless CMS
+## Table of Contents
+- [Technologies](#technologies)
+- [Getting Started](#getting-started)
+- [Customization](#customization)
+- [License](#license)
+- [Acknowledgements](#acknowledgements)
 
-## Running Locally
+## Technologies
+- **Framework:** Next.js
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **Deployment:** Vercel
+- **CMS:** Hashnode Headless CMS
 
-This application requires Node.js v18+
+## Getting Started
 
-```bash
-git clone https://github.com/hovanhoa/hovanhoa.net.git
-cd hovanhoa.net
-npm install
-npm run dev
-```
+To run this application locally, ensure you have Node.js v18+ installed. Follow these steps:
 
-You can just edit the information in `@/constant/index.ts` to change the content of the website. All the required information are imported from this file.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/hovanhoa/hovanhoa.net.git
+   ```
+2. Navigate into the project directory:
+   ```bash
+   cd hovanhoa.net
+   ```
+3. Install the dependencies:
+   ```bash
+   npm install
+   ```
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+## Customization
+
+You can easily customize the content of the website by editing the information in `@/constant/index.ts`. All required information is imported from this file.
 
 ## License
 
-Feel free to use this code for your own portfolio. But please do not copy it directly and make sure to replace the info on `@/constant/index.ts` with your own information.
+Feel free to use this code for your own portfolio. However, please do not copy it directly. Make sure to replace the information in `@/constant/index.ts` with your own details. Crediting the author is appreciated but not required.
 
-Crediting the author is appreciated but not required :)
+## Acknowledgements
 
-## Acknowledgement
-
-The portfolio design is inspired by [LogWatch](https://logwatch.vercel.app/). The credit for post card on home page design goes to its creator.
+The design of this portfolio is inspired by [LogWatch](https://logwatch.vercel.app/). Special thanks to the creator of the postcard design featured on the homepage.
