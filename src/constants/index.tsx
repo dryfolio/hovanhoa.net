@@ -63,7 +63,7 @@ const DESCRIPTION = (
         <br/> <br/>
         Feel free to connect with me on {' '}
         <Link href={'https://x.com/_hovanhoa_'} target="_blank" className="text-sky-600">
-            X
+            twitter
         </Link>{' '} and <Link href={'https://github.com/hovanhoa'} target="_blank" className="text-sky-600">
             GitHub
         </Link>!
