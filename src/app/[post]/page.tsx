@@ -28,6 +28,8 @@ export async function generateMetadata({
         }
     }
 
+    const ogImage = post?.coverImage?.url || `${BASE_URL}/api/og?title=${encodeURIComponent(post.title)}`
+
     return {
         title: post.title,
         description: post.brief,
@@ -38,9 +40,9 @@ export async function generateMetadata({
             siteName: NAME,
             images: [
                 {
-                    url: post?.coverImage?.url || '/og-bg.jpg',
+                    url: ogImage,
                     width: 800,
-                    height: 600,
+                    height: 418,
                 },
             ],
             locale: 'en_US',
@@ -51,7 +53,7 @@ export async function generateMetadata({
             title: post.title,
             description: post.brief,
             creator: '@_hovanhoa_',
-            images: [post?.coverImage?.url || '/og-bg.jpg'],
+            images: [ogImage],
         },
     }
 }
