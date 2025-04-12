@@ -12,6 +12,49 @@ import { Footer } from '@/components/footer'
 import NotFound from '@/app/not-found'
 import {HashNode} from "@/lib/hashnode";
 import ArticleContent from '@/components/article-content'
+import { Metadata } from 'next'
+
+export async function generateMetadata({ 
+    params 
+}: { 
+    params: { post: string } 
+}): Promise<Metadata> {
+    const post = await HashNode.getArticleBySlug(params.post)
+    
+    if (!post) {
+        return {
+            title: 'Not Found',
+            description: 'The page you are looking for does not exist.',
+        }
+    }
+
+    return {
+        title: post.title,
+        description: post.brief,
+        openGraph: {
+            title: post.title,
+            description: post.brief,
+            url: `${BASE_URL}/${params.post}`,
+            siteName: NAME,
+            images: [
+                {
+                    url: post?.coverImage?.url || '/og-bg.jpg',
+                    width: 800,
+                    height: 600,
+                },
+            ],
+            locale: 'en_US',
+            type: 'article',
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: post.title,
+            description: post.brief,
+            creator: '@_hovanhoa_',
+            images: [post?.coverImage?.url || '/og-bg.jpg'],
+        },
+    }
+}
 
 export default async function Page({ params }: { params: { post: string } }) {
     const postSlug = params.post
