@@ -40,3 +40,27 @@ body {
 .document {
   @apply max-w-none prose-h3:mb-4 prose-h3:text-base prose-h3:leading-6 prose-sm prose prose-pre:text-base prose-slate prose-a:font-semibold prose-a:text-primary hover:prose-a:text-sky-600;
 }
+
+
+/* Add these styles for code blocks */
+pre[class*="language-"] {
+    padding: 1em;
+    margin: 0.5em 0;
+    overflow: auto;
+    border-radius: 0.5em;
+    background: #2d2d2d !important;
+}
+
+code[class*="language-"] {
+    background: transparent !important;
+    padding: 0 !important;
+    font-size: 0.875rem !important;
+    line-height: 1.7142857 !important;
+}
+
+:not(pre) > code {
+    background: #f1f5f9;
+    padding: 0.2em 0.4em;
+    border-radius: 0.25em;
+    font-size: 0.875em;
+}

@@ -11,7 +11,7 @@ import Link from 'next/link'
 import { Footer } from '@/components/footer'
 import NotFound from '@/app/not-found'
 import {HashNode} from "@/lib/hashnode";
-
+import ArticleContent from '@/components/article-content'
 
 export default async function Page({ params }: { params: { post: string } }) {
     const postSlug = params.post
@@ -82,14 +82,7 @@ export default async function Page({ params }: { params: { post: string } }) {
                             imageURL={post?.coverImage?.url}
                         />
                     </div>
-                    <article className="text-sm leading-7 text-slate-500 prose max-w-none my-4">
-                        <div
-                            className="prose max-w-none"
-                            dangerouslySetInnerHTML={{
-                                __html: post.content.html,
-                            }}
-                        ></div>
-                    </article>
+                    <ArticleContent content={post.content.html} />
                 </section>
                 <div className="top-60 left-20 h-full w-1/5 lg:block fixed lg hidden">
                     <TableOfContent
