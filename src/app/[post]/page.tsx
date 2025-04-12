@@ -28,13 +28,13 @@ export async function generateMetadata({
         }
     }
 
-    const ogImage = post?.coverImage?.url || `${BASE_URL}/api/og?title=${encodeURIComponent(post.title)}`
+    const ogImage = post?.coverImage?.url || `${BASE_URL}/api/og?title=${encodeURIComponent(`${post.title} | ${NAME}`)}`
 
     return {
-        title: post.title,
+        title: `${post.title} | ${NAME}`,
         description: post.brief,
         openGraph: {
-            title: post.title,
+            title: `${post.title} | ${NAME}`,
             description: post.brief,
             url: `${BASE_URL}/${params.post}`,
             siteName: NAME,
@@ -50,7 +50,7 @@ export async function generateMetadata({
         },
         twitter: {
             card: 'summary_large_image',
-            title: post.title,
+            title: `${post.title} | ${NAME}`,
             description: post.brief,
             creator: '@_hovanhoa_',
             images: [ogImage],
