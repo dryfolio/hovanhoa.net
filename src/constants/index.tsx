@@ -16,7 +16,7 @@ const ROLE = 'Software Engineer'
 const DESCRIPTION = (
     <>
         Hey there! 👋 I&apos;m Hòa. <br/>
-        <br/> Software Engineer with 2+ years of experience. I am confident in
+        <br/> Software Engineer with 3+ years of experience. I am confident in
         my knowledge of software development concepts, industry best practices,
         and modern software technologies.
         <br/>
