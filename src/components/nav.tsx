@@ -1,4 +1,4 @@
-import {BASE_URL, GALLERY_URL, GITHUB, INSIGHT_URL, LINKEDIN} from '@/constants'
+import {BASE_URL, GALLERY_URL, GITHUB, INSIGHT_URL, LINKEDIN, STATUS_URL} from '@/constants'
 import Link from 'next/link'
 import React from 'react'
 
@@ -24,6 +24,12 @@ export default function Navbar() {
                         href={GALLERY_URL}
                     >
                         Gallery
+                    </Link>
+                    <Link
+                        className="hover:underline hover:decoration-wavy hover:underline-offset-8 transition duration-300 ease-in-out"
+                        href={STATUS_URL}
+                    >
+                        Status
                     </Link>
                 </ul>
             </nav>

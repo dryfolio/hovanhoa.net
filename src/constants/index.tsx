@@ -2,6 +2,7 @@ import Link from 'next/link'
 
 const NAME = 'hovanhoa'
 const BASE_URL = 'https://hovanhoa.net'
+const STATUS_URL = 'https://status.hovanhoa.net'
 const TWITTER = '_hovanhoa_'
 const LINKEDIN = 'hovanhoa'
 const GITHUB = 'hovanhoa'
@@ -83,5 +84,6 @@ export {
     HASHNODE_API,
     OG_IMAGE_BG,
     BASE_URL,
+    STATUS_URL,
     ROLE,
 }
