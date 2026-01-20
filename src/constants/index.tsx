@@ -62,12 +62,11 @@ const DESCRIPTION = (
             GCP
         </Link>
         <br/> <br/>
-        Feel free to connect with me on {' '}
-        <Link href={'https://x.com/_hovanhoa_'} target="_blank" className="text-sky-600">
-            twitter
-        </Link>{' '} and <Link href={'https://github.com/hovanhoa'} target="_blank" className="text-sky-600">
-            GitHub
-        </Link>!
+        Check out {' '}
+        <Link href={'https://contact.hovanhoa.net'} target="_blank" className="text-sky-600">
+            here
+        </Link>
+        {' '}to connect with me!
     </>
 )
 
