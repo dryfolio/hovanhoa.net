@@ -8,6 +8,7 @@ const GITHUB = 'hovanhoa'
 const IMAGE = '/avatar.png'
 const INSIGHT_URL = 'https://insight.hovanhoa.net'
 const GALLERY_URL = 'https://gallery.hovanhoa.net'
+const STATUS_URL = 'https://status.hovanhoa.net'
 const OG_IMAGE_BG = '/og-bg.jpg'
 const HOST = 'hovanhoa.hashnode.dev'
 const HASHNODE_API = 'https://gql.hashnode.com'
@@ -22,41 +23,41 @@ const DESCRIPTION = (
         <br/>
         <br/>
         Tech stacks:{' '}
-        <Link href={'https://go.dev/'} target="_blank" className="text-sky-600">
+        <Link href={'https://go.dev/'} target="_blank" className="text-rose-400">
             Golang
         </Link>{' '}
         <Link
             href={'https://www.python.org/'}
             target="_blank"
-            className="text-sky-600"
+            className="text-pink-400"
         >
             Python
         </Link>{' '}
         <Link
             href={'https://www.postgresql.org/'}
             target="_blank"
-            className="text-sky-600"
+            className="text-purple-400"
         >
             PostgreSQL
         </Link>{' '}
         <Link
             href={'https://www.mongodb.com/'}
             target="_blank"
-            className="text-sky-600"
+            className="text-sky-400"
         >
             MongoDB
         </Link>{' '}
         <Link
             href={'https://aws.amazon.com/'}
             target="_blank"
-            className="text-sky-600"
+            className="text-blue-400"
         >
             AWS
         </Link>{' '}
         <Link
             href={'https://cloud.google.com/'}
             target="_blank"
-            className="text-sky-600"
+            className="text-indigo-400"
         >
             GCP
         </Link>
@@ -66,6 +67,13 @@ const DESCRIPTION = (
             here
         </Link>
         {' '}to connect with me!
+        <br/>
+        <br/>
+        Monitor my services at{' '}
+        <Link href={'https://status.hovanhoa.net'} target="_blank" className="text-emerald-500">
+            the status page
+        </Link>
+        .
     </>
 )
 
@@ -79,6 +87,7 @@ export {
     HOST,
     INSIGHT_URL,
     GALLERY_URL,
+    STATUS_URL,
     HASHNODE_API,
     OG_IMAGE_BG,
     BASE_URL,
