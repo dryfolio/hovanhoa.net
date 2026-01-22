@@ -63,7 +63,7 @@ const DESCRIPTION = (
         </Link>
         <br/> <br/>
         Check out {' '}
-        <Link href={'https://contact.hovanhoa.net'} target="_blank" className="text-sky-600">
+        <Link href={'https://info.hovanhoa.net'} target="_blank" className="text-sky-600">
             here
         </Link>
         {' '}to connect with me!
