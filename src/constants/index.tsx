@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 const NAME = 'hovanhoa'
+const FULL_NAME = 'Hồ Văn Hòa'
 const BASE_URL = 'https://hovanhoa.net'
 const TWITTER = '_hovanhoa_'
 const LINKEDIN = 'hovanhoa'
@@ -79,6 +80,7 @@ const DESCRIPTION = (
 
 export {
     NAME,
+    FULL_NAME,
     TWITTER,
     LINKEDIN,
     GITHUB,

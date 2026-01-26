@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { BASE_URL, NAME } from '@/constants'
+import { BASE_URL, NAME, FULL_NAME } from '@/constants'
 import { Analytics } from '@vercel/analytics/react'
 import ScrollToTop from '@/components/scroll-to-top'
 
@@ -11,12 +11,24 @@ export const metadata: Metadata = {
     metadataBase: new URL(BASE_URL),
     title: {
         default: NAME,
-        template: `%s | ${NAME}`,
+        template: `${NAME} | %s`,
     },
-    description: 'Software Engineer.',
+    description: `${FULL_NAME} - Software Engineer. Personal website and blog of ${FULL_NAME}.`,
+    keywords: [
+        FULL_NAME,
+        'Hồ Văn Hòa',
+        NAME,
+        'hovanhoa',
+        'Software Engineer',
+        'Developer',
+        'Blog',
+        'Tech Blog',
+        'Vietnam Developer',
+    ],
+    authors: [{ name: FULL_NAME }],
     openGraph: {
         title: NAME,
-        description: 'Software Engineer.',
+        description: `${FULL_NAME} - Software Engineer. Personal website and blog of ${FULL_NAME}.`,
         url: BASE_URL,
         siteName: NAME,
         locale: 'en_US',
@@ -36,6 +48,10 @@ export const metadata: Metadata = {
     twitter: {
         title: NAME,
         card: 'summary_large_image',
+        description: `${FULL_NAME} - Software Engineer.`,
+    },
+    alternates: {
+        canonical: BASE_URL,
     },
 }
 

@@ -1,4 +1,4 @@
-import { DESCRIPTION, IMAGE, NAME, TWITTER, ROLE } from '@/constants'
+import { DESCRIPTION, IMAGE, NAME, FULL_NAME, TWITTER, ROLE } from '@/constants'
 import Image from 'next/image'
 
 export default function Hero() {
@@ -9,7 +9,7 @@ export default function Hero() {
                     <div className="border border-slate-200 p-1 rounded-full">
                         <Image
                             src={IMAGE}
-                            alt={NAME}
+                            alt={FULL_NAME}
                             className="h-20 w-20 rounded-full"
                             height={100}
                             width={100}

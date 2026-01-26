@@ -2,7 +2,7 @@ import Badge from '@/components/badge'
 import ImagePreview from '@/components/image-preview'
 import Navbar from '@/components/nav'
 import TableOfContent from '@/components/toc'
-import { BASE_URL, IMAGE, NAME } from '@/constants'
+import { BASE_URL, IMAGE, NAME, FULL_NAME } from '@/constants'
 import formatDate from '@/lib/format-date'
 import { type Tag, type Post } from '@/lib/types'
 import Image from 'next/image'
@@ -28,13 +28,24 @@ export async function generateMetadata({
         }
     }
 
-    const ogImage = post?.coverImage?.url || `${BASE_URL}/api/og?title=${encodeURIComponent(`${post.title} | ${NAME}`)}`
+    const ogImage = post?.coverImage?.url || `${BASE_URL}/api/og?title=${encodeURIComponent(`${NAME} | ${post.title.toLowerCase()}`)}`
 
     return {
-        title: `${post.title} | ${NAME}`,
+        title: {
+            absolute: `${NAME} | ${post.title.toLowerCase()}`,
+        },
         description: post.brief,
+        keywords: [
+            FULL_NAME,
+            'Hồ Văn Hòa',
+            NAME,
+            'hovanhoa',
+            post.title,
+            ...(post.tags?.map((tag: { name: string }) => tag.name) || []),
+        ],
+        authors: [{ name: FULL_NAME }],
         openGraph: {
-            title: `${post.title} | ${NAME}`,
+            title: `${NAME} | ${post.title.toLowerCase()}`,
             description: post.brief,
             url: `${BASE_URL}/${params.post}`,
             siteName: NAME,
@@ -43,6 +54,7 @@ export async function generateMetadata({
                     url: ogImage,
                     width: 800,
                     height: 418,
+                    alt: post.title,
                 },
             ],
             locale: 'en_US',
@@ -50,10 +62,13 @@ export async function generateMetadata({
         },
         twitter: {
             card: 'summary_large_image',
-            title: `${post.title} | ${NAME}`,
+            title: `${NAME} | ${post.title.toLowerCase()}`,
             description: post.brief,
             creator: '@_hovanhoa_',
             images: [ogImage],
+        },
+        alternates: {
+            canonical: `${BASE_URL}/${params.post}`,
         },
     }
 }
@@ -84,7 +99,8 @@ export default async function Page({ params }: { params: { post: string } }) {
                             url: `${BASE_URL}/${postSlug}`,
                             author: {
                                 '@type': 'Person',
-                                name: NAME,
+                                name: FULL_NAME,
+                                alternateName: NAME,
                             },
                         }),
                     }}
@@ -95,7 +111,7 @@ export default async function Page({ params }: { params: { post: string } }) {
                             <div className="border border-slate-200 p-1 rounded-full">
                                 <Image
                                     src={IMAGE}
-                                    alt={NAME}
+                                    alt={FULL_NAME}
                                     className="h-12 w-12 rounded-full"
                                     height={100}
                                     width={100}
