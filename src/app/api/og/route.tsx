@@ -5,7 +5,6 @@ export const runtime = 'edge'
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const title = searchParams.get('title')
-    
     const bgImageUrl = new URL('/og-bg.jpg', request.url).toString()
     
     return new ImageResponse(
@@ -20,6 +19,7 @@ export async function GET(request: Request) {
                     borderRadius: 20,
                 }}
             >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                     src={bgImageUrl}
                     alt="Background"

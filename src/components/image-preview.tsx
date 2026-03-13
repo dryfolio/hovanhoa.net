@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from 'next/image'
 
 export default function ImagePreview({
     title,
@@ -9,15 +10,23 @@ export default function ImagePreview({
 }) {
     if (imageURL) {
         return (
-            <img
+            <div
                 style={{
-                    backgroundSize: 'contain',
-                    backgroundRepeat: 'no-repeat',
+                    position: 'relative',
                     aspectRatio: '16 / 9',
                     borderRadius: 20,
+                    overflow: 'hidden',
                 }}
-                src={imageURL}
-            />
+            >
+                <Image
+                    src={imageURL}
+                    alt={title}
+                    fill
+                    style={{
+                        objectFit: 'contain',
+                    }}
+                />
+            </div>
         )
     }
 
