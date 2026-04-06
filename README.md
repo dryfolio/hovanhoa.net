@@ -22,7 +22,7 @@ To run this application locally, ensure you have Node.js v18+ installed. Follow 
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/hovanhoa/hovanhoa.net.git
+   git clone git@github.com:dryfolio/hovanhoa.net.git
    ```
 2. Navigate into the project directory:
    ```bash
