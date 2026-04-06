@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next'
 import { HashNode } from '@/lib/hashnode'
-import { BASE_URL, INSIGHT_URL, GALLERY_URL, STATUS_URL, INFO_URL } from '@/constants'
+import { BASE_URL, INSIGHT_URL, GALLERY_URL, STATUS_URL, INFO_URL, MUSIC_URL } from '@/constants'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = BASE_URL
@@ -58,6 +58,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: STATUS_URL,
       lastModified: new Date(),
       changeFrequency: 'always',
+      priority: 0.8,
+    },
+    {
+      url: MUSIC_URL,
+      lastModified: new Date(),
+      changeFrequency: 'daily',
       priority: 0.8,
     },
   ]
