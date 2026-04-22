@@ -15,7 +15,7 @@ export default function ScrollToTop() {
                 }
                 hideTimeoutRef.current = setTimeout(() => {
                     setIsVisible(false)
-                }, 2000)
+                }, 1000)
             } else {
                 setIsVisible(false)
                 if (hideTimeoutRef.current) {
