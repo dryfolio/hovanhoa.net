@@ -1,32 +1,11 @@
 import { MetadataRoute } from 'next'
-import { HashNode } from '@/lib/hashnode'
+import { Posts } from '@/lib/posts'
 import { BASE_URL, INSIGHT_URL, GALLERY_URL, STATUS_URL, INFO_URL, MUSIC_URL } from '@/constants'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = BASE_URL
 
-  // Get all posts from HashNode
-  let allPosts: any[] = []
-  let page = 1
-  let hasNextPage = true
-
-  try {
-    while (hasNextPage) {
-      const response = await HashNode.getArticles({
-        pageSize: 20,
-        page: page,
-      })
-
-      const posts = response?.data?.publication?.postsViaPage?.nodes || []
-      allPosts = [...allPosts, ...posts]
-
-      const pageInfo = response?.data?.publication?.postsViaPage?.pageInfo
-      hasNextPage = pageInfo?.hasNextPage || false
-      page++
-    }
-  } catch (error) {
-    console.error('Error fetching posts for sitemap:', error)
-  }
+  const allPosts = Posts.getAllSummaries()
 
   // Static pages including subdomains
   const staticPages: MetadataRoute.Sitemap = [

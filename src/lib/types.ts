@@ -5,6 +5,7 @@ export type PostExcerpt = {
   url: string;
   tags: Tag[];
   publishedAt: string;
+  updatedAt?: string;
   coverImage: {
     url: string;
   }

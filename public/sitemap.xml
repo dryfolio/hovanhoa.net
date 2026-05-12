@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <url>
+    <loc>https://hovanhoa.net</loc>
+    <changefreq>always</changefreq>
+    <priority>1</priority>
+    <lastmod>2026-05-12T10:00:17.707Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hovanhoa.net/looking-back-at-2025</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-02-22T00:00:00.000Z</lastmod>
+  </url>
+</urlset>

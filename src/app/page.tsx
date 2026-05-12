@@ -5,7 +5,7 @@ import { type PostExcerpt } from '@/lib/types'
 import Link from 'next/link'
 import { Footer } from '@/components/footer'
 import { unstable_noStore as noStore } from 'next/cache'
-import { HashNode } from '@/lib/hashnode'
+import { Posts } from '@/lib/posts'
 import { Metadata } from 'next'
 import { BASE_URL, NAME, FULL_NAME, ROLE, IMAGE, TWITTER, GITHUB, LINKEDIN } from '@/constants'
 
@@ -55,12 +55,10 @@ export const metadata: Metadata = {
 
 export default async function Home() {
     noStore()
-    const posts = await HashNode.getArticles({
+    const postsArr: PostExcerpt[] = Posts.getArticles({
         page: 1,
         pageSize: 20,
     })
-
-    const postsArr = posts?.data?.publication?.postsViaPage?.nodes
 
     return (
         <main className="min-h-screen relative">

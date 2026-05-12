@@ -1,55 +1,73 @@
-import { writeFileSync } from "fs";
-import { resolve } from "path";
+import { readdirSync, readFileSync, writeFileSync, existsSync } from "fs";
+import { resolve, join } from "path";
 
- const GET_POST = `
-query Publication {
-  publication(host: "hovanhoa.hashnode.dev") {
-    isTeam
-    title
-    posts(first: 20) {
-      edges {
-        node {
-          id
-          title
-          brief
-          tags {
-            name
-          }
-          slug
-          publishedAt
-        }
+const POSTS_DIR = resolve(process.cwd(), "content", "posts");
+const BASE_URL = "https://hovanhoa.net";
+
+function parseFrontmatter(raw) {
+  const match = raw.match(/^---\n([\s\S]*?)\n---\n?/);
+  if (!match) return {};
+
+  const block = match[1];
+  const data = {};
+  const lines = block.split("\n");
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (!line.trim() || line.startsWith("#")) continue;
+
+    const colonIdx = line.indexOf(":");
+    if (colonIdx === -1) continue;
+
+    const key = line.slice(0, colonIdx).trim();
+    let value = line.slice(colonIdx + 1).trim();
+
+    if (value === "") {
+      const arr = [];
+      while (i + 1 < lines.length && /^\s*-\s+/.test(lines[i + 1])) {
+        i += 1;
+        arr.push(lines[i].replace(/^\s*-\s+/, "").trim().replace(/^["']|["']$/g, ""));
       }
+      data[key] = arr;
+    } else {
+      data[key] = value.replace(/^["']|["']$/g, "");
     }
   }
+
+  return data;
 }
-`;
 
-async function getPosts() {
-  const res = await fetch("https://gql.hashnode.com", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ query: GET_POST }),
-  });
+function readLocalPosts() {
+  if (!existsSync(POSTS_DIR)) return [];
 
-  const { data } = await res.json();
-  return data.publication.posts.edges.map((edge) => edge.node);
+  return readdirSync(POSTS_DIR)
+    .filter((name) => name.endsWith(".md") || name.endsWith(".mdx"))
+    .map((file) => {
+      const slug = file.replace(/\.(md|mdx)$/, "");
+      const raw = readFileSync(join(POSTS_DIR, file), "utf8");
+      const data = parseFrontmatter(raw);
+      return {
+        slug,
+        publishedAt: data.publishedAt,
+        updatedAt: data.updatedAt,
+      };
+    })
+    .sort(
+      (a, b) =>
+        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+    );
 }
 
 async function generateSitemap() {
-  const posts = await getPosts();
-  const baseUrl = "https://hovanhoa.net";
+  const posts = readLocalPosts();
 
-  const staticPages = [
-    { path: "", changefreq: "always", priority: 1.0 },
-  ];
+  const staticPages = [{ path: "", changefreq: "always", priority: 1.0 }];
 
   const dynamicPages = posts.map((post) => ({
     path: `/${post.slug}`,
     changefreq: "daily",
     priority: 0.8,
-    lastmod: new Date(post.publishedAt).toISOString(),
+    lastmod: new Date(post.updatedAt || post.publishedAt).toISOString(),
   }));
 
   const allPages = [
@@ -68,7 +86,7 @@ ${allPages
   .map(
     (url) => `
   <url>
-    <loc>${baseUrl}${url.path}</loc>
+    <loc>${BASE_URL}${url.path}</loc>
     <changefreq>${url.changefreq}</changefreq>
     <priority>${url.priority}</priority>
     <lastmod>${url.lastmod || new Date().toISOString()}</lastmod>
@@ -79,7 +97,7 @@ ${allPages
 
   const sitemapPath = resolve(process.cwd(), "public", "sitemap.xml");
   writeFileSync(sitemapPath, sitemap, "utf8");
-  console.log(`✔️ Sitemap generated at ${sitemapPath}`);
+  console.log(`✔️ Sitemap generated at ${sitemapPath} (${posts.length} posts)`);
 }
 
 generateSitemap().catch((err) => {
