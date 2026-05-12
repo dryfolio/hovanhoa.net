@@ -10,16 +10,20 @@ import React from 'react'
 import Link from 'next/link'
 import { Footer } from '@/components/footer'
 import NotFound from '@/app/not-found'
-import {HashNode} from "@/lib/hashnode";
+import { Posts } from '@/lib/posts'
 import ArticleContent from '@/components/article-content'
 import { Metadata } from 'next'
+
+export function generateStaticParams() {
+    return Posts.getAllSlugs().map((slug) => ({ post: slug }))
+}
 
 export async function generateMetadata({ 
     params 
 }: { 
     params: { post: string } 
 }): Promise<Metadata> {
-    const post = await HashNode.getArticleBySlug(params.post)
+    const post = Posts.getArticleBySlug(params.post)
     
     if (!post) {
         return {
@@ -75,7 +79,7 @@ export async function generateMetadata({
 
 export default async function Page({ params }: { params: { post: string } }) {
     const postSlug = params.post
-    const post:Post = await HashNode.getArticleBySlug(postSlug)
+    const post: Post | null = Posts.getArticleBySlug(postSlug)
 
     if (!post) {
         return <NotFound />

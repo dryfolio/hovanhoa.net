@@ -13,8 +13,6 @@ const MUSIC_URL = 'https://music.hovanhoa.net'
 const STATUS_URL = 'https://status.hovanhoa.net'
 const INFO_URL = 'https://info.hovanhoa.net'
 const OG_IMAGE_BG = '/og-bg.jpg'
-const HOST = 'hovanhoa.hashnode.dev'
-const HASHNODE_API = 'https://gql.hashnode.com'
 const ROLE = 'Software Engineer'
 
 const DESCRIPTION = (
@@ -88,13 +86,11 @@ export {
     GITHUB,
     IMAGE,
     DESCRIPTION,
-    HOST,
     INSIGHT_URL,
     GALLERY_URL,
     MUSIC_URL,
     STATUS_URL,
     INFO_URL,
-    HASHNODE_API,
     OG_IMAGE_BG,
     BASE_URL,
     ROLE,

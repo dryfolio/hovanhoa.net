@@ -12,23 +12,23 @@ export default function Badge({
         switch (label) {
             case 'concurrency':
                 return 'bg-orange-100 text-orange-800 border-orange-200'
-            case 'Go Language':
+            case 'golang':
                 return 'bg-sky-100 text-sky-800 border-sky-200'
-            case 'Docker':
+            case 'docker':
                 return 'bg-sky-100 text-sky-800 border-sky-200'
-            case 'Web Development':
+            case 'web development':
                 return 'bg-green-100 text-green-800 border-green-20'
             case "ci-cd":
                 return 'bg-cyan-100 text-cyan-800 border-cyan-20'
-            case "Devops":
+            case "devops":
                 return 'bg-red-100 text-red-800 border-red-20'
             case 'distributed system':
                 return 'bg-pink-200 text-pink-800 border-pink-200'
             case 'life':
                 return 'bg-purple-100 text-purple-800 border-purple-200'
-            case 'System Design':
+            case 'system design':
                 return 'bg-yellow-100 text-yellow-800 border-yellow-200'
-            case 'Testing':
+            case 'testing':
                 return 'bg-green-100 text-green-800 border-green-200'
         }
     }
