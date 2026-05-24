@@ -1,6 +1,6 @@
 ---
 title: "2025 Rewind"
-brief: "A quiet reflection on a year of change — switching companies, becoming a Senior Engineer, traveling almost every month, and learning to keep going."
+brief: "A quiet reflection on a year of change — switching companies, traveling almost every month, and learning to keep going."
 publishedAt: "2026-02-16"
 updatedAt: "2026-02-16"
 tags:
@@ -13,11 +13,9 @@ Finally, I get to sit in my hometown and take some time to reflect on everything
 
 # A Change
 
-After Tet 2025, I changed companies — or more accurately, I made a partial change. I still work part-time at my previous company, and I'm truly grateful to my boss for giving me this opportunity. I also received the title of Senior Software Engineer. Becoming a senior just one year after graduating from university is something I still pause to think about. I still remember that moment.
+After Tet 2025, I changed companies. I'm truly grateful to my previous boss for everything I learned there — it shaped how I think about my work to this day.
 
-![Senior Software Engineer milestone](/posts/2025-rewind/senior-engineer.jpeg)
-
-Balancing a full-time job with part-time work often leaves me feeling exhausted — and honestly, it happens more often than I'd like. That's also why I barely wrote any blog posts this year. Most days, after finishing work, I simply didn't have the mental space left to sit down and reflect properly. Writing has always required a certain quietness for me — not just time, but energy and clarity.
+The new chapter has been demanding. Work often left me feeling drained this year, more often than I'd like, and that's part of why I barely wrote any blog posts. Most evenings, I simply didn't have the mental space left to sit down and reflect. Writing has always required a certain quietness for me — not just time, but energy and clarity.
 
 I also had the chance to work closely with a boss from Russia who is genuinely awesome and highly skilled. Throughout the year, I worked in a role that was very close to an AI engineer, which pushed me beyond traditional software development. I learned a lot from him, especially around the AI tech stack and related areas, and that collaboration significantly broadened my technical mindset and how I approach problem-solving.
 
