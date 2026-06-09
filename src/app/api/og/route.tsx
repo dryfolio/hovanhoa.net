@@ -6,7 +6,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const title = searchParams.get('title')
     const bgImageUrl = new URL('/og-bg.jpg', request.url).toString()
-    
+
     return new ImageResponse(
         (
             <div

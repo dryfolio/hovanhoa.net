@@ -4,10 +4,23 @@ import PostTile from '@/components/post-tile'
 import { type PostExcerpt } from '@/lib/types'
 import Link from 'next/link'
 import { Footer } from '@/components/footer'
+import { Eyebrow } from '@/components/redesign/eyebrow'
+import { OrbitArt } from '@/components/redesign/orbit-art'
 import { unstable_noStore as noStore } from 'next/cache'
 import { Posts } from '@/lib/posts'
 import { Metadata } from 'next'
-import { BASE_URL, NAME, FULL_NAME, ROLE, IMAGE, TWITTER, GITHUB, LINKEDIN } from '@/constants'
+import {
+    BASE_URL,
+    NAME,
+    FULL_NAME,
+    ROLE,
+    IMAGE,
+    TWITTER,
+    GITHUB,
+    LINKEDIN,
+    INSIGHT_URL,
+    INFO_URL,
+} from '@/constants'
 
 export const metadata: Metadata = {
     title: NAME,
@@ -59,6 +72,7 @@ export default async function Home() {
         page: 1,
         pageSize: 20,
     })
+    const totalPosts = Posts.getAllSlugs().length
 
     return (
         <main className="min-h-screen relative">
@@ -82,24 +96,82 @@ export default async function Home() {
                     }),
                 }}
             />
-            <div className="py-8 md:py-12 pb-0 px-4 sm:px-6 lg:pl-52 mb-8 md:mb-0">
-                <Navbar />
+            {/* sticky header */}
+            <header className="sticky top-0 z-50 border-b border-[var(--rd-border-2)] bg-[var(--rd-bg-sub)] shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
+                <div className="mx-auto w-full max-w-[var(--rd-maxw)] px-[var(--rd-pad)] py-3">
+                    <Navbar />
+                </div>
+            </header>
+            {/* hero — fills the first screen; blog lives below the fold */}
+            <div className="flex min-h-screen flex-col border-b border-[var(--rd-border)]">
+                <div className="mx-auto w-full max-w-[var(--rd-maxw)] px-[var(--rd-pad)] pb-16 pt-12">
+                    <div className="grid items-center gap-10 lg:grid-cols-2">
+                        <div>
+                            <Hero />
+
+                            {/* action links */}
+                            <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3 font-[family-name:var(--font-mono)] text-sm">
+                                <a
+                                    href="#blog"
+                                    className="inline-flex items-center gap-1.5 font-medium text-[var(--rd-accent-ink)] transition-opacity hover:opacity-80"
+                                >
+                                    read the blog <span aria-hidden>↓</span>
+                                </a>
+                                <a
+                                    href={`https://github.com/${GITHUB}`}
+                                    className="text-[var(--rd-text-3)] transition-colors hover:text-[var(--rd-accent-ink)]"
+                                >
+                                    github
+                                </a>
+                                <a
+                                    href={INSIGHT_URL}
+                                    className="text-[var(--rd-text-3)] transition-colors hover:text-[var(--rd-accent-ink)]"
+                                >
+                                    insight
+                                </a>
+                                <a
+                                    href={INFO_URL}
+                                    className="text-[var(--rd-text-3)] transition-colors hover:text-[var(--rd-accent-ink)]"
+                                >
+                                    connect
+                                </a>
+                            </div>
+                        </div>
+                        <OrbitArt />
+                    </div>
+
+                    {/* quiet stats */}
+                    <div className="mt-8 font-[family-name:var(--font-mono)] text-xs text-[var(--rd-text-3)]">
+                        {totalPosts} posts · 5 apps · based in vietnam
+                    </div>
+                </div>
             </div>
-            <Hero />
-            <section className="relative mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 overflow-hidden mb-30">
-                {postsArr?.map((post: PostExcerpt) => (
-                    <Link
-                        href={`/${post.slug}`}
-                        prefetch={false}
-                        key={post.id}
-                    >
-                        <PostTile key={post.id} post={post} />
-                    </Link>
-                ))}
-            </section>
-            <div className="py-8 md:py-12 pb-0 px-4 sm:px-6 lg:pl-52 mb-8 md:mb-0">
-                <Footer />
+            {/* body */}
+            <div className="mx-auto max-w-[var(--rd-maxw)] px-[var(--rd-pad)] pt-16">
+                <div id="blog" className="mb-12 scroll-mt-8">
+                    <Eyebrow>blog</Eyebrow>
+                    <h2 className="rd-h-sec mt-3 text-[var(--rd-text)]">
+                        latest writing
+                    </h2>
+                    <p className="rd-lead mt-3">
+                        notes on software engineering, distributed systems, and
+                        lessons from building things — with the occasional life
+                        update in between.
+                    </p>
+                </div>
+                <section className="relative">
+                    {postsArr?.map((post: PostExcerpt) => (
+                        <Link
+                            href={`/${post.slug}`}
+                            prefetch={false}
+                            key={post.id}
+                        >
+                            <PostTile post={post} />
+                        </Link>
+                    ))}
+                </section>
             </div>
+            <Footer />
         </main>
     )
 }

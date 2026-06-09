@@ -16,7 +16,7 @@ export default function TableOfContent({ items }: { items: TableOfContent[] }) {
                             <div className="feed-border"></div>
                             <div className="feed-dot"></div>
                             <Link
-                                className="no-underline text-sm text-slate-500 hover:text-black font-normal transition-colors duration-200"
+                                className="font-[family-name:var(--font-mono)] text-xs text-[var(--rd-text-3)] no-underline transition-colors duration-200 hover:text-[var(--rd-accent-ink)]"
                                 href={`#heading-${item.slug}`}
                             >
                                 {item.title}

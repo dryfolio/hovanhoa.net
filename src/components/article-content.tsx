@@ -24,13 +24,11 @@ export default function ArticleContent({ content }: ArticleContentProps) {
     }, [content])
 
     return (
-        <article className="text-sm leading-7 text-slate-500 prose max-w-none my-4">
-            <div
-                className="prose max-w-none prose-pre:p-0 prose-pre:bg-transparent"
-                dangerouslySetInnerHTML={{
-                    __html: content,
-                }}
-            ></div>
-        </article>
+        <article
+            className="prose max-w-none prose-headings:tracking-tight prose-a:font-medium prose-a:text-[var(--rd-accent-ink)] prose-pre:bg-transparent prose-pre:p-0"
+            dangerouslySetInnerHTML={{
+                __html: content,
+            }}
+        ></article>
     )
 }
