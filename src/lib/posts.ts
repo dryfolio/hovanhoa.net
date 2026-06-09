@@ -112,7 +112,9 @@ function renderMarkdown(body: string): string {
         breaks: false,
     })
 
-    type HeadingThis = { parser: { parseInline: (tokens: Tokens.Heading['tokens']) => string } }
+    type HeadingThis = {
+        parser: { parseInline: (tokens: Tokens.Heading['tokens']) => string }
+    }
 
     md.use({
         renderer: {

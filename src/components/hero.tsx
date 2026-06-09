@@ -1,31 +1,17 @@
-import { DESCRIPTION, IMAGE, NAME, FULL_NAME, TWITTER, ROLE } from '@/constants'
-import Image from 'next/image'
+import { DESCRIPTION, NAME, ROLE } from '@/constants'
+import { Eyebrow } from '@/components/redesign/eyebrow'
 
 export default function Hero() {
     return (
-        <div className=" px-4 sm:px-6 lg:pl-52">
-            <div className="relative mx-auto max-w-xl   pb-20">
-                <div className="flex items-center space-x-3">
-                    <div className="border border-slate-200 p-1 rounded-full">
-                        <Image
-                            src={IMAGE}
-                            alt={FULL_NAME}
-                            className="h-20 w-20 rounded-full"
-                            height={100}
-                            width={100}
-                        />
-                    </div>
-                    <div className="flex flex-col items-start">
-                        <h1 className="text-2xl font-semibold  text-slate-700">
-                            {NAME}
-                        </h1>
-                        <p className=" text-base  text-slate-400">{ROLE}</p>
-                    </div>
-                </div>
-                <p className="mt-4 text-base leading-7 text-slate-600">
-                    {DESCRIPTION}
-                </p>
-            </div>
+        <div>
+            <Eyebrow>hovanhoa · blog</Eyebrow>
+            <h1 className="mt-3 text-[clamp(1.9rem,4vw,3rem)] font-semibold tracking-[-0.04em] text-[var(--rd-text)]">
+                {NAME}
+            </h1>
+            <p className="mt-1 font-[family-name:var(--font-mono)] text-sm text-[var(--rd-text-3)]">
+                {ROLE}
+            </p>
+            <p className="rd-lead mt-4">{DESCRIPTION}</p>
         </div>
     )
 }

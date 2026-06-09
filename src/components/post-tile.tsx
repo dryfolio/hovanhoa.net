@@ -1,52 +1,27 @@
-import Badge from '@/components/badge'
 import formatDate from '@/lib/format-date'
 import truncate from '@/lib/truncate'
 import { type PostExcerpt, type Tag } from '@/lib/types'
-import ImagePreview from './image-preview'
 
 export default function PostTile({ post }: { post: PostExcerpt }) {
     return (
-        <article className="md:flex cursor-pointer">
-            <h2 className="content-date h-full mt-px">
-                <p>{formatDate(post.publishedAt)}</p>
-            </h2>
-            <div className="content-block pb-20">
-                <div className="feed-border"></div>
-                <div className="feed-dot"></div>
-                <div className="hidden md:block">
-                    {post.tags.map((tag: Tag) => (
-                        <Badge
-                            label={tag.name}
-                            key={tag.name}
-                            className={
-                                'absolute -top-6 right-0 md:static mb-4 mr-4'
-                            }
-                        />
-                    ))}
-                </div>
-                {/* Render only the first tag on mobile */}
-                <div className="block md:hidden">
-                    <Badge
-                        label={post.tags[0].name}
-                        key={post.tags[0].name}
-                        className={
-                            'absolute -top-6 right-0 md:static mb-4 mr-4'
-                        }
-                    />
-                </div>
-                <h1 className="text-xl sm:text-3xl font-bold mb-4">
-                    {post.title}
-                </h1>
-                <p className="text-sm leading-7 text-slate-500 prose max-w-none">
-                    {truncate(post.brief, 160)}
-                </p>
-                <div className="mt-4 relative">
-                    <ImagePreview
-                        title={post.title}
-                        imageURL={post.coverImage?.url}
-                    />
-                </div>
+        <article className="group relative border-l border-slate-200 pb-10 pl-8 md:pl-10">
+            {/* timeline dot sitting on the left rail */}
+            <span className="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full border-2 border-slate-300 bg-white transition-colors group-hover:border-[var(--rd-accent)]" />
+            <div className="mb-2 flex flex-wrap items-center gap-x-2 font-[family-name:var(--font-mono)] text-xs text-[var(--rd-text-3)]">
+                <span>{formatDate(post.publishedAt)}</span>
+                {post.tags.map((tag: Tag) => (
+                    <span key={tag.name}>· {tag.name}</span>
+                ))}
             </div>
+            <h2 className="mb-2 inline-flex items-center gap-2 text-xl font-bold tracking-tight text-[var(--rd-text)] transition-colors group-hover:text-[var(--rd-accent-ink)] sm:text-2xl">
+                {post.title}
+                <span className="translate-x-0 text-[var(--rd-accent)] opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100">
+                    →
+                </span>
+            </h2>
+            <p className="max-w-2xl text-sm leading-7 text-[var(--rd-text-2)]">
+                {truncate(post.brief, 160)}
+            </p>
         </article>
     )
 }

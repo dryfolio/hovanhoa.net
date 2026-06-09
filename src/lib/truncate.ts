@@ -1,9 +1,9 @@
 const truncate = (str: string, maxLength: number) => {
-  if (str.length > maxLength) {
-    return str.slice(0, maxLength) + "...";
-  }
+    if (str.length > maxLength) {
+        return str.slice(0, maxLength) + '...'
+    }
 
-  return str;
-};
+    return str
+}
 
-export default truncate;
+export default truncate
