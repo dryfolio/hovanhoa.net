@@ -151,8 +151,16 @@ export default function Navbar() {
 
                 {/* inline links */}
                 <div className="hidden items-center gap-5 sm:flex sm:gap-7">
-                    {APPS.filter((a) => a.label !== CURRENT).map((a) => (
-                        <a key={a.label} href={a.href} className={linkClass}>
+                    {APPS.map((a) => (
+                        <a
+                            key={a.label}
+                            href={a.href}
+                            className={`${linkClass} ${
+                                a.label === CURRENT
+                                    ? 'text-[var(--rd-accent-ink)]'
+                                    : ''
+                            }`}
+                        >
                             {a.label}
                         </a>
                     ))}
