@@ -66,6 +66,7 @@ body {
 }
 
 
+
 /* Add these styles for code blocks */
 pre[class*="language-"] {
     padding: 1em;
@@ -87,6 +88,11 @@ code[class*="language-"] {
     padding: 0.2em 0.4em;
     border-radius: 0.25em;
     font-size: 0.875em;
+}
+
+.dark :not(pre) > code {
+    background: var(--rd-surface-2);
+    color: var(--rd-text);
 }
 
 /* ============================================================
