@@ -25,7 +25,7 @@ export default function ArticleContent({ content }: ArticleContentProps) {
 
     return (
         <article
-            className="prose max-w-none prose-headings:tracking-tight prose-a:font-medium prose-a:text-[var(--rd-accent-ink)] prose-pre:bg-transparent prose-pre:p-0"
+            className="prose dark:prose-invert max-w-none prose-headings:tracking-tight prose-a:font-medium prose-a:text-[var(--rd-accent-ink)] prose-pre:bg-transparent prose-pre:p-0"
             dangerouslySetInnerHTML={{
                 __html: content,
             }}
