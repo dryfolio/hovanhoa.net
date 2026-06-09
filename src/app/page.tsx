@@ -6,6 +6,11 @@ import Link from 'next/link'
 import { Footer } from '@/components/footer'
 import { Eyebrow } from '@/components/redesign/eyebrow'
 import { OrbitArt } from '@/components/redesign/orbit-art'
+import { Sparkline } from '@/components/redesign/sparkline'
+import { formatNumber, computeTrend } from '@/lib/utils'
+
+const WAKA_CODING =
+    'https://wakatime.com/share/@hovanhoa/0d76f73e-d398-4c07-9bc6-781f52986fd8.json'
 import { unstable_noStore as noStore } from 'next/cache'
 import { Posts } from '@/lib/posts'
 import { Metadata } from 'next'
@@ -74,6 +79,95 @@ export default async function Home() {
     })
     const totalPosts = Posts.getAllSlugs().length
 
+    // coding hours — pulled live from WakaTime (real chart, the "insight" metric)
+    let coding: {
+        hours: number
+        spark: number[]
+        trend: string
+        avg: number
+    } | null = null
+    try {
+        const res = await fetch(WAKA_CODING, { next: { revalidate: 86400 } })
+        const data: { grand_total: { total_seconds: number } }[] =
+            (await res.json())?.data ?? []
+        const spark = data.map(
+            (x) => (x.grand_total?.total_seconds ?? 0) / 3600
+        )
+        const hours = spark.reduce((a, b) => a + b, 0)
+        const active = spark.filter((h) => h > 0).length
+        if (hours > 0)
+            coding = {
+                hours,
+                spark,
+                trend: computeTrend(spark),
+                avg: active ? hours / active : 0,
+            }
+    } catch {
+        // ignore — falls back to a static tile
+    }
+
+    // heartbeat — how many monitored services are currently up (status page logs)
+    let heartbeat: { up: number; total: number } | null = null
+    try {
+        const RAW =
+            'https://raw.githubusercontent.com/dryfolio/status.hovanhoa.net/main/public'
+        const cfg = await (
+            await fetch(`${RAW}/urls.cfg`, { next: { revalidate: 3600 } })
+        ).text()
+        const keys = cfg
+            .split('\n')
+            .map((l) => l.split('=')[0].trim())
+            .filter(Boolean)
+        const ups = await Promise.all(
+            keys.map(async (key) => {
+                try {
+                    const txt = await (
+                        await fetch(`${RAW}/status/${key}_report.log`, {
+                            next: { revalidate: 3600 },
+                        })
+                    ).text()
+                    const lines = txt.trim().split('\n').filter(Boolean)
+                    return /,\s*success/i.test(lines[lines.length - 1] || '')
+                } catch {
+                    return false
+                }
+            })
+        )
+        if (keys.length)
+            heartbeat = { up: ups.filter(Boolean).length, total: keys.length }
+    } catch {
+        // ignore
+    }
+
+    const tiles: {
+        k: string
+        v: string
+        sub: string
+        dot?: boolean
+        spark?: number[]
+        trend?: string
+    }[] = [
+        coding
+            ? {
+                  k: 'coding',
+                  v: `${formatNumber(coding.hours)}h`,
+                  sub: `${formatNumber(coding.avg)}h avg / active day`,
+                  spark: coding.spark,
+                  trend: coding.trend,
+              }
+            : { k: 'coding', v: '3+', sub: 'years shipping' },
+        { k: 'writing', v: String(totalPosts), sub: 'blog posts' },
+        { k: 'backend', v: 'go·py', sub: 'services at scale' },
+        heartbeat
+            ? {
+                  k: 'heartbeat',
+                  v: `${heartbeat.up}/${heartbeat.total}`,
+                  sub: 'services live',
+                  dot: true,
+              }
+            : { k: 'shipping', v: '5', sub: 'live apps' },
+    ]
+
     return (
         <main className="min-h-screen relative">
             <script
@@ -140,9 +234,53 @@ export default async function Home() {
                         <OrbitArt />
                     </div>
 
-                    {/* quiet stats */}
+                    {/* quiet line */}
                     <div className="mt-8 font-[family-name:var(--font-mono)] text-xs text-[var(--rd-text-3)]">
-                        {totalPosts} posts · 5 apps · based in vietnam
+                        based in vietnam · open to interesting problems
+                    </div>
+
+                    {/* themed tiles */}
+                    <div className="mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-[var(--rd-r)] border border-[var(--rd-border)] bg-[var(--rd-border)] sm:grid-cols-4">
+                        {tiles.map((t) => {
+                            const up = t.trend?.startsWith('+')
+                            return (
+                                <div
+                                    key={t.k}
+                                    className="flex min-h-[150px] flex-col bg-[var(--rd-surface)] p-4"
+                                >
+                                    <div className="flex items-center justify-between gap-2">
+                                        <span className="rd-eyebrow text-[10px]">
+                                            {t.k}
+                                        </span>
+                                        {t.trend && (
+                                            <span
+                                                className={`font-[family-name:var(--font-mono)] text-[10.5px] ${
+                                                    up
+                                                        ? 'text-[var(--rd-ok)]'
+                                                        : 'text-[var(--rd-text-3)]'
+                                                }`}
+                                            >
+                                                {t.trend}
+                                            </span>
+                                        )}
+                                    </div>
+                                    <div className="mt-2 flex items-center gap-2 text-[1.5rem] font-semibold lowercase leading-none tracking-[-0.03em] text-[var(--rd-text)]">
+                                        {t.dot && (
+                                            <span className="inline-block h-2.5 w-2.5 shrink-0 animate-pulse rounded-full bg-[var(--rd-ok)] motion-reduce:animate-none" />
+                                        )}
+                                        {t.v}
+                                    </div>
+                                    {t.spark && (
+                                        <div className="mt-3">
+                                            <Sparkline data={t.spark} h={26} />
+                                        </div>
+                                    )}
+                                    <div className="mt-auto pt-3 font-[family-name:var(--font-mono)] text-[10.5px] text-[var(--rd-text-3)]">
+                                        {t.sub}
+                                    </div>
+                                </div>
+                            )
+                        })}
                     </div>
                 </div>
             </div>

@@ -15,14 +15,15 @@ const ROLE = 'Software Engineer'
 
 const DESCRIPTION = (
     <>
-        Hey 👋 I&apos;m Hòa — a software engineer with 3+ years building for the
-        web. I care about strong fundamentals, pragmatic best practices, and the
-        right tools for the job.
+        Hey 👋 I&apos;m Hòa — a software engineer with 3+ years focused on
+        backend systems, microservices, and AI agents. I care about strong
+        fundamentals, pragmatic best practices, and shipping things that stay
+        calm under load.
         <br />
         <br />
-        mostly working with:{' '}
+        tools of the trade:{' '}
         <span className="text-[var(--rd-text)]">
-            go · python · postgresql · mongodb · aws · gcp
+            go · python · kafka · kubernetes · postgres · aws
         </span>
         .
     </>
