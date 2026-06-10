@@ -21,11 +21,8 @@ const DESCRIPTION = (
         calm under load.
         <br />
         <br />
-        tools of the trade:{' '}
-        <span className="text-[var(--rd-text)]">
-            go · python · kafka · kubernetes · postgres · aws
-        </span>
-        .
+        i&apos;d write everything in{' '}
+        <span className="text-[var(--rd-text)]">go</span> if i could.
     </>
 )
 
