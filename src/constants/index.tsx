@@ -21,16 +21,16 @@ const DESCRIPTION = (
         calm under load.
         <br />
         <br />
-        i&apos;d write everything in{' '}
+        I&apos;d write everything in{' '}
         <a
             href="https://github.com/hovanhoa?tab=repositories&q=&type=source&language=go&sort="
             target="_blank"
             rel="noopener noreferrer"
             className="font-semibold transition-colors hover:text-[var(--rd-orange-ink)]"
         >
-            golang
+            Golang
         </a>{' '}
-        if i could.
+        if I could.
     </>
 )
 

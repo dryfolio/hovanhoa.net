@@ -28,9 +28,9 @@ export default function PostTile({
     }
 
     return (
-        <article className="group relative border-l border-slate-200 pb-10 pl-8 md:pl-10">
+        <article className="group relative border-l border-[var(--rd-line)] pb-10 pl-8 md:pl-10">
             {/* timeline dot sitting on the left rail */}
-            <span className="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full border-2 border-slate-300 bg-white transition-colors group-has-[[data-card-link]:hover]:border-[var(--rd-orange)]" />
+            <span className="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full border-2 border-[var(--rd-border-2)] bg-[var(--rd-bg)] transition-colors group-has-[[data-card-link]:hover]:border-[var(--rd-orange)]" />
             <div className="mb-2 flex flex-wrap items-center gap-x-2 font-[family-name:var(--font-mono)] text-xs text-[var(--rd-text-3)]">
                 <span>{formatDate(post.publishedAt)}</span>
                 {post.tags.map((tag: Tag) => {
@@ -42,7 +42,7 @@ export default function PostTile({
                             className={`relative z-10 transition-colors ${
                                 isActive
                                     ? 'font-medium text-[var(--rd-orange-ink)]'
-                                    : 'hover:text-[var(--rd-orange-ink)]'
+                                    : 'text-[var(--rd-text-2)] hover:text-[var(--rd-orange-ink)]'
                             }`}
                         >
                             · {tag.name}
