@@ -127,9 +127,9 @@ export default function Navbar() {
                     <button
                         type="button"
                         onClick={() => setOpen((o) => !o)}
-                        className="inline-flex items-center gap-1.5 rounded-full bg-[var(--rd-accent-bg)] px-3 py-1.5 font-[family-name:var(--font-mono)] text-[13px] font-semibold text-[var(--rd-accent-ink)] transition-opacity hover:opacity-80"
+                        className="inline-flex items-center gap-1.5 rounded-full bg-[var(--rd-orange-bg)] px-3 py-1.5 font-[family-name:var(--font-mono)] text-[13px] font-semibold text-[var(--rd-orange-ink)] transition-opacity hover:opacity-80"
                     >
-                        <span className="text-[var(--rd-accent)]">/</span>
+                        <span className="text-[var(--rd-orange)]">/</span>
                         <span className="min-w-[7ch] text-center">{CURRENT}</span>
                         <Caret />
                     </button>
@@ -141,7 +141,7 @@ export default function Navbar() {
                                     href={a.href}
                                     className={`block rounded-lg px-3 py-2 font-[family-name:var(--font-mono)] text-[13px] transition-colors ${
                                         a.label === CURRENT
-                                            ? 'bg-[var(--rd-accent-bg)] text-[var(--rd-accent-ink)]'
+                                            ? 'bg-[var(--rd-orange-bg)] text-[var(--rd-orange-ink)]'
                                             : 'text-[var(--rd-text-2)] hover:bg-[var(--rd-surface-2)] hover:text-[var(--rd-text)]'
                                     }`}
                                 >
@@ -160,7 +160,7 @@ export default function Navbar() {
                             href={a.href}
                             className={`${linkClass} ${
                                 a.label === CURRENT
-                                    ? 'text-[var(--rd-accent-ink)]'
+                                    ? 'text-[var(--rd-orange-ink)]'
                                     : ''
                             }`}
                         >
