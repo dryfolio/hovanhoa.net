@@ -5,13 +5,12 @@ import { type PostExcerpt } from '@/lib/types'
 import Link from 'next/link'
 import { Footer } from '@/components/footer'
 import { Eyebrow } from '@/components/redesign/eyebrow'
-import { EcosystemGraph } from '@/components/redesign/ecosystem-graph'
+import EcosystemGraph from '@/components/redesign/ecosystem-graph-lazy'
 import { Sparkline } from '@/components/redesign/sparkline'
 import { formatNumber, computeTrend } from '@/lib/utils'
 
 const WAKA_CODING =
     'https://wakatime.com/share/@hovanhoa/0d76f73e-d398-4c07-9bc6-781f52986fd8.json'
-import { unstable_noStore as noStore } from 'next/cache'
 import { Posts } from '@/lib/posts'
 import { Metadata } from 'next'
 import {
@@ -26,9 +25,11 @@ import {
     INFO_URL,
 } from '@/constants'
 
+const OG_IMAGE = `${BASE_URL}/api/og?title=${encodeURIComponent(NAME)}`
+
 export const metadata: Metadata = {
     title: NAME,
-    description: `${FULL_NAME} - ${ROLE}. Personal website and blog of ${FULL_NAME}.`,
+    description: `${FULL_NAME} — software engineer writing about backend systems, microservices, and AI agents.`,
     keywords: [
         FULL_NAME,
         'Hồ Văn Hòa',
@@ -44,14 +45,14 @@ export const metadata: Metadata = {
     authors: [{ name: FULL_NAME }],
     openGraph: {
         title: NAME,
-        description: `${FULL_NAME} - ${ROLE}. Personal website and blog of ${FULL_NAME}.`,
+        description: `${FULL_NAME} — software engineer writing about backend systems, microservices, and AI agents.`,
         url: BASE_URL,
         siteName: NAME,
         images: [
             {
-                url: IMAGE,
+                url: OG_IMAGE,
                 width: 800,
-                height: 600,
+                height: 418,
                 alt: FULL_NAME,
             },
         ],
@@ -61,9 +62,9 @@ export const metadata: Metadata = {
     twitter: {
         card: 'summary_large_image',
         title: NAME,
-        description: `${FULL_NAME} - ${ROLE}.`,
+        description: `${FULL_NAME} — software engineer writing about backend systems, microservices, and AI agents.`,
         creator: '@_hovanhoa_',
-        images: [IMAGE],
+        images: [OG_IMAGE],
     },
     alternates: {
         canonical: BASE_URL,
@@ -75,7 +76,6 @@ export default async function Home({
 }: {
     searchParams?: { tag?: string | string[] }
 }) {
-    noStore()
     // tags arrive comma-separated (?tag=life,testing) or as repeated params
     const rawTag = Array.isArray(searchParams?.tag)
         ? searchParams!.tag.join(',')
@@ -232,7 +232,7 @@ export default async function Home({
                                 </a>
                                 <a
                                     href={INFO_URL}
-                                    className="inline-flex items-center rounded-full bg-[var(--rd-orange)] px-4 py-1.5 font-medium text-white transition-opacity hover:opacity-80"
+                                    className="inline-flex items-center rounded-full bg-[var(--rd-orange-bg)] px-4 py-1.5 font-medium text-[var(--rd-orange-ink)] transition-opacity hover:opacity-80"
                                 >
                                     connect
                                 </a>
@@ -265,7 +265,7 @@ export default async function Home({
                                             <span
                                                 className={`font-[family-name:var(--font-mono)] text-[10.5px] ${
                                                     up
-                                                        ? 'text-[var(--rd-ok)]'
+                                                        ? 'text-[var(--rd-orange-ink)]'
                                                         : 'text-[var(--rd-text-3)]'
                                                 }`}
                                             >
@@ -331,7 +331,7 @@ export default async function Home({
                             {activeTags.length > 1 && (
                                 <Link
                                     href="/#blog"
-                                    className="rounded-full border border-[var(--rd-border-2)] px-2.5 py-0.5 text-xs text-[var(--rd-text-3)] transition-colors hover:border-[var(--rd-orange)] hover:text-[var(--rd-orange-ink)]"
+                                    className="rounded-full border border-[var(--rd-border-2)] px-2.5 py-0.5 text-xs text-[var(--rd-text-2)] transition-colors hover:border-[var(--rd-orange)] hover:text-[var(--rd-orange-ink)]"
                                 >
                                     clear all
                                 </Link>
