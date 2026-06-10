@@ -1,44 +1,30 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function ScrollToTop() {
     const [isVisible, setIsVisible] = useState(false)
-    const hideTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
     useEffect(() => {
         const toggleVisibility = () => {
-            if (window.scrollY > 300) {
-                setIsVisible(true)
-                if (hideTimeoutRef.current) {
-                    clearTimeout(hideTimeoutRef.current)
-                }
-                hideTimeoutRef.current = setTimeout(() => {
-                    setIsVisible(false)
-                }, 1000)
-            } else {
-                setIsVisible(false)
-                if (hideTimeoutRef.current) {
-                    clearTimeout(hideTimeoutRef.current)
-                    hideTimeoutRef.current = null
-                }
-            }
+            setIsVisible(window.scrollY > 300)
         }
 
-        window.addEventListener('scroll', toggleVisibility)
+        toggleVisibility()
+        window.addEventListener('scroll', toggleVisibility, { passive: true })
 
         return () => {
             window.removeEventListener('scroll', toggleVisibility)
-            if (hideTimeoutRef.current) {
-                clearTimeout(hideTimeoutRef.current)
-            }
         }
     }, [])
 
     const scrollToTop = () => {
+        const reduced = window.matchMedia(
+            '(prefers-reduced-motion: reduce)'
+        ).matches
         window.scrollTo({
             top: 0,
-            behavior: 'smooth',
+            behavior: reduced ? 'auto' : 'smooth',
         })
     }
 
@@ -47,7 +33,7 @@ export default function ScrollToTop() {
             {isVisible && (
                 <button
                     onClick={scrollToTop}
-                    className="fixed bottom-8 left-8 p-3 bg-white text-slate-900 rounded-full shadow-lg hover:bg-slate-100 transition-all duration-300 z-50"
+                    className="fixed bottom-8 right-8 p-3 bg-[var(--rd-surface)] text-[var(--rd-text)] border border-[var(--rd-border)] rounded-full shadow-lg hover:bg-[var(--rd-surface-2)] transition-all duration-300 z-50"
                     aria-label="Scroll to top"
                 >
                     <svg

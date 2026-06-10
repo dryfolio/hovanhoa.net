@@ -2,21 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 252, 252, 252;
-  --background-end-rgb: 255, 255, 255;
-}
-
-
 body {
-  color: rgb(var(--foreground-rgb));
-  background-color: #ffffff;
+  color: var(--rd-text);
+  background-color: var(--rd-bg);
   text-transform: lowercase !important;
-}
-
-.dark body {
-  background-color: #0a0a0a;
 }
 
 @keyframes rd-blink {
@@ -36,15 +25,15 @@ body {
 
 /*main feed*/
 .feed-dot {
-  @apply absolute -top-[1.0625rem] -left-1 h-[0.5625rem] w-[0.5625rem] rounded-full border-2 border-slate-300 bg-white md:top-[0.4375rem];
+  @apply absolute -top-[1.0625rem] -left-1 h-[0.5625rem] w-[0.5625rem] rounded-full border-2 border-[var(--rd-border-2)] bg-[var(--rd-bg)] md:top-[0.4375rem];
 }
 
 .feed-border {
-  @apply absolute -bottom-2 left-0 w-px bg-slate-200 -top-3 md:top-2.5;
+  @apply absolute -bottom-2 left-0 w-px bg-[var(--rd-line)] -top-3 md:top-2.5;
 }
 
 .content-date {
-  @apply pl-7 text-xs sm:text-sm leading-6 text-slate-500 md:w-1/4 md:pl-0 md:pr-12 md:text-left;
+  @apply pl-7 text-xs sm:text-sm leading-6 text-[var(--rd-text-2)] md:w-1/4 md:pl-0 md:pr-12 md:text-left;
 }
 
 .content-block {
@@ -57,13 +46,14 @@ body {
 
 
 
-/* Add these styles for code blocks */
+/* Code blocks are deliberately dark in BOTH themes (terminal reads dark);
+   the token pins that decision instead of a stray hex. */
 pre[class*="language-"] {
     padding: 1em;
     margin: 0.5em 0;
     overflow: auto;
     border-radius: 0.5em;
-    background: #2d2d2d !important;
+    background: var(--rd-code-bg) !important;
 }
 
 code[class*="language-"] {
@@ -119,6 +109,9 @@ code[class*="language-"] {
   --rd-ok: #1f8a5b;
   --rd-warn: #c98a16;
   --rd-down: #d23b3b;
+
+  /* code blocks — dark in both themes by design */
+  --rd-code-bg: #2d2d2d;
 
   /* shape */
   --rd-r-sm: 7px;

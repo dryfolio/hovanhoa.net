@@ -54,7 +54,8 @@ function ThemeToggle() {
             type="button"
             onClick={toggle}
             aria-label="Toggle dark mode"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-[var(--rd-text-3)] transition-colors hover:bg-[var(--rd-surface-2)] hover:text-[var(--rd-text)]"
+            aria-pressed={dark}
+            className="-m-1 inline-flex h-11 w-11 items-center justify-center rounded-lg text-[var(--rd-text-3)] transition-colors hover:bg-[var(--rd-surface-2)] hover:text-[var(--rd-text)]"
         >
             {dark ? (
                 <svg
@@ -103,7 +104,7 @@ export default function Navbar() {
     }, [])
 
     const linkClass =
-        'font-[family-name:var(--font-mono)] text-[13px] text-[var(--rd-text-3)] transition-colors duration-200 hover:text-[var(--rd-orange-ink)]'
+        'font-[family-name:var(--font-mono)] text-[13px] text-[var(--rd-text-2)] transition-colors duration-200 hover:text-[var(--rd-orange-ink)]'
 
     return (
         <nav className="flex items-center justify-between gap-3">

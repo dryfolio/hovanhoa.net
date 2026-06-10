@@ -12,7 +12,7 @@ export const metadata: Metadata = {
         default: NAME,
         template: `${NAME} | %s`,
     },
-    description: `${FULL_NAME} - Software Engineer. Personal website and blog of ${FULL_NAME}.`,
+    description: `${FULL_NAME} — software engineer writing about backend systems, microservices, and AI agents.`,
     keywords: [
         FULL_NAME,
         'Hồ Văn Hòa',
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     authors: [{ name: FULL_NAME }],
     openGraph: {
         title: NAME,
-        description: `${FULL_NAME} - Software Engineer. Personal website and blog of ${FULL_NAME}.`,
+        description: `${FULL_NAME} — software engineer writing about backend systems, microservices, and AI agents.`,
         url: BASE_URL,
         siteName: NAME,
         locale: 'en_US',
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     twitter: {
         title: NAME,
         card: 'summary_large_image',
-        description: `${FULL_NAME} - Software Engineer.`,
+        description: `${FULL_NAME} — software engineer writing about backend systems, microservices, and AI agents.`,
     },
     alternates: {
         canonical: BASE_URL,
@@ -62,7 +62,7 @@ export default function RootLayout({
     return (
         <html
             lang="en"
-            className={`scroll-smooth ${GeistSans.variable} ${GeistMono.variable}`}
+            className={`motion-safe:scroll-smooth ${GeistSans.variable} ${GeistMono.variable}`}
         >
             <body className={GeistSans.className}>
                 <script

@@ -49,7 +49,7 @@ const linkClass =
 function Section({ title, links }: FooterSection) {
     return (
         <div>
-            <h3 className="font-[family-name:var(--font-mono)] text-[11.5px] font-medium uppercase tracking-[0.14em] text-[var(--rd-orange)]">
+            <h3 className="font-[family-name:var(--font-mono)] text-[11.5px] font-medium uppercase tracking-[0.14em] text-[var(--rd-orange-ink)]">
                 {title}
             </h3>
             <ul className="mt-4 space-y-2.5">

@@ -32,7 +32,7 @@ import {
     type EdgeProps,
 } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
-import { memo, useCallback, useEffect, useMemo, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 /* ------------------------------------------------------------------ icons */
 
@@ -131,6 +131,7 @@ type GNodeData = {
     hub?: boolean
     live?: boolean
     dim?: boolean
+    onTrace?: (id: string | null) => void
     [key: string]: unknown
 }
 
@@ -260,8 +261,40 @@ const FloatingEdge = memo(FloatingEdgeImpl)
 
 /* --------------------------------------------------------------- node card */
 
-function NodeCardImpl({ data }: NodeProps) {
+// App nodes carry a real link so keyboard and screen-reader users can reach
+// them; "nodrag" keeps React Flow's node-drag from swallowing the click.
+function LabelWrap({
+    href,
+    ariaLabel,
+    className,
+    onFocus,
+    onBlur,
+    children,
+}: {
+    href?: string
+    ariaLabel: string
+    className: string
+    onFocus?: () => void
+    onBlur?: () => void
+    children: React.ReactNode
+}) {
+    if (!href) return <span className={className}>{children}</span>
+    return (
+        <a
+            href={href}
+            aria-label={ariaLabel}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            className={`nodrag ${className} focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--rd-orange)]`}
+        >
+            {children}
+        </a>
+    )
+}
+
+function NodeCardImpl({ id, data }: NodeProps) {
     const d = data as GNodeData
+    const trace = d.onTrace
     const { Icon } = d
     const compact = !!d.compact
     const accent =
@@ -304,24 +337,42 @@ function NodeCardImpl({ data }: NodeProps) {
             </span>
 
             {compact ? (
-                <span className="flex items-center gap-1 pr-0.5 font-[family-name:var(--font-mono)] text-[11px] font-semibold text-[var(--rd-text)]">
+                <LabelWrap
+                    href={d.href}
+                    ariaLabel={`${d.label} — ${d.sub}`}
+                    onFocus={() => trace?.(id)}
+                    onBlur={() => trace?.(null)}
+                    className="flex items-center gap-1 rounded pr-0.5 font-[family-name:var(--font-mono)] text-[11px] font-semibold text-[var(--rd-text)]"
+                >
                     {d.label}
                     {d.live && (
-                        <span className="inline-block h-1 w-1 rounded-full bg-[var(--rd-ok)] motion-safe:animate-pulse" />
+                        <span
+                            aria-hidden
+                            className="inline-block h-1 w-1 rounded-full bg-[var(--rd-ok)] motion-safe:animate-pulse"
+                        />
                     )}
-                </span>
+                </LabelWrap>
             ) : (
-                <span className="flex flex-col leading-tight">
+                <LabelWrap
+                    href={d.href}
+                    ariaLabel={`${d.label} — ${d.sub}`}
+                    onFocus={() => trace?.(id)}
+                    onBlur={() => trace?.(null)}
+                    className="flex flex-col rounded leading-tight"
+                >
                     <span className="flex items-center gap-1.5 font-[family-name:var(--font-mono)] text-[13px] font-semibold text-[var(--rd-text)]">
                         {d.label}
                         {d.live && (
-                            <span className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--rd-ok)] motion-safe:animate-pulse" />
+                            <span
+                                aria-hidden
+                                className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--rd-ok)] motion-safe:animate-pulse"
+                            />
                         )}
                     </span>
                     <span className="font-[family-name:var(--font-mono)] text-[10px] text-[var(--rd-text-3)]">
                         {d.sub}
                     </span>
-                </span>
+                </LabelWrap>
             )}
         </div>
     )
@@ -344,13 +395,21 @@ function Graph({ compact }: { compact: boolean }) {
         return m
     }, [])
 
+    // keyboard focus on a node link triggers the same trace highlight as hover;
+    // routed through a ref so node data stays referentially stable.
+    const focusRef = useRef<(id: string | null) => void>(() => {})
+
     const initialNodes: Node[] = useMemo(
         () =>
             RAW_NODES.map((n) => ({
                 id: n.id,
                 type: 'card',
                 position: { x: n.x, y: n.y },
-                data: { ...n.data, compact },
+                data: {
+                    ...n.data,
+                    compact,
+                    onTrace: (id: string | null) => focusRef.current(id),
+                },
             })),
         [compact]
     )
@@ -406,11 +465,7 @@ function Graph({ compact }: { compact: boolean }) {
         },
         [adjacency, setNodes, setEdges]
     )
-
-    const onNodeClick = useCallback((_: unknown, node: Node) => {
-        const href = (node.data as GNodeData).href
-        if (href) window.open(href, '_blank', 'noopener,noreferrer')
-    }, [])
+    focusRef.current = focus
 
     return (
         <ReactFlow
@@ -422,7 +477,6 @@ function Graph({ compact }: { compact: boolean }) {
             edgeTypes={edgeTypes}
             onNodeMouseEnter={(_, n) => focus(n.id)}
             onNodeMouseLeave={() => focus(null)}
-            onNodeClick={onNodeClick}
             fitView
             fitViewOptions={{ padding: compact ? 0.06 : 0.18 }}
             minZoom={0.3}
@@ -432,6 +486,10 @@ function Graph({ compact }: { compact: boolean }) {
             panOnScroll={false}
             preventScrolling={false}
             panOnDrag={!compact}
+            nodesDraggable={!compact}
+            nodesFocusable={false}
+            edgesFocusable={false}
+            elementsSelectable={false}
             proOptions={{ hideAttribution: true }}
             nodesConnectable={false}
             className={compact ? '' : 'cursor-grab active:cursor-grabbing'}
@@ -483,6 +541,8 @@ export function EcosystemGraph({ compact = false }: { compact?: boolean }) {
         // into the page and reveals its wiring on hover.
         return (
             <div
+                role="group"
+                aria-label="map of the hovanhoa.net apps and the services they run on"
                 className="relative h-[clamp(360px,52vh,520px)] w-full select-none"
                 data-theme={theme}
             >
@@ -494,7 +554,11 @@ export function EcosystemGraph({ compact = false }: { compact?: boolean }) {
     }
 
     return (
-        <div className="overflow-hidden rounded-[var(--rd-r-lg)] border border-[var(--rd-border)] bg-[var(--rd-bg-sub)]">
+        <div
+            role="group"
+            aria-label="map of the hovanhoa.net apps and the services they run on"
+            className="overflow-hidden rounded-[var(--rd-r-lg)] border border-[var(--rd-border)] bg-[var(--rd-bg-sub)]"
+        >
             <div
                 className="relative h-[clamp(420px,68vh,640px)] w-full"
                 data-theme={theme}
