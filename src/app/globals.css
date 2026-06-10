@@ -262,3 +262,40 @@ code[class*="language-"] {
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------- ecosystem graph (react-flow) ---------- */
+@keyframes eg-flow {
+  to {
+    stroke-dashoffset: -26;
+  }
+}
+.eg-flow {
+  animation: eg-flow 0.9s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .eg-flow {
+    animation: none;
+  }
+}
+
+.react-flow__attribution {
+  display: none;
+}
+.react-flow__controls {
+  box-shadow: none !important;
+  gap: 2px;
+}
+.react-flow__controls-button {
+  background: var(--rd-surface) !important;
+  border: 1px solid var(--rd-border) !important;
+  border-radius: 7px !important;
+  color: var(--rd-text-2) !important;
+  width: 26px;
+  height: 26px;
+}
+.react-flow__controls-button:hover {
+  background: var(--rd-surface-2) !important;
+}
+.react-flow__controls-button svg {
+  fill: currentColor;
+}

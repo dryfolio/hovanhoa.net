@@ -5,7 +5,7 @@ import { type PostExcerpt } from '@/lib/types'
 import Link from 'next/link'
 import { Footer } from '@/components/footer'
 import { Eyebrow } from '@/components/redesign/eyebrow'
-import { OrbitArt } from '@/components/redesign/orbit-art'
+import { EcosystemGraph } from '@/components/redesign/ecosystem-graph'
 import { Sparkline } from '@/components/redesign/sparkline'
 import { formatNumber, computeTrend } from '@/lib/utils'
 
@@ -231,7 +231,9 @@ export default async function Home() {
                                 </a>
                             </div>
                         </div>
-                        <OrbitArt />
+
+                        {/* ecosystem map — the apps and the services they run on */}
+                        <EcosystemGraph compact />
                     </div>
 
                     {/* quiet line */}
