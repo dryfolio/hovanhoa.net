@@ -52,7 +52,7 @@ body {
 }
 
 .document {
-  @apply max-w-none prose-h3:mb-4 prose-h3:text-base prose-h3:leading-6 prose-sm prose prose-pre:text-base prose-slate prose-a:font-semibold prose-a:text-primary hover:prose-a:text-orange-700;
+  @apply max-w-none prose-h3:mb-4 prose-h3:text-base prose-h3:leading-6 prose-sm prose prose-pre:text-base prose-slate prose-a:font-semibold prose-a:text-primary hover:prose-a:text-[#1c1b19];
 }
 
 
@@ -105,10 +105,15 @@ code[class*="language-"] {
   --rd-text-3: #8c8b85;
   --rd-text-4: #b6b5ae;
 
-  /* accent (orange) */
-  --rd-accent: #d8602f;
-  --rd-accent-ink: #b54a1f;
-  --rd-accent-bg: #fbeee7;
+  /* accent (warm graphite) */
+  --rd-accent: #3a3936;
+  --rd-accent-ink: #1c1b19;
+  --rd-accent-bg: #efeeec;
+
+  /* orange — retained for the ecosystem graph + coding sparkline */
+  --rd-orange: #d8602f;
+  --rd-orange-ink: #b54a1f;
+  --rd-orange-bg: #fbeee7;
 
   /* status */
   --rd-ok: #1f8a5b;
@@ -141,9 +146,12 @@ code[class*="language-"] {
   --rd-text-2: #a7a6a1;
   --rd-text-3: #74736e;
   --rd-text-4: #4a4a47;
-  --rd-accent: #f0743f;
-  --rd-accent-ink: #f59568;
-  --rd-accent-bg: #2a1810;
+  --rd-accent: #e8e7e3;
+  --rd-accent-ink: #f4f3f1;
+  --rd-accent-bg: #201f1d;
+  --rd-orange: #f0743f;
+  --rd-orange-ink: #f59568;
+  --rd-orange-bg: #2a1810;
   --rd-ok: #43c089;
   --rd-warn: #e0a93a;
   --rd-down: #f06464;

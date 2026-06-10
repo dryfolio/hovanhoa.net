@@ -25,7 +25,7 @@ export async function GET() {
 ## Professional Profile
 Hey there! 👋 I'm Hòa.
 
-Software Engineer with 3+ years of experience. I am confident in my knowledge of software development concepts, industry best practices, and modern software technologies.
+Software Engineer with 4+ years of experience. I am confident in my knowledge of software development concepts, industry best practices, and modern software technologies.
 
 ## Tech Stack
 - Golang (https://go.dev/)

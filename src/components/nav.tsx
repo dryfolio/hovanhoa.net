@@ -103,7 +103,7 @@ export default function Navbar() {
     }, [])
 
     const linkClass =
-        'font-[family-name:var(--font-mono)] text-[13px] text-[var(--rd-text-3)] transition-colors duration-200 hover:text-[var(--rd-accent-ink)]'
+        'font-[family-name:var(--font-mono)] text-[13px] text-[var(--rd-text-3)] transition-colors duration-200 hover:text-[var(--rd-orange-ink)]'
 
     return (
         <nav className="flex items-center justify-between gap-3">

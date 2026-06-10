@@ -15,7 +15,7 @@ const ROLE = 'Software Engineer'
 
 const DESCRIPTION = (
     <>
-        Hey 👋 I&apos;m Hòa — a software engineer with 3+ years focused on
+        Hey 👋 I&apos;m Hòa — a software engineer with 4+ years focused on
         backend systems, microservices, and AI agents. I care about strong
         fundamentals, pragmatic best practices, and shipping things that stay
         calm under load.
@@ -26,7 +26,7 @@ const DESCRIPTION = (
             href="https://github.com/hovanhoa?tab=repositories&q=&type=source&language=go&sort="
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[#00ADD8] hover:underline"
+            className="font-semibold transition-colors hover:text-[var(--rd-orange-ink)]"
         >
             golang
         </a>{' '}

@@ -115,7 +115,7 @@ type Kind = 'host' | 'data' | 'monitor' | 'link'
 
 const KIND_COLOR: Record<Kind, string> = {
     host: 'var(--rd-border-2)',
-    data: 'var(--rd-accent)',
+    data: 'var(--rd-orange)',
     monitor: 'var(--rd-ok)',
     link: 'var(--rd-text-4)',
 }
@@ -268,8 +268,8 @@ function NodeCardImpl({ data }: NodeProps) {
         d.kind === 'platform'
             ? 'var(--rd-text-2)'
             : d.kind === 'service'
-              ? 'var(--rd-accent)'
-              : 'var(--rd-accent-ink)'
+              ? 'var(--rd-orange)'
+              : 'var(--rd-orange-ink)'
 
     return (
         <div
@@ -277,8 +277,8 @@ function NodeCardImpl({ data }: NodeProps) {
                 compact ? 'gap-1.5 px-2 py-1' : 'gap-2.5 rounded-2xl px-3 py-2 shadow-sm'
             }`}
             style={{
-                background: d.hub ? 'var(--rd-accent-bg)' : 'var(--rd-surface)',
-                borderColor: d.hub ? 'var(--rd-accent)' : 'var(--rd-border-2)',
+                background: d.hub ? 'var(--rd-orange-bg)' : 'var(--rd-surface)',
+                borderColor: d.hub ? 'var(--rd-orange)' : 'var(--rd-border-2)',
                 borderWidth: d.hub ? 1.5 : 1,
                 opacity: d.dim ? 0.28 : 1,
                 transform: d.dim ? 'scale(0.94)' : 'scale(1)',
@@ -296,7 +296,7 @@ function NodeCardImpl({ data }: NodeProps) {
                     compact ? 'h-5 w-5' : 'h-7 w-7 rounded-lg'
                 }`}
                 style={{
-                    background: d.kind === 'platform' ? 'var(--rd-surface-2)' : 'var(--rd-accent-bg)',
+                    background: d.kind === 'platform' ? 'var(--rd-surface-2)' : 'var(--rd-orange-bg)',
                     color: accent,
                 }}
             >
@@ -489,22 +489,6 @@ export function EcosystemGraph({ compact = false }: { compact?: boolean }) {
                 <ReactFlowProvider>
                     <Graph compact />
                 </ReactFlowProvider>
-
-                {/* whisper-quiet legend + hint, borderless */}
-                <div className="pointer-events-none absolute bottom-1 left-1 z-10 flex flex-wrap items-center gap-x-3 gap-y-1 font-[family-name:var(--font-mono)] text-[10px] text-[var(--rd-text-4)]">
-                    {LEGEND.map((l) => (
-                        <span key={l.kind} className="flex items-center gap-1.5">
-                            <span
-                                className="inline-block h-[2px] w-3.5 rounded-full"
-                                style={{ background: KIND_COLOR[l.kind] }}
-                            />
-                            {l.label}
-                        </span>
-                    ))}
-                    <span className="text-[var(--rd-text-4)]">
-                        · hover to trace
-                    </span>
-                </div>
             </div>
         )
     }
