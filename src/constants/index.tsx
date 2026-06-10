@@ -22,7 +22,15 @@ const DESCRIPTION = (
         <br />
         <br />
         i&apos;d write everything in{' '}
-        <span className="text-[var(--rd-text)]">go</span> if i could.
+        <a
+            href="https://github.com/hovanhoa?tab=repositories&q=&type=source&language=go&sort="
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#00ADD8] hover:underline"
+        >
+            golang
+        </a>{' '}
+        if i could.
     </>
 )
 
