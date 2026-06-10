@@ -70,12 +70,32 @@ export const metadata: Metadata = {
     },
 }
 
-export default async function Home() {
+export default async function Home({
+    searchParams,
+}: {
+    searchParams?: { tag?: string | string[] }
+}) {
     noStore()
-    const postsArr: PostExcerpt[] = Posts.getArticles({
+    // tags arrive comma-separated (?tag=life,testing) or as repeated params
+    const rawTag = Array.isArray(searchParams?.tag)
+        ? searchParams!.tag.join(',')
+        : (searchParams?.tag ?? '')
+    const activeTags = rawTag
+        .split(',')
+        .map((t) => t.trim())
+        .filter(Boolean)
+    const activeSet = new Set(activeTags.map((t) => t.toLowerCase()))
+
+    const allPosts: PostExcerpt[] = Posts.getArticles({
         page: 1,
         pageSize: 20,
     })
+    // OR filter — show posts matching any selected tag
+    const postsArr = activeSet.size
+        ? allPosts.filter((p) =>
+              p.tags.some((t) => activeSet.has(t.name.toLowerCase()))
+          )
+        : allPosts
     const totalPosts = Posts.getAllSlugs().length
 
     // coding hours — pulled live from WakaTime (real chart, the "insight" metric)
@@ -289,17 +309,54 @@ export default async function Home() {
                         lessons from building things — with the occasional life
                         update in between.
                     </p>
+                    {activeTags.length > 0 && (
+                        <div className="mt-5 flex flex-wrap items-center gap-2 font-[family-name:var(--font-mono)] text-sm text-[var(--rd-text-2)]">
+                            <span>filtered by</span>
+                            {activeTags.map((t) => {
+                                const rest = activeTags.filter((x) => x !== t)
+                                return (
+                                    <Link
+                                        key={t}
+                                        href={
+                                            rest.length
+                                                ? `/?tag=${rest.map(encodeURIComponent).join(',')}#blog`
+                                                : '/#blog'
+                                        }
+                                        className="inline-flex items-center gap-1 rounded-full border border-[var(--rd-orange)] bg-[var(--rd-orange-bg)] px-2.5 py-0.5 text-xs text-[var(--rd-orange-ink)] transition-opacity hover:opacity-80"
+                                    >
+                                        #{t} ✕
+                                    </Link>
+                                )
+                            })}
+                            {activeTags.length > 1 && (
+                                <Link
+                                    href="/#blog"
+                                    className="rounded-full border border-[var(--rd-border-2)] px-2.5 py-0.5 text-xs text-[var(--rd-text-3)] transition-colors hover:border-[var(--rd-orange)] hover:text-[var(--rd-orange-ink)]"
+                                >
+                                    clear all
+                                </Link>
+                            )}
+                        </div>
+                    )}
                 </div>
                 <section className="relative">
-                    {postsArr?.map((post: PostExcerpt) => (
-                        <Link
-                            href={`/${post.slug}`}
-                            prefetch={false}
-                            key={post.id}
-                        >
-                            <PostTile post={post} />
-                        </Link>
-                    ))}
+                    {postsArr.length > 0 ? (
+                        postsArr.map((post: PostExcerpt) => (
+                            <PostTile
+                                key={post.id}
+                                post={post}
+                                activeTags={activeTags}
+                            />
+                        ))
+                    ) : (
+                        <p className="font-[family-name:var(--font-mono)] text-sm text-[var(--rd-text-3)]">
+                            no posts tagged{' '}
+                            <span className="text-[var(--rd-orange-ink)]">
+                                {activeTags.map((t) => `#${t}`).join(' ')}
+                            </span>{' '}
+                            yet.
+                        </p>
+                    )}
                 </section>
             </div>
             <Footer />
