@@ -23,7 +23,6 @@ import {
     TWITTER,
     GITHUB,
     LINKEDIN,
-    INSIGHT_URL,
     INFO_URL,
 } from '@/constants'
 
@@ -147,6 +146,7 @@ export default async function Home() {
         spark?: number[]
         trend?: string
     }[] = [
+        { k: 'writing', v: String(totalPosts), sub: 'blog posts' },
         coding
             ? {
                   k: 'coding',
@@ -155,8 +155,7 @@ export default async function Home() {
                   spark: coding.spark,
                   trend: coding.trend,
               }
-            : { k: 'coding', v: '3+', sub: 'years shipping' },
-        { k: 'writing', v: String(totalPosts), sub: 'blog posts' },
+            : { k: 'coding', v: '4+', sub: 'years shipping' },
         { k: 'backend', v: 'go·py', sub: 'services at scale' },
         heartbeat
             ? {
@@ -207,25 +206,13 @@ export default async function Home() {
                             <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3 font-[family-name:var(--font-mono)] text-sm">
                                 <a
                                     href="#blog"
-                                    className="inline-flex items-center gap-1.5 font-medium text-[var(--rd-accent-ink)] transition-opacity hover:opacity-80"
+                                    className="inline-flex items-center gap-1.5 font-medium text-[var(--rd-accent-ink)] transition-colors hover:text-[var(--rd-orange-ink)]"
                                 >
                                     read the blog <span aria-hidden>↓</span>
                                 </a>
                                 <a
-                                    href={`https://github.com/${GITHUB}`}
-                                    className="text-[var(--rd-text-3)] transition-colors hover:text-[var(--rd-accent-ink)]"
-                                >
-                                    github
-                                </a>
-                                <a
-                                    href={INSIGHT_URL}
-                                    className="text-[var(--rd-text-3)] transition-colors hover:text-[var(--rd-accent-ink)]"
-                                >
-                                    insight
-                                </a>
-                                <a
                                     href={INFO_URL}
-                                    className="text-[var(--rd-text-3)] transition-colors hover:text-[var(--rd-accent-ink)]"
+                                    className="inline-flex items-center rounded-full bg-[var(--rd-orange)] px-4 py-1.5 font-medium text-white transition-opacity hover:opacity-80"
                                 >
                                     connect
                                 </a>
@@ -274,7 +261,11 @@ export default async function Home() {
                                     </div>
                                     {t.spark && (
                                         <div className="mt-3">
-                                            <Sparkline data={t.spark} h={26} />
+                                            <Sparkline
+                                                data={t.spark}
+                                                h={26}
+                                                stroke="var(--rd-orange)"
+                                            />
                                         </div>
                                     )}
                                     <div className="mt-auto pt-3 font-[family-name:var(--font-mono)] text-[10.5px] text-[var(--rd-text-3)]">
