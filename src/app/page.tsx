@@ -232,7 +232,7 @@ export default async function Home({
                                 </a>
                                 <a
                                     href={INFO_URL}
-                                    className="inline-flex items-center rounded-full bg-[var(--rd-orange-bg)] px-4 py-1.5 font-medium text-[var(--rd-orange-ink)] transition-opacity hover:opacity-80"
+                                    className="inline-flex items-center rounded-full bg-[var(--rd-orange)] px-4 py-1.5 font-medium text-white transition-colors hover:bg-[var(--rd-orange-ink)]"
                                 >
                                     connect
                                 </a>
