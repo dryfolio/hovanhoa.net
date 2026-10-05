@@ -5,12 +5,72 @@
     <loc>https://hovanhoa.net</loc>
     <changefreq>always</changefreq>
     <priority>1</priority>
-    <lastmod>2026-05-12T10:00:17.707Z</lastmod>
+    <lastmod>2026-10-05T02:22:35.612Z</lastmod>
   </url>
   <url>
-    <loc>https://hovanhoa.net/looking-back-at-2025</loc>
+    <loc>https://hovanhoa.net/thundering-herd-in-distributed-systems</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
-    <lastmod>2026-02-22T00:00:00.000Z</lastmod>
+    <lastmod>2026-10-05T00:00:00.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hovanhoa.net/building-an-ai-agent-in-go</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-07-20T00:00:00.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hovanhoa.net/2025-rewind</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-02-16T00:00:00.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hovanhoa.net/load-testing-k6-search-optimization</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2025-02-18T00:00:00.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hovanhoa.net/looking-back-at-2024</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2025-01-17T00:00:00.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hovanhoa.net/live-reload-in-go-with-air</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2025-01-14T00:00:00.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hovanhoa.net/cap-theorem-in-distributed-systems</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2024-12-28T00:00:00.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hovanhoa.net/why-i-chose-twitter-snowflake-id</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2024-12-28T00:00:00.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hovanhoa.net/building-a-url-shortener-service-using-golang</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2024-12-26T00:00:00.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hovanhoa.net/jenkins-cicd-on-aws-ec2</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2024-12-01T00:00:00.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://hovanhoa.net/go-concurrency-goroutines-channels</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2024-11-26T00:00:00.000Z</lastmod>
   </url>
 </urlset>
