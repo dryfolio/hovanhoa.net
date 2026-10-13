@@ -7,6 +7,7 @@ import {
     MUSIC_URL,
     STATUS_URL,
     INFO_URL,
+    BOOK_URL,
     GITHUB,
     TWITTER,
     LINKEDIN,
@@ -24,6 +25,7 @@ const SECTIONS: FooterSection[] = [
             { label: 'gallery', href: GALLERY_URL },
             { label: 'music', href: MUSIC_URL },
             { label: 'status', href: STATUS_URL },
+            { label: 'book', href: BOOK_URL },
         ],
     },
     {

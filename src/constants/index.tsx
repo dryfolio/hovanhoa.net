@@ -10,6 +10,7 @@ const GALLERY_URL = 'https://gallery.hovanhoa.net'
 const MUSIC_URL = 'https://music.hovanhoa.net'
 const STATUS_URL = 'https://status.hovanhoa.net'
 const INFO_URL = 'https://info.hovanhoa.net'
+const BOOK_URL = 'https://book.hovanhoa.net'
 const OG_IMAGE_BG = '/og-bg.jpg'
 const ROLE = 'Software Engineer'
 
@@ -47,6 +48,7 @@ export {
     MUSIC_URL,
     STATUS_URL,
     INFO_URL,
+    BOOK_URL,
     OG_IMAGE_BG,
     BASE_URL,
     ROLE,
