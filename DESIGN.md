@@ -19,12 +19,12 @@ colors:
   ember-orange: "#d8602f"
   ember-orange-ink: "#b54a1f"
   ember-orange-bg: "#fbeee7"
-  label-slate: "#2563eb"
-  label-slate-fg: "#ffffff"
-  label-pine: "#059669"
-  label-pine-fg: "#ffffff"
-  label-plum: "#db2777"
-  label-plum-fg: "#ffffff"
+  label-slate: "#e8eaf0"
+  label-slate-fg: "#3d4458"
+  label-pine: "#e4f0e9"
+  label-pine-fg: "#2d5a42"
+  label-plum: "#f3e6ec"
+  label-plum-fg: "#6b3a52"
   status-ok: "#1f8a5b"
   status-warn: "#c98a16"
   status-down: "#d23b3b"
@@ -121,12 +121,10 @@ A near-monochrome warm-neutral ramp with a single ember accent; in dark mode the
 - **Status Green / Amber / Red** (#1f8a5b / #c98a16 / #d23b3b): operational status only (uptime, health indicators). Never used for brand or emphasis.
 
 ### Tag Category Colors
-Three fixed, saturated hues reserved exclusively for blog tag pills (the home-page "Blog Bento" — see §5), mapped from tag → category → color:
-- **Slate** (#2563eb bg / #ffffff fg): **engineering** tags — `system design`, `golang`, `distributed systems`, `concurrency`, `ci-cd`, `testing`.
-- **Pine** (#059669 bg / #ffffff fg): **ai** tags — `ai agents`.
-- **Plum** (#db2777 bg / #ffffff fg): **life** tags — `life`.
-
-Solid, saturated chips (not desaturated washes) — deliberately bolder than the rest of the near-monochrome system, since these are the one place the site invites color.
+Three fixed, deliberately desaturated hues reserved exclusively for blog tag pills (the home-page "Blog Bento" — see §5), mapped from tag → category → color:
+- **Slate** (#e8eaf0 bg / #3d4458 fg): **engineering** tags — `system design`, `golang`, `distributed systems`, `concurrency`, `ci-cd`, `testing`.
+- **Pine** (#e4f0e9 bg / #2d5a42 fg): **ai** tags — `ai agents`.
+- **Plum** (#f3e6ec bg / #6b3a52 fg): **life** tags — `life`.
 
 See **The Category Label Exception** below — these colors never leave the pill background.
 
