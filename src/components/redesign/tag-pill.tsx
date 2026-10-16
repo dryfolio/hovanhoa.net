@@ -1,21 +1,34 @@
 import { BLOG_URL } from '@/constants'
 
-type TagCategory = 'engineering' | 'ai' | 'life'
+type TagColor =
+    | 'blue'
+    | 'teal'
+    | 'indigo'
+    | 'amber'
+    | 'orange'
+    | 'violet'
+    | 'green'
+    | 'pink'
 
-const CATEGORY_VARS: Record<TagCategory, { bg: string; fg: string }> = {
-    engineering: { bg: 'var(--rd-label-slate)', fg: 'var(--rd-label-slate-fg)' },
-    ai: { bg: 'var(--rd-label-pine)', fg: 'var(--rd-label-pine-fg)' },
-    life: { bg: 'var(--rd-label-plum)', fg: 'var(--rd-label-plum-fg)' },
+const CATEGORY_VARS: Record<TagColor, { bg: string; fg: string }> = {
+    blue: { bg: 'var(--rd-label-blue)', fg: 'var(--rd-label-blue-fg)' },
+    teal: { bg: 'var(--rd-label-teal)', fg: 'var(--rd-label-teal-fg)' },
+    indigo: { bg: 'var(--rd-label-indigo)', fg: 'var(--rd-label-indigo-fg)' },
+    amber: { bg: 'var(--rd-label-amber)', fg: 'var(--rd-label-amber-fg)' },
+    orange: { bg: 'var(--rd-label-orange)', fg: 'var(--rd-label-orange-fg)' },
+    violet: { bg: 'var(--rd-label-violet)', fg: 'var(--rd-label-violet-fg)' },
+    green: { bg: 'var(--rd-label-green)', fg: 'var(--rd-label-green-fg)' },
+    pink: { bg: 'var(--rd-label-pink)', fg: 'var(--rd-label-pink-fg)' },
 }
 
 export function TagPill({
     name,
-    category = 'engineering',
+    category = 'blue',
 }: {
     name: string
-    category?: TagCategory
+    category?: TagColor
 }) {
-    const { bg, fg } = CATEGORY_VARS[category]
+    const { bg, fg } = CATEGORY_VARS[category] ?? CATEGORY_VARS.blue
 
     return (
         <a

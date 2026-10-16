@@ -19,12 +19,22 @@ colors:
   ember-orange: "#d8602f"
   ember-orange-ink: "#b54a1f"
   ember-orange-bg: "#fbeee7"
-  label-slate: "#e8eaf0"
-  label-slate-fg: "#3d4458"
-  label-pine: "#e4f0e9"
-  label-pine-fg: "#2d5a42"
-  label-plum: "#f3e6ec"
-  label-plum-fg: "#6b3a52"
+  label-blue: "#dbeafe"
+  label-blue-fg: "#1e40af"
+  label-teal: "#ccfbf1"
+  label-teal-fg: "#0f766e"
+  label-indigo: "#e0e7ff"
+  label-indigo-fg: "#3730a3"
+  label-amber: "#fef3c7"
+  label-amber-fg: "#92400e"
+  label-orange: "#ffedd5"
+  label-orange-fg: "#9a3412"
+  label-violet: "#ede9fe"
+  label-violet-fg: "#5b21b6"
+  label-green: "#dcfce7"
+  label-green-fg: "#166534"
+  label-pink: "#fce7f3"
+  label-pink-fg: "#9d174d"
   status-ok: "#1f8a5b"
   status-warn: "#c98a16"
   status-down: "#d23b3b"
@@ -121,10 +131,15 @@ A near-monochrome warm-neutral ramp with a single ember accent; in dark mode the
 - **Status Green / Amber / Red** (#1f8a5b / #c98a16 / #d23b3b): operational status only (uptime, health indicators). Never used for brand or emphasis.
 
 ### Tag Category Colors
-Three fixed, deliberately desaturated hues reserved exclusively for blog tag pills (the home-page "Blog Bento" — see §5), mapped from tag → category → color:
-- **Slate** (#e8eaf0 bg / #3d4458 fg): **engineering** tags — `system design`, `golang`, `distributed systems`, `concurrency`, `ci-cd`, `testing`.
-- **Pine** (#e4f0e9 bg / #2d5a42 fg): **ai** tags — `ai agents`.
-- **Plum** (#f3e6ec bg / #6b3a52 fg): **life** tags — `life`.
+Eight fixed pastel hues reserved exclusively for blog tag pills (the home-page "Blog Bento" and blog.hovanhoa.net's own rail/filter chips — see §5), one per tag so the tag cloud reads as varied rather than one hue repeated:
+- **Blue** (#dbeafe bg / #1e40af fg) — `system design`
+- **Teal** (#ccfbf1 bg / #0f766e fg) — `golang`
+- **Indigo** (#e0e7ff bg / #3730a3 fg) — `distributed systems`
+- **Amber** (#fef3c7 bg / #92400e fg) — `concurrency`
+- **Orange** (#ffedd5 bg / #9a3412 fg) — `ci-cd`
+- **Violet** (#ede9fe bg / #5b21b6 fg) — `testing`
+- **Green** (#dcfce7 bg / #166534 fg) — `ai agents`
+- **Pink** (#fce7f3 bg / #9d174d fg) — `life`
 
 See **The Category Label Exception** below — these colors never leave the pill background.
 
@@ -140,7 +155,7 @@ See **The Category Label Exception** below — these colors never leave the pill
 ### Named Rules
 **The One Ember Rule.** Ember Orange touches at most ~10% of any screen. It means "current", "interactive", or "live data" — nothing else, with one named exception: the footer's section labels run in Ember Ink as a deliberate brand cadence (the footer is the site's one ember-washed surface, and the labels belong to it). If orange appears anywhere else and none of the three meanings applies, remove it.
 
-**The Category Label Exception.** Tag-category pills (engineering/ai/life — Slate/Pine/Plum) are the one deliberate exception to The One Ember Rule. These three hues are reserved exclusively for pill backgrounds in the blog feed; they must never be reused for links, buttons, icons, or any brand/interactive element. If a non-pill element needs color, it's still Ember Orange or nothing.
+**The Category Label Exception.** Tag pills (Blue/Teal/Indigo/Amber/Orange/Violet/Green/Pink, one per tag) are the one deliberate exception to The One Ember Rule. These eight hues are reserved exclusively for pill backgrounds in the blog feed; they must never be reused for links, buttons, icons, or any brand/interactive element. If a non-pill element needs color, it's still Ember Orange or nothing.
 
 **The Meta-Only Gray Rule.** Ink Tertiary (#8c8b85) and below are forbidden for body prose and for any interactive text (links, tags, nav items) — both need Ink or Ink Secondary. Tertiary grays are reserved for small non-interactive mono meta (dates, eyebrows, footnotes) where AA incidental thresholds apply.
 
@@ -189,7 +204,7 @@ Refined and restrained: quiet at rest, precise on hover. Feedback is a color shi
 Three distinct tag/chip treatments exist, each scoped to its own context — do not mix them:
 - **`.rd-chip`** — Surface background, 1px Border, fully rounded, 12.5px medium text in Ink Secondary, 4px × 10px padding. The generic neutral utility chip (filter-chip UI, etc.).
 - **Rail tags** (Blog Feed Timeline, §5 below) — bare mono text, no pill: Ink Secondary at rest (they're interactive), Ember Ink + medium weight when active, Ember Ink on hover. Lives on blog.hovanhoa.net now (see below), not on this site.
-- **Category pills** (Blog Bento, §5 below) — rounded-full pills filled with a Tag Category Color (Slate/Pine/Plum, see §2), never Surface/Border. Used only in the bento's featured card and compact rows.
+- **Category pills** (Blog Bento, §5 below) — rounded-full pills filled with a Tag Category Color (one of eight pastel hues, see §2), never Surface/Border. Used only in the bento's featured card and compact rows.
 
 ### Cards / Containers
 - **Corner Style:** 11px (`--rd-r`); 16px (`--rd-r-lg`) for large feature panels.

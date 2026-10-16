@@ -15,5 +15,13 @@ export type PostExcerpt = {
 
 export type Tag = {
     name: string
-    category?: 'engineering' | 'ai' | 'life'
+    category?:
+        | 'blue'
+        | 'teal'
+        | 'indigo'
+        | 'amber'
+        | 'orange'
+        | 'violet'
+        | 'green'
+        | 'pink'
 }
