@@ -1,6 +1,7 @@
 const NAME = 'hovanhoa'
 const FULL_NAME = 'Hồ Văn Hòa'
 const BASE_URL = 'https://hovanhoa.net'
+const BLOG_URL = 'https://blog.hovanhoa.net'
 const TWITTER = '_hovanhoa_'
 const LINKEDIN = 'hovanhoa'
 const GITHUB = 'hovanhoa'
@@ -13,6 +14,9 @@ const INFO_URL = 'https://info.hovanhoa.net'
 const BOOK_URL = 'https://book.hovanhoa.net'
 const OG_IMAGE_BG = '/og-bg.jpg'
 const ROLE = 'Software Engineer'
+const GITHUB_URL = `https://github.com/${GITHUB}`
+const TWITTER_URL = `https://twitter.com/${TWITTER}`
+const LINKEDIN_URL = `https://linkedin.com/in/${LINKEDIN}`
 
 const DESCRIPTION = (
     <>
@@ -51,5 +55,9 @@ export {
     BOOK_URL,
     OG_IMAGE_BG,
     BASE_URL,
+    BLOG_URL,
     ROLE,
+    GITHUB_URL,
+    TWITTER_URL,
+    LINKEDIN_URL,
 }

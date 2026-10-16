@@ -19,13 +19,19 @@ colors:
   ember-orange: "#d8602f"
   ember-orange-ink: "#b54a1f"
   ember-orange-bg: "#fbeee7"
+  label-slate: "#e8eaf0"
+  label-slate-fg: "#3d4458"
+  label-pine: "#e4f0e9"
+  label-pine-fg: "#2d5a42"
+  label-plum: "#f3e6ec"
+  label-plum-fg: "#6b3a52"
   status-ok: "#1f8a5b"
   status-warn: "#c98a16"
   status-down: "#d23b3b"
 typography:
   display:
     fontFamily: "Geist Sans, Inter, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "clamp(1.9rem, 4vw, 3rem)"
+    fontSize: "clamp(2.1rem, 4.6vw, 3.4rem)"
     fontWeight: 600
     letterSpacing: "-0.04em"
   headline:
@@ -114,6 +120,14 @@ A near-monochrome warm-neutral ramp with a single ember accent; in dark mode the
 ### Tertiary
 - **Status Green / Amber / Red** (#1f8a5b / #c98a16 / #d23b3b): operational status only (uptime, health indicators). Never used for brand or emphasis.
 
+### Tag Category Colors
+Three fixed, deliberately desaturated hues reserved exclusively for blog tag pills (the home-page "Blog Bento" — see §5), mapped from tag → category → color:
+- **Slate** (#e8eaf0 bg / #3d4458 fg): **engineering** tags — `system design`, `golang`, `distributed systems`, `concurrency`, `ci-cd`, `testing`.
+- **Pine** (#e4f0e9 bg / #2d5a42 fg): **ai** tags — `ai agents`.
+- **Plum** (#f3e6ec bg / #6b3a52 fg): **life** tags — `life`.
+
+See **The Category Label Exception** below — these colors never leave the pill background.
+
 ### Neutral
 - **Canvas** (#ffffff) and **Canvas Sub** (#fafafa): page background and quiet alternating bands.
 - **Surface** (#ffffff) / **Surface-2** (#f6f6f5): card faces and inset wells (terminal title bar, meter tracks).
@@ -126,6 +140,8 @@ A near-monochrome warm-neutral ramp with a single ember accent; in dark mode the
 ### Named Rules
 **The One Ember Rule.** Ember Orange touches at most ~10% of any screen. It means "current", "interactive", or "live data" — nothing else, with one named exception: the footer's section labels run in Ember Ink as a deliberate brand cadence (the footer is the site's one ember-washed surface, and the labels belong to it). If orange appears anywhere else and none of the three meanings applies, remove it.
 
+**The Category Label Exception.** Tag-category pills (engineering/ai/life — Slate/Pine/Plum) are the one deliberate exception to The One Ember Rule. These three hues are reserved exclusively for pill backgrounds in the blog feed; they must never be reused for links, buttons, icons, or any brand/interactive element. If a non-pill element needs color, it's still Ember Orange or nothing.
+
 **The Meta-Only Gray Rule.** Ink Tertiary (#8c8b85) and below are forbidden for body prose and for any interactive text (links, tags, nav items) — both need Ink or Ink Secondary. Tertiary grays are reserved for small non-interactive mono meta (dates, eyebrows, footnotes) where AA incidental thresholds apply.
 
 ## 3. Typography
@@ -137,7 +153,7 @@ A near-monochrome warm-neutral ramp with a single ember accent; in dark mode the
 **Character:** One sans family in multiple weights, counterpointed by a mono voice. Geist Sans is quiet and contemporary; Geist Mono carries all the personality — every date, tag, nav link, eyebrow, and terminal line. Everything renders lowercase (except the uppercase mono eyebrow), which is the brand's signature voice.
 
 ### Hierarchy
-- **Display** (600, clamp(1.9rem, 4vw, 3rem), -0.04em): the page h1 ("hovanhoa", post titles). Confident but well under shouting size.
+- **Display** (600, clamp(2.1rem, 4.6vw, 3.4rem), -0.04em): the page h1 ("hovanhoa", post titles). Confident but well under shouting size — sized to hold its own next to the hero's ecosystem graph without overpowering it.
 - **Headline** (600, clamp(1.7rem, 3vw, 2.3rem), -0.035em): section headings (`.rd-h-sec`).
 - **Title** (700, 1.25rem → 1.5rem at sm, tight tracking): post-tile titles in the blog feed.
 - **Lead** (400, clamp(1.05rem, 1.5vw, 1.28rem), 1.6, max 46ch, `text-wrap: pretty`): the hero intro paragraph (`.rd-lead`), in Ink Secondary.
@@ -170,8 +186,10 @@ Refined and restrained: quiet at rest, precise on hover. Feedback is a color shi
 - **Hover / Focus:** color transitions at 0.18s; focus uses the browser's visible focus ring — never remove it.
 
 ### Chips
-- **Style** (`.rd-chip`): Surface background, 1px Border, fully rounded, 12.5px medium text in Ink Secondary, 4px × 10px padding.
-- **State:** tags in the blog feed are bare mono text instead — Ink Secondary at rest (they're interactive), Ember Ink + medium weight when active, Ember Ink on hover.
+Three distinct tag/chip treatments exist, each scoped to its own context — do not mix them:
+- **`.rd-chip`** — Surface background, 1px Border, fully rounded, 12.5px medium text in Ink Secondary, 4px × 10px padding. The generic neutral utility chip (filter-chip UI, etc.).
+- **Rail tags** (Blog Feed Timeline, §5 below) — bare mono text, no pill: Ink Secondary at rest (they're interactive), Ember Ink + medium weight when active, Ember Ink on hover. Lives on blog.hovanhoa.net now (see below), not on this site.
+- **Category pills** (Blog Bento, §5 below) — rounded-full pills filled with a Tag Category Color (Slate/Pine/Plum, see §2), never Surface/Border. Used only in the bento's featured card and compact rows.
 
 ### Cards / Containers
 - **Corner Style:** 11px (`--rd-r`); 16px (`--rd-r-lg`) for large feature panels.
@@ -191,8 +209,11 @@ Not yet part of the system (no forms on the site). If added: Surface background,
 ### Terminal Card (signature)
 A faux terminal window in family mono: Surface-2 title bar with three hollow graphite traffic-light dots and a `~/hovanhoa` path; body lines as `$ command` (graphite prompt, Ink Secondary command) over Ink output; a 0.55ch Ember-free graphite caret blinking at 1.1s steps on the last line. The single most identity-dense component — reuse its grammar (prompt, path, caret) rather than inventing new terminal idioms.
 
-### Blog Feed Timeline (signature)
-Posts hang off a 1px left rail (Hairline, `--rd-line`) with a hollow 10px dot per entry (Border Strong ring on a Canvas fill, so it inverts with the theme); hovering anywhere on a tile turns the dot's ring and an arrow (`→`, slides 4px) Ember Orange and the title Ember Ink. The whole tile is clickable via a stretched link; tags sit above it and toggle independently.
+### Blog Feed Timeline (signature, now on blog.hovanhoa.net)
+Posts hang off a 1px left rail (Hairline, `--rd-line`) with a hollow 10px dot per entry (Border Strong ring on a Canvas fill, so it inverts with the theme); hovering anywhere on a tile turns the dot's ring and an arrow (`→`, slides 4px) Ember Orange and the title Ember Ink. The whole tile is clickable via a stretched link; tags sit above it and toggle independently. The blog itself (full archive, tag filtering, post detail pages) lives at `blog.hovanhoa.net` — this site no longer renders the rail at all.
+
+### Blog Bento (featured + compact rows)
+hovanhoa.net's own "latest writing" teaser: fetched server-side from `blog.hovanhoa.net`'s `/api/feed.json` (5 latest posts, same pattern as the WakaTime/status fetches elsewhere on the home page — no local content, no tag filtering here). The newest post renders as a large featured card (`rd-card`, text-only today — no post has a cover image yet, but the card has a forward-compatible image slot) with a category pill + mono `date · read time` + display-weight title + clamped excerpt; the next four posts render as compact hairline-separated rows in a second card alongside it, same meta pattern at a smaller scale. `grid-cols-[1.2fr_0.9fr]` above 900px, stacks below it. Every title and tag pill links out to `blog.hovanhoa.net`; a "view all posts →" link below the bento does the same.
 
 ## 6. Do's and Don'ts
 
@@ -208,7 +229,7 @@ Posts hang off a 1px left rail (Hairline, `--rd-line`) with a hollow 10px dot pe
 - **Don't** build anything that reads as a "SaaS landing page" — gradient heroes, metric cards, marketing-speak, corporate startup energy (PRODUCT.md anti-reference, verbatim).
 - **Don't** drift toward the "over-designed showcase" — heavy animations, 3D, scroll-jacking; style must never overpower the writing (PRODUCT.md anti-reference, verbatim).
 - **Don't** rebuild the generic dev-portfolio template — hero + skills grid + identical project cards.
-- **Don't** introduce a second accent hue. Graphite is structure, Ember is the voice; status colors are operational only.
+- **Don't** introduce a second accent hue. Graphite is structure, Ember is the voice; status colors are operational only (see The Category Label Exception for the one approved, pill-only carve-out).
 - **Don't** use gradient text, `border-left` color stripes, or glassmorphism anywhere.
 - **Don't** uppercase anything except the mono eyebrow, and never bake lowercase into source strings.
 - **Don't** use Ink Tertiary (#8c8b85) or Ink Faint (#b6b5ae) for running text — meta labels only.

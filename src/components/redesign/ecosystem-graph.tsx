@@ -107,6 +107,12 @@ const Box = (p: IconProps) => (
         <path d="M12 11 4 6.5M12 11l8-4.5M12 11v9" />
     </svg>
 )
+const Doc = (p: IconProps) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}>
+        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z" />
+        <path d="M14 3v5h5M9 13h6M9 17h6" />
+    </svg>
+)
 const Book = (p: IconProps) => (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" {...p}>
         <path d="M4 5.5C4 4.7 4.7 4 5.5 4H11a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4V5.5Z" />
@@ -150,7 +156,8 @@ type GNodeData = {
 // so it reads as an ambient map rather than a tidy org chart.
 const RAW_NODES: { id: string; x: number; y: number; data: GNodeData }[] = [
     // apps
-    { id: 'home', x: 240, y: 230, data: { label: 'hovanhoa', sub: 'home · blog', kind: 'app', Icon: Globe, href: 'https://hovanhoa.net', hub: true, live: true } },
+    { id: 'home', x: 240, y: 230, data: { label: 'hovanhoa', sub: 'profile & writing', kind: 'app', Icon: Globe, href: 'https://hovanhoa.net', hub: true, live: true } },
+    { id: 'blog', x: 290, y: 80, data: { label: 'blog', sub: 'notes & posts', kind: 'app', Icon: Doc, href: 'https://blog.hovanhoa.net', live: true } },
     { id: 'insight', x: 150, y: 30, data: { label: 'insight', sub: 'dashboards', kind: 'app', Icon: Chart, href: 'https://insight.hovanhoa.net', live: true } },
     { id: 'status', x: 470, y: 140, data: { label: 'status', sub: 'uptime watcher', kind: 'app', Icon: Pulse, href: 'https://status.hovanhoa.net', live: true } },
     { id: 'gallery', x: 40, y: 170, data: { label: 'gallery', sub: 'photos', kind: 'app', Icon: Image, href: 'https://gallery.hovanhoa.net', live: true } },
@@ -168,7 +175,7 @@ const RAW_NODES: { id: string; x: number; y: number; data: GNodeData }[] = [
     { id: 'cloudflare', x: 560, y: 440, data: { label: 'cloudflare', sub: 'dns · analytics', kind: 'platform', Icon: Cloud } },
 ]
 
-const APPS = ['home', 'insight', 'status', 'gallery', 'music', 'info', 'book']
+const APPS = ['home', 'blog', 'insight', 'status', 'gallery', 'music', 'info', 'book']
 
 const RAW_EDGES: { s: string; t: string; kind: Kind; dir?: boolean }[] = [
     // every app is hosted on vercel + fronted by cloudflare

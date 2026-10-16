@@ -18,6 +18,7 @@ import {
 } from '@remixicon/react'
 import {
     BASE_URL,
+    BLOG_URL,
     BOOK_URL,
     GALLERY_URL,
     GITHUB,
@@ -51,17 +52,18 @@ const COLUMNS: Column[] = [
                 href: BASE_URL,
                 icon: RiHome5Line,
             },
-            {
-                label: 'blog',
-                desc: 'notes & posts',
-                href: `${BASE_URL}/#blog`,
-                icon: RiBookOpenLine,
-            },
         ],
     },
     {
         title: 'the family',
         items: [
+            {
+                label: 'blog',
+                desc: 'notes & posts',
+                href: BLOG_URL,
+                icon: RiBookOpenLine,
+                external: true,
+            },
             {
                 label: 'insight',
                 desc: 'coding activity',
@@ -292,7 +294,7 @@ export default function Navbar() {
 
                 {/* inline quick links */}
                 <div className="hidden items-center gap-5 sm:flex sm:gap-7">
-                    <a href={`${BASE_URL}/#blog`} className={linkClass}>
+                    <a href={BLOG_URL} className={linkClass}>
                         blog
                     </a>
                     <a href={INSIGHT_URL} className={linkClass}>

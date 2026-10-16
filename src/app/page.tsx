@@ -1,8 +1,7 @@
 import Hero from '@/components/hero'
 import Navbar from '@/components/nav'
-import PostTile from '@/components/post-tile'
+import { BlogBento } from '@/components/blog-bento'
 import { type PostExcerpt } from '@/lib/types'
-import Link from 'next/link'
 import { Footer } from '@/components/footer'
 import { Eyebrow } from '@/components/redesign/eyebrow'
 import EcosystemGraph from '@/components/redesign/ecosystem-graph-lazy'
@@ -11,10 +10,10 @@ import { formatNumber, computeTrend } from '@/lib/utils'
 
 const WAKA_CODING =
     'https://wakatime.com/share/@hovanhoa/0d76f73e-d398-4c07-9bc6-781f52986fd8.json'
-import { Posts } from '@/lib/posts'
 import { Metadata } from 'next'
 import {
     BASE_URL,
+    BLOG_URL,
     NAME,
     FULL_NAME,
     ROLE,
@@ -71,32 +70,21 @@ export const metadata: Metadata = {
     },
 }
 
-export default async function Home({
-    searchParams,
-}: {
-    searchParams?: { tag?: string | string[] }
-}) {
-    // tags arrive comma-separated (?tag=life,testing) or as repeated params
-    const rawTag = Array.isArray(searchParams?.tag)
-        ? searchParams!.tag.join(',')
-        : (searchParams?.tag ?? '')
-    const activeTags = rawTag
-        .split(',')
-        .map((t) => t.trim())
-        .filter(Boolean)
-    const activeSet = new Set(activeTags.map((t) => t.toLowerCase()))
-
-    const allPosts: PostExcerpt[] = Posts.getArticles({
-        page: 1,
-        pageSize: 20,
-    })
-    // OR filter — show posts matching any selected tag
-    const postsArr = activeSet.size
-        ? allPosts.filter((p) =>
-              p.tags.some((t) => activeSet.has(t.name.toLowerCase()))
-          )
-        : allPosts
-    const totalPosts = Posts.getAllSlugs().length
+export default async function Home() {
+    // latest posts — pulled from blog.hovanhoa.net's own feed, same pattern
+    // as the WakaTime/status fetches below
+    let feedPosts: PostExcerpt[] = []
+    let totalPosts: number | null = null
+    try {
+        const res = await fetch(`${BLOG_URL}/api/feed.json?limit=5`, {
+            next: { revalidate: 3600 },
+        })
+        const data: { total: number; posts: PostExcerpt[] } = await res.json()
+        feedPosts = data.posts ?? []
+        totalPosts = data.total ?? null
+    } catch {
+        // ignore — bento quietly disappears, stat tile falls back below
+    }
 
     // coding hours — pulled live from WakaTime (real chart, the "insight" metric)
     let coding: {
@@ -166,7 +154,9 @@ export default async function Home({
         spark?: number[]
         trend?: string
     }[] = [
-        { k: 'writing', v: String(totalPosts), sub: 'blog posts' },
+        totalPosts !== null
+            ? { k: 'writing', v: String(totalPosts), sub: 'blog posts' }
+            : { k: 'writing', v: '—', sub: 'blog posts' },
         coding
             ? {
                   k: 'coding',
@@ -309,53 +299,18 @@ export default async function Home({
                         lessons from building things — with the occasional life
                         update in between.
                     </p>
-                    {activeTags.length > 0 && (
-                        <div className="mt-5 flex flex-wrap items-center gap-2 font-[family-name:var(--font-mono)] text-sm text-[var(--rd-text-2)]">
-                            <span>filtered by</span>
-                            {activeTags.map((t) => {
-                                const rest = activeTags.filter((x) => x !== t)
-                                return (
-                                    <Link
-                                        key={t}
-                                        href={
-                                            rest.length
-                                                ? `/?tag=${rest.map(encodeURIComponent).join(',')}#blog`
-                                                : '/#blog'
-                                        }
-                                        className="inline-flex items-center gap-1 rounded-full border border-[var(--rd-orange)] bg-[var(--rd-orange-bg)] px-2.5 py-0.5 text-xs text-[var(--rd-orange-ink)] transition-opacity hover:opacity-80"
-                                    >
-                                        #{t} ✕
-                                    </Link>
-                                )
-                            })}
-                            {activeTags.length > 1 && (
-                                <Link
-                                    href="/#blog"
-                                    className="rounded-full border border-[var(--rd-border-2)] px-2.5 py-0.5 text-xs text-[var(--rd-text-2)] transition-colors hover:border-[var(--rd-orange)] hover:text-[var(--rd-orange-ink)]"
-                                >
-                                    clear all
-                                </Link>
-                            )}
-                        </div>
-                    )}
                 </div>
                 <section className="relative">
-                    {postsArr.length > 0 ? (
-                        postsArr.map((post: PostExcerpt) => (
-                            <PostTile
-                                key={post.id}
-                                post={post}
-                                activeTags={activeTags}
-                            />
-                        ))
-                    ) : (
-                        <p className="font-[family-name:var(--font-mono)] text-sm text-[var(--rd-text-3)]">
-                            no posts tagged{' '}
-                            <span className="text-[var(--rd-orange-ink)]">
-                                {activeTags.map((t) => `#${t}`).join(' ')}
-                            </span>{' '}
-                            yet.
-                        </p>
+                    <BlogBento posts={feedPosts} />
+                    {feedPosts.length > 0 && (
+                        <div className="mt-8">
+                            <a
+                                href={BLOG_URL}
+                                className="inline-flex items-center gap-1.5 font-[family-name:var(--font-mono)] text-sm font-medium text-[var(--rd-orange-ink)] transition-colors hover:opacity-80"
+                            >
+                                view all posts <span aria-hidden>→</span>
+                            </a>
+                        </div>
                     )}
                 </section>
             </div>

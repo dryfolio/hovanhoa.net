@@ -2,16 +2,18 @@ import Link from 'next/link'
 import React from 'react'
 import {
     BASE_URL,
+    BLOG_URL,
     INSIGHT_URL,
     GALLERY_URL,
     MUSIC_URL,
     STATUS_URL,
     INFO_URL,
     BOOK_URL,
-    GITHUB,
-    TWITTER,
-    LINKEDIN,
+    GITHUB_URL,
+    TWITTER_URL,
+    LINKEDIN_URL,
 } from '@/constants'
+import { SocialIcon } from '@/components/redesign/social-icons'
 
 type FooterLink = { label: string; href: string }
 type FooterSection = { title: string; links: FooterLink[] }
@@ -21,6 +23,7 @@ const SECTIONS: FooterSection[] = [
         title: 'apps',
         links: [
             { label: 'home', href: BASE_URL },
+            { label: 'blog', href: BLOG_URL },
             { label: 'insight', href: INSIGHT_URL },
             { label: 'gallery', href: GALLERY_URL },
             { label: 'music', href: MUSIC_URL },
@@ -31,9 +34,9 @@ const SECTIONS: FooterSection[] = [
     {
         title: 'elsewhere',
         links: [
-            { label: 'github', href: `https://github.com/${GITHUB}` },
-            { label: 'twitter', href: `https://twitter.com/${TWITTER}` },
-            { label: 'linkedin', href: `https://linkedin.com/in/${LINKEDIN}` },
+            { label: 'github', href: GITHUB_URL },
+            { label: 'twitter', href: TWITTER_URL },
+            { label: 'linkedin', href: LINKEDIN_URL },
         ],
     },
     {
@@ -93,6 +96,11 @@ export function Footer() {
                             software engineer — building, writing, and shipping.
                             one small corner of the internet, a few sites deep.
                         </p>
+                        <div className="mt-5 flex items-center gap-4">
+                            <SocialIcon kind="github" href={GITHUB_URL} />
+                            <SocialIcon kind="twitter" href={TWITTER_URL} />
+                            <SocialIcon kind="linkedin" href={LINKEDIN_URL} />
+                        </div>
                     </div>
 
                     {/* sectioned links */}
