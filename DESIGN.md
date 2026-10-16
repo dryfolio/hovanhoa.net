@@ -19,22 +19,22 @@ colors:
   ember-orange: "#d8602f"
   ember-orange-ink: "#b54a1f"
   ember-orange-bg: "#fbeee7"
-  label-blue: "#dbeafe"
-  label-blue-fg: "#1e40af"
-  label-teal: "#ccfbf1"
-  label-teal-fg: "#0f766e"
-  label-indigo: "#e0e7ff"
-  label-indigo-fg: "#3730a3"
-  label-amber: "#fef3c7"
-  label-amber-fg: "#92400e"
-  label-orange: "#ffedd5"
-  label-orange-fg: "#9a3412"
-  label-violet: "#ede9fe"
-  label-violet-fg: "#5b21b6"
-  label-green: "#dcfce7"
-  label-green-fg: "#166534"
-  label-pink: "#fce7f3"
-  label-pink-fg: "#9d174d"
+  label-blue: "#e6edfa"
+  label-blue-fg: "#4a5d8a"
+  label-teal: "#e1f5f0"
+  label-teal-fg: "#3a7267"
+  label-indigo: "#e8e9fa"
+  label-indigo-fg: "#5955a0"
+  label-amber: "#faf1e0"
+  label-amber-fg: "#8a6d35"
+  label-orange: "#fae8db"
+  label-orange-fg: "#935f3c"
+  label-violet: "#efe8fa"
+  label-violet-fg: "#6e58a0"
+  label-green: "#e4f5e8"
+  label-green-fg: "#4a7a56"
+  label-pink: "#faeaf2"
+  label-pink-fg: "#9c5775"
   status-ok: "#1f8a5b"
   status-warn: "#c98a16"
   status-down: "#d23b3b"
@@ -132,14 +132,14 @@ A near-monochrome warm-neutral ramp with a single ember accent; in dark mode the
 
 ### Tag Category Colors
 Eight fixed pastel hues reserved exclusively for blog tag pills (the home-page "Blog Bento" and blog.hovanhoa.net's own rail/filter chips — see §5), one per tag so the tag cloud reads as varied rather than one hue repeated:
-- **Blue** (#dbeafe bg / #1e40af fg) — `system design`
-- **Teal** (#ccfbf1 bg / #0f766e fg) — `golang`
-- **Indigo** (#e0e7ff bg / #3730a3 fg) — `distributed systems`
-- **Amber** (#fef3c7 bg / #92400e fg) — `concurrency`
-- **Orange** (#ffedd5 bg / #9a3412 fg) — `ci-cd`
-- **Violet** (#ede9fe bg / #5b21b6 fg) — `testing`
-- **Green** (#dcfce7 bg / #166534 fg) — `ai agents`
-- **Pink** (#fce7f3 bg / #9d174d fg) — `life`
+- **Blue** (#e6edfa bg / #4a5d8a fg) — `system design`
+- **Teal** (#e1f5f0 bg / #3a7267 fg) — `golang`
+- **Indigo** (#e8e9fa bg / #5955a0 fg) — `distributed systems`
+- **Amber** (#faf1e0 bg / #8a6d35 fg) — `concurrency`
+- **Orange** (#fae8db bg / #935f3c fg) — `ci-cd`
+- **Violet** (#efe8fa bg / #6e58a0 fg) — `testing`
+- **Green** (#e4f5e8 bg / #4a7a56 fg) — `ai agents`
+- **Pink** (#faeaf2 bg / #9c5775 fg) — `life`
 
 See **The Category Label Exception** below — these colors never leave the pill background.
 
