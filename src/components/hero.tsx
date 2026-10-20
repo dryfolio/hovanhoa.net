@@ -7,11 +7,12 @@ import {
     LINKEDIN_URL,
 } from '@/constants'
 import { Eyebrow } from '@/components/redesign/eyebrow'
+import { SocialIcon } from '@/components/redesign/social-icons'
 
 const SOCIAL_LINKS = [
-    { label: 'github', href: GITHUB_URL },
-    { label: 'twitter', href: TWITTER_URL },
-    { label: 'linkedin', href: LINKEDIN_URL },
+    { kind: 'github' as const, href: GITHUB_URL },
+    { kind: 'twitter' as const, href: TWITTER_URL },
+    { kind: 'linkedin' as const, href: LINKEDIN_URL },
 ]
 
 export default function Hero() {
@@ -25,19 +26,9 @@ export default function Hero() {
                 {ROLE}
             </p>
             <p className="rd-lead mt-4">{DESCRIPTION}</p>
-            <div className="mt-5 flex flex-wrap items-center gap-x-3 font-[family-name:var(--font-mono)] text-sm text-[var(--rd-text-2)]">
-                {SOCIAL_LINKS.map((s, i) => (
-                    <span key={s.label} className="inline-flex items-center gap-x-3">
-                        {i > 0 && <span aria-hidden>·</span>}
-                        <a
-                            href={s.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="transition-colors hover:text-[var(--rd-orange-ink)]"
-                        >
-                            {s.label}
-                        </a>
-                    </span>
+            <div className="mt-5 flex items-center gap-4">
+                {SOCIAL_LINKS.map((s) => (
+                    <SocialIcon key={s.kind} kind={s.kind} href={s.href} />
                 ))}
             </div>
         </div>
