@@ -7,7 +7,7 @@ export function PostRow({ post }: { post: PostExcerpt }) {
     const primaryTag = post.tags[0]
 
     return (
-        <article className="group relative border-b border-[var(--rd-line)] px-5 py-4 last:border-b-0">
+        <article className="group relative border-b border-[var(--rd-line)] px-[1.15rem] py-[0.95rem] transition-colors last:border-b-0 hover:bg-[var(--rd-surface-2)]">
             <div className="flex flex-wrap items-center gap-2">
                 {primaryTag && (
                     <TagPill
@@ -15,12 +15,12 @@ export function PostRow({ post }: { post: PostExcerpt }) {
                         category={primaryTag.category}
                     />
                 )}
-                <span className="font-[family-name:var(--font-mono)] text-xs text-[var(--rd-text-3)]">
+                <span className="font-[family-name:var(--font-mono)] text-[0.72rem] text-[var(--rd-text-3)]">
                     {formatDate(post.publishedAt)} · {post.readTimeInMinutes}{' '}
-                    min read
+                    min
                 </span>
             </div>
-            <h4 className="mt-1.5 text-[0.95rem] font-medium tracking-tight text-[var(--rd-text)] transition-colors group-hover:text-[var(--rd-orange-ink)]">
+            <h4 className="mt-1.5 text-[0.95rem] font-medium leading-[1.3] tracking-[-0.02em] text-[var(--rd-text)] transition-colors group-hover:text-[var(--rd-orange-ink)]">
                 <a
                     href={`${BLOG_URL}/${post.slug}`}
                     data-card-link=""
@@ -29,7 +29,7 @@ export function PostRow({ post }: { post: PostExcerpt }) {
                     {post.title}
                 </a>
             </h4>
-            <p className="mt-1 line-clamp-2 text-[0.8rem] leading-snug text-[var(--rd-text-2)]">
+            <p className="mt-1 line-clamp-2 text-[0.8rem] leading-[1.45] text-[var(--rd-text-2)]">
                 {post.brief}
             </p>
         </article>

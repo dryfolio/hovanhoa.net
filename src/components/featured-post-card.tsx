@@ -8,18 +8,18 @@ export function FeaturedPostCard({ post }: { post: PostExcerpt }) {
     const primaryTag = post.tags[0]
 
     return (
-        <article className="rd-card group relative overflow-hidden">
+        <article className="group relative overflow-hidden rounded-[var(--rd-r-lg)] border border-[var(--rd-border)] bg-[var(--rd-surface)]">
             {post.coverImage.url && (
-                <div className="relative aspect-[16/9] w-full overflow-hidden bg-[var(--rd-surface-2)]">
+                <div className="relative aspect-[16/9] w-full overflow-hidden bg-[var(--rd-bg-sub)]">
                     <Image
                         src={post.coverImage.url}
                         alt=""
                         fill
-                        className="object-cover"
+                        className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                     />
                 </div>
             )}
-            <div className="flex flex-col gap-3 p-7 sm:p-8">
+            <div className="flex flex-col gap-2 p-[1.15rem]">
                 <div className="flex flex-wrap items-center gap-2">
                     {primaryTag && (
                         <TagPill
@@ -27,12 +27,12 @@ export function FeaturedPostCard({ post }: { post: PostExcerpt }) {
                             category={primaryTag.category}
                         />
                     )}
-                    <span className="font-[family-name:var(--font-mono)] text-xs text-[var(--rd-text-3)]">
-                        {formatDate(post.publishedAt)} · {post.readTimeInMinutes}{' '}
-                        min read
+                    <span className="font-[family-name:var(--font-mono)] text-[0.72rem] text-[var(--rd-text-3)]">
+                        {formatDate(post.publishedAt)} ·{' '}
+                        {post.readTimeInMinutes} min
                     </span>
                 </div>
-                <h3 className="text-2xl font-bold tracking-tight text-[var(--rd-text)] transition-colors group-hover:text-[var(--rd-orange-ink)] sm:text-[1.75rem]">
+                <h3 className="m-0 font-[family-name:var(--font-display)] text-[clamp(1.25rem,2vw,1.55rem)] font-normal leading-[1.2] tracking-[-0.03em] text-[var(--rd-text)] transition-colors group-hover:text-[var(--rd-orange-ink)]">
                     <a
                         href={`${BLOG_URL}/${post.slug}`}
                         data-card-link=""
@@ -41,7 +41,7 @@ export function FeaturedPostCard({ post }: { post: PostExcerpt }) {
                         {post.title}
                     </a>
                 </h3>
-                <p className="line-clamp-3 text-[0.95rem] leading-relaxed text-[var(--rd-text-2)]">
+                <p className="m-0 line-clamp-3 text-[0.9rem] leading-[1.55] text-[var(--rd-text-2)]">
                     {post.brief}
                 </p>
             </div>

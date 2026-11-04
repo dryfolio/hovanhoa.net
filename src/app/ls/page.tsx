@@ -1,5 +1,3 @@
-import Navbar from '@/components/nav'
-import { Footer } from '@/components/footer'
 import LsDirectory, {
     type LsEntry,
     type LsGroup,
@@ -100,18 +98,11 @@ export default function LsPage() {
     const total = groups.reduce((n, g) => n + g.items.length, 0)
 
     return (
-        <main className="min-h-screen relative">
-            {/* sticky header */}
-            <header className="sticky top-0 z-50 border-b border-[var(--rd-border-2)] bg-[var(--rd-bg-sub)] shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
-                <div className="mx-auto w-full max-w-[var(--rd-maxw)] px-[var(--rd-pad)] py-3">
-                    <Navbar />
-                </div>
-            </header>
-
-            <div className="mx-auto w-full max-w-[var(--rd-maxw)] px-[var(--rd-pad)] pb-24 pt-12 sm:pt-16">
+        <main className="relative min-h-screen">
+            <div className="mx-auto w-full max-w-[var(--rd-maxw)] px-[var(--rd-pad)] pb-24 pt-12 sm:pt-[clamp(3.5rem,8vw,6rem)]">
                 {/* hero */}
                 <div className="flex items-baseline gap-3">
-                    <h1 className="text-[clamp(1.9rem,4vw,3rem)] font-semibold leading-none tracking-[-0.04em] text-[var(--rd-text)]">
+                    <h1 className="m-0 font-[family-name:var(--font-display)] text-[clamp(2.1rem,4.5vw,3.4rem)] font-normal leading-[1.08] tracking-[-0.03em] text-[var(--rd-text)]">
                         ls
                     </h1>
                     <span className="font-[family-name:var(--font-mono)] text-base text-[var(--rd-text-3)]">
@@ -127,8 +118,6 @@ export default function LsPage() {
                     <LsDirectory groups={groups} total={total} />
                 </div>
             </div>
-
-            <Footer />
         </main>
     )
 }

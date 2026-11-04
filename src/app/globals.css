@@ -2,10 +2,52 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+    background-color: var(--rd-bg);
+    scrollbar-gutter: stable;
+}
+
 body {
     color: var(--rd-text);
     background-color: var(--rd-bg);
-    text-transform: lowercase !important;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* selected-work progress rail */
+@keyframes rd-work-rail {
+    from {
+        transform: scaleX(0);
+    }
+    to {
+        transform: scaleX(1);
+    }
+}
+.rd-work-rail {
+    transform-origin: left;
+    animation: rd-work-rail linear forwards;
+}
+
+/* gentle entrance for each home section */
+@keyframes rd-rise {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+.rd-rise {
+    animation: rd-rise 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+    .rd-rise,
+    .rd-work-rail {
+        animation: none;
+    }
 }
 
 @keyframes rd-blink {
@@ -121,18 +163,18 @@ code[class*='language-'] {
    .dark tokens included but no toggle is wired.
    ============================================================ */
 :root {
-    /* neutrals (light) */
-    --rd-bg: #ffffff;
-    --rd-bg-sub: #fafafa;
+    /* neutrals (light) — warm paper canvas, white surfaces */
+    --rd-bg: #f7f7f5;
+    --rd-bg-sub: #f0f0ed;
     --rd-surface: #ffffff;
-    --rd-surface-2: #f6f6f5;
-    --rd-border: #e8e8e6;
-    --rd-border-2: #dededc;
-    --rd-line: #ededeb;
+    --rd-surface-2: #f3f3f0;
+    --rd-border: #e4e4e0;
+    --rd-border-2: #d4d4cf;
+    --rd-line: #ebebe7;
     --rd-text: #0c0c0c;
-    --rd-text-2: #54534f;
-    --rd-text-3: #8c8b85;
-    --rd-text-4: #b6b5ae;
+    --rd-text-2: #5c5b56;
+    --rd-text-3: #8a8983;
+    --rd-text-4: #b3b2ab;
 
     /* accent (warm graphite) */
     --rd-accent: #3a3936;
@@ -163,6 +205,14 @@ code[class*='language-'] {
     --rd-label-pink: #faeaf2;
     --rd-label-pink-fg: #9c5775;
 
+    /* soft labels for non-tag categories (family apps) */
+    --rd-label-plum: #f3e6ec;
+    --rd-label-plum-fg: #6b3a52;
+    --rd-label-pine: #e4f0e9;
+    --rd-label-pine-fg: #2d5a42;
+    --rd-label-slate: #e8eaf0;
+    --rd-label-slate-fg: #3d4458;
+
     /* status */
     --rd-ok: #1f8a5b;
     --rd-warn: #c98a16;
@@ -172,15 +222,19 @@ code[class*='language-'] {
     --rd-code-bg: #2d2d2d;
 
     /* shape */
-    --rd-r-sm: 7px;
-    --rd-r: 11px;
-    --rd-r-lg: 16px;
+    --rd-r-sm: 10px;
+    --rd-r: 16px;
+    --rd-r-lg: 24px;
 
     /* layout */
-    --rd-maxw: 1180px;
-    --rd-pad: clamp(20px, 5vw, 56px);
+    --rd-maxw: 1120px;
+    --rd-pad: clamp(24px, 5.5vw, 56px);
+    --rd-nav-h: 64px;
 
-    /* fonts — mapped to Geist via next/font in layout.tsx */
+    /* fonts — Geist via next/font in layout.tsx; the serif display face
+       is a Google Fonts stylesheet linked in <head> */
+    --font-display: 'Libertinus Serif', 'Noto Serif', Georgia, 'Times New Roman',
+        serif;
     --font-sans: var(--font-geist-sans), 'Inter', ui-sans-serif, system-ui,
         sans-serif;
     --font-mono: var(--font-geist-mono), ui-monospace, 'SFMono-Regular', Menlo,
@@ -190,15 +244,15 @@ code[class*='language-'] {
 .dark {
     --rd-bg: #0a0a0a;
     --rd-bg-sub: #0e0e0e;
-    --rd-surface: #111111;
-    --rd-surface-2: #161616;
-    --rd-border: #242424;
+    --rd-surface: #141414;
+    --rd-surface-2: #1a1a1a;
+    --rd-border: #222222;
     --rd-border-2: #2e2e2e;
-    --rd-line: #1d1d1d;
-    --rd-text: #f4f3f1;
-    --rd-text-2: #a7a6a1;
-    --rd-text-3: #74736e;
-    --rd-text-4: #4a4a47;
+    --rd-line: #1c1c1c;
+    --rd-text: #f5f5f4;
+    --rd-text-2: #a1a1aa;
+    --rd-text-3: #71717a;
+    --rd-text-4: #3f3f46;
     --rd-accent: #e8e7e3;
     --rd-accent-ink: #f4f3f1;
     --rd-accent-bg: #201f1d;
@@ -221,6 +275,12 @@ code[class*='language-'] {
     --rd-label-green-fg: #93c9a3;
     --rd-label-pink: #2c1c25;
     --rd-label-pink-fg: #e0a9c0;
+    --rd-label-plum: #3d2433;
+    --rd-label-plum-fg: #e0b8c8;
+    --rd-label-pine: #1a3228;
+    --rd-label-pine-fg: #a8cbb8;
+    --rd-label-slate: #252836;
+    --rd-label-slate-fg: #b8bcc8;
     --rd-ok: #43c089;
     --rd-warn: #e0a93a;
     --rd-down: #f06464;
@@ -244,9 +304,20 @@ code[class*='language-'] {
 }
 
 .rd-h-sec {
-    font-size: clamp(1.7rem, 3vw, 2.3rem);
+    font-family: var(--font-display);
+    font-size: clamp(1.45rem, 2.4vw, 1.75rem);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    font-weight: 400;
+}
+
+.rd-display {
+    font-family: var(--font-display);
+    font-weight: 400;
     letter-spacing: -0.035em;
-    font-weight: 600;
+    line-height: 0.95;
+    font-size: clamp(2.35rem, 6.4vw, 4.15rem);
+    text-wrap: balance;
 }
 
 .rd-lead {
