@@ -286,6 +286,94 @@ const FloatingEdge = memo(FloatingEdgeImpl)
 
 /* --------------------------------------------------------------- node card */
 
+const NODE_CELL = 2 // css px per dot inside a node
+
+// The node's own body, drawn as pixels: a dotted rim, an ember glow that
+// dithers out from behind the icon, and a clean core so the label stays
+// legible. Redraws on resize and theme change only.
+function NodeDither({
+    kind,
+    hub,
+    radius,
+}: {
+    kind: NodeKind
+    hub?: boolean
+    radius: number
+}) {
+    const ref = useRef<HTMLCanvasElement>(null)
+    const dark = useDarkClass()
+
+    useEffect(() => {
+        const canvas = ref.current
+        const ctx = canvas?.getContext('2d')
+        const box = canvas?.parentElement
+        if (!canvas || !ctx || !box) return
+
+        const draw = () => {
+            const css = getComputedStyle(canvas)
+            const surface = tokenRgb(ctx, css, '--rd-surface', dark ? '#141414' : '#ffffff')
+            const ember = tokenRgb(ctx, css, '--rd-orange', '#d8602f')
+            const grey = tokenRgb(ctx, css, '--rd-text-3', '#8a8a8a')
+            const ink = kind === 'platform' ? grey : ember
+            const rim = mixRgb(surface, ink, hub ? 0.95 : 0.5)
+            const glow = mixRgb(surface, ink, hub ? 0.4 : dark ? 0.32 : 0.24)
+            const core = hub ? mixRgb(surface, ember, dark ? 0.12 : 0.08) : surface
+
+            const w = Math.max(1, Math.round(box.offsetWidth / NODE_CELL))
+            const h = Math.max(1, Math.round(box.offsetHeight / NODE_CELL))
+            canvas.width = w
+            canvas.height = h
+            const img = ctx.createImageData(w, h)
+            const data = img.data
+            const r = Math.min(h / 2, radius / NODE_CELL)
+            const rimW = hub ? 1.6 : 1
+
+            for (let y = 0; y < h; y++) {
+                for (let x = 0; x < w; x++) {
+                    // signed distance to the rounded rect, in cells
+                    const qx = Math.abs(x + 0.5 - w / 2) - (w / 2 - r)
+                    const qy = Math.abs(y + 0.5 - h / 2) - (h / 2 - r)
+                    const sd =
+                        Math.hypot(Math.max(qx, 0), Math.max(qy, 0)) +
+                        Math.min(Math.max(qx, qy), 0) -
+                        r
+                    if (sd > 0) continue // outside: leave transparent
+                    const th = BAYER[(y & 3) * 4 + (x & 3)]
+                    let c = core
+                    if (sd > -rimW) {
+                        c = rim
+                    } else {
+                        // glow from the icon side, plus a soft inner edge
+                        const fromIcon = 1 - (x / w) * (hub ? 1.4 : 2.6)
+                        const edge = Math.max(0, 1 + sd / 3)
+                        const t = Math.max(fromIcon, 0) * 0.85 + edge * 0.45
+                        if (t > th) c = glow
+                    }
+                    const i = (y * w + x) * 4
+                    data[i] = c[0]
+                    data[i + 1] = c[1]
+                    data[i + 2] = c[2]
+                    data[i + 3] = 255
+                }
+            }
+            ctx.putImageData(img, 0, 0)
+        }
+
+        draw()
+        const ro = new ResizeObserver(draw)
+        ro.observe(box)
+        return () => ro.disconnect()
+    }, [dark, kind, hub, radius])
+
+    return (
+        <canvas
+            ref={ref}
+            aria-hidden
+            className="pointer-events-none absolute inset-0 -z-10 h-full w-full [image-rendering:pixelated]"
+        />
+    )
+}
+
 // App nodes carry a real link so keyboard and screen-reader users can reach
 // them; "nodrag" keeps React Flow's node-drag from swallowing the click.
 function LabelWrap({
@@ -331,32 +419,24 @@ function NodeCardImpl({ id, data }: NodeProps) {
 
     return (
         <div
-            className={`group relative flex items-center rounded-full border transition-all duration-200 ${
-                compact ? 'gap-1.5 px-2 py-1' : 'gap-2.5 rounded-2xl px-3 py-2 shadow-sm'
+            className={`group relative isolate flex items-center transition-all duration-200 ${
+                compact ? 'gap-1.5 px-2.5 py-1.5' : 'gap-2.5 px-3.5 py-2.5'
             }`}
             style={{
-                background: d.hub ? 'var(--rd-orange-bg)' : 'var(--rd-surface)',
-                borderColor: d.hub ? 'var(--rd-orange)' : 'var(--rd-border-2)',
-                borderWidth: d.hub ? 1.5 : 1,
                 opacity: d.dim ? 0.28 : 1,
                 transform: d.dim ? 'scale(0.94)' : 'scale(1)',
-                boxShadow: compact
-                    ? '0 1px 2px rgba(0,0,0,0.04)'
-                    : undefined,
             }}
         >
+            <NodeDither kind={d.kind} hub={d.hub} radius={compact ? 999 : 16} />
             {/* hidden handles — floating edges anchor to the box, not these */}
             <Handle type="source" position={Position.Top} className="!h-0 !w-0 !min-w-0 !border-0 !bg-transparent" isConnectable={false} />
             <Handle type="target" position={Position.Top} className="!h-0 !w-0 !min-w-0 !border-0 !bg-transparent" isConnectable={false} />
 
             <span
-                className={`flex shrink-0 items-center justify-center rounded-full ${
-                    compact ? 'h-5 w-5' : 'h-7 w-7 rounded-lg'
+                className={`flex shrink-0 items-center justify-center ${
+                    compact ? 'h-5 w-4' : 'h-7 w-6'
                 }`}
-                style={{
-                    background: d.kind === 'platform' ? 'var(--rd-surface-2)' : 'var(--rd-orange-bg)',
-                    color: accent,
-                }}
+                style={{ color: accent }}
             >
                 <Icon className={compact ? 'h-3 w-3' : 'h-4 w-4'} />
             </span>
@@ -373,7 +453,7 @@ function NodeCardImpl({ id, data }: NodeProps) {
                     {d.live && (
                         <span
                             aria-hidden
-                            className="inline-block h-1 w-1 rounded-full bg-[var(--rd-ok)] motion-safe:animate-pulse"
+                            className="inline-block h-1 w-1 bg-[var(--rd-ok)] motion-safe:animate-pulse"
                         />
                     )}
                 </LabelWrap>
@@ -390,7 +470,7 @@ function NodeCardImpl({ id, data }: NodeProps) {
                         {d.live && (
                             <span
                                 aria-hidden
-                                className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--rd-ok)] motion-safe:animate-pulse"
+                                className="inline-block h-1.5 w-1.5 bg-[var(--rd-ok)] motion-safe:animate-pulse"
                             />
                         )}
                     </span>
@@ -408,6 +488,41 @@ const nodeTypes = { card: NodeCard }
 const edgeTypes = { floating: FloatingEdge }
 
 /* ----------------------------------------------------------- dither field */
+
+// resolve a CSS colour token to [r, g, b] using the canvas colour parser
+function tokenRgb(
+    ctx: CanvasRenderingContext2D,
+    css: CSSStyleDeclaration,
+    token: string,
+    fallback: string
+) {
+    ctx.fillStyle = fallback
+    ctx.fillStyle = css.getPropertyValue(token).trim() || fallback
+    const h = ctx.fillStyle
+    return h.startsWith('#')
+        ? [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16))
+        : (h.match(/\d+/g) ?? ['0', '0', '0']).slice(0, 3).map(Number)
+}
+
+const mixRgb = (a: number[], b: number[], t: number) =>
+    a.map((v, i) => Math.round(v + (b[i] - v) * t))
+
+// the site toggles dark mode with a class on <html>
+function useDarkClass() {
+    const [dark, setDark] = useState(false)
+    useEffect(() => {
+        const read = () =>
+            setDark(document.documentElement.classList.contains('dark'))
+        read()
+        const obs = new MutationObserver(read)
+        obs.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['class'],
+        })
+        return () => obs.disconnect()
+    }, [])
+    return dark
+}
 
 // 4×4 Bayer thresholds, 0..1
 const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5].map(
@@ -434,19 +549,10 @@ function DitherField({ theme }: { theme: 'light' | 'dark' }) {
         const ctx = canvas?.getContext('2d')
         if (!canvas || !ctx) return
 
-        // resolve the theme tokens to rgb via the canvas parser
         const css = getComputedStyle(canvas)
-        const rgb = (token: string, fallback: string) => {
-            ctx.fillStyle = fallback
-            ctx.fillStyle = css.getPropertyValue(token).trim() || fallback
-            const h = ctx.fillStyle
-            return h.startsWith('#')
-                ? [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16))
-                : (h.match(/\d+/g) ?? ['0', '0', '0']).slice(0, 3).map(Number)
-        }
-        const base = rgb('--rd-surface', theme === 'dark' ? '#141414' : '#ffffff')
-        const ember = rgb('--rd-orange', '#d8602f')
-        const mix = (t: number) => base.map((b, i) => Math.round(b + (ember[i] - b) * t))
+        const base = tokenRgb(ctx, css, '--rd-surface', theme === 'dark' ? '#141414' : '#ffffff')
+        const ember = tokenRgb(ctx, css, '--rd-orange', '#d8602f')
+        const mix = (t: number) => mixRgb(base, ember, t)
         const ramp = theme === 'dark' ? [mix(0.16), mix(0.34), mix(0.6)] : [mix(0.1), mix(0.24), mix(0.46)]
         const levels = ramp.length
 
@@ -726,7 +832,7 @@ const LEGEND: { kind: Kind; label: string }[] = [
 ]
 
 export function EcosystemGraph({ compact = false }: { compact?: boolean }) {
-    const [theme, setTheme] = useState<'light' | 'dark'>('light')
+    const theme = useDarkClass() ? 'dark' : 'light'
     const [vertical, setVertical] = useState(false)
     useEffect(() => {
         const mq = window.matchMedia('(max-width: 640px)')
@@ -734,21 +840,6 @@ export function EcosystemGraph({ compact = false }: { compact?: boolean }) {
         read()
         mq.addEventListener('change', read)
         return () => mq.removeEventListener('change', read)
-    }, [])
-    useEffect(() => {
-        const read = () =>
-            setTheme(
-                document.documentElement.classList.contains('dark')
-                    ? 'dark'
-                    : 'light'
-            )
-        read()
-        const obs = new MutationObserver(read)
-        obs.observe(document.documentElement, {
-            attributes: true,
-            attributeFilter: ['class'],
-        })
-        return () => obs.disconnect()
     }, [])
 
     if (compact) {
