@@ -4,7 +4,7 @@
 //
 //   node scripts/generate-family-art.mjs
 //
-// Output: public/family/<name>-art.webp (1600×1000)
+// Output: public/family/<name>-art.webp (1600×1000), except blog
 
 import { spawn } from 'node:child_process'
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs'
@@ -16,12 +16,9 @@ const CHROME =
     '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 const OUT = join(import.meta.dirname, '..', 'public', 'family')
 
-// light → dark ramps; each site gets its own seed so the shapes differ
+// light → dark ramps; each site gets its own seed so the shapes differ.
+// blog-art.webp isn't generated: it's the thundering-herd post's cover.
 const ART = {
-    blog: {
-        seed: 3,
-        ramp: ['#fbe9d8', '#f4b98c', '#e8794a', '#b8452a', '#5a2214'],
-    },
     insight: {
         seed: 11,
         ramp: ['#e3eefa', '#9fc4e6', '#5b8fc4', '#2f5f8f', '#142844'],
