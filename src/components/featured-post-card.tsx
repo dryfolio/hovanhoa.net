@@ -8,13 +8,14 @@ export function FeaturedPostCard({ post }: { post: PostExcerpt }) {
     const primaryTag = post.tags[0]
 
     return (
-        <article className="group relative overflow-hidden rounded-[var(--rd-r-lg)] border border-[var(--rd-border)] bg-[var(--rd-surface)]">
+        <article className="group relative self-start overflow-hidden rounded-[var(--rd-r-lg)] border border-[var(--rd-border)] bg-[var(--rd-surface)]">
             {post.coverImage.url && (
                 <div className="relative aspect-[16/9] w-full overflow-hidden bg-[var(--rd-bg-sub)]">
                     <Image
                         src={post.coverImage.url}
                         alt=""
                         fill
+                        sizes="(min-width: 900px) 600px, 100vw"
                         className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                     />
                 </div>
