@@ -3,6 +3,9 @@
 //
 //   node scripts/capture-family.mjs            # all sites
 //   node scripts/capture-family.mjs blog music # just these
+//   node scripts/capture-family.mjs blog=http://localhost:3201
+//                                  # capture a site from another origin,
+//                                  # e.g. a local build before it deploys
 //
 // Output: public/family/<name>-<light|dark>.webp (1440×900 viewport, 1x)
 
@@ -80,7 +83,11 @@ async function withChrome(fn) {
     }
 }
 
-const only = process.argv.slice(2)
+const args = process.argv.slice(2)
+const origins = Object.fromEntries(
+    args.filter((a) => a.includes('=')).map((a) => a.split(/=(.*)/s, 2))
+)
+const only = args.map((a) => a.split('=')[0])
 const sites = only.length ? SITES.filter((s) => only.includes(s)) : SITES
 mkdirSync(OUT, { recursive: true })
 
@@ -94,14 +101,13 @@ await withChrome(async (send) => {
         mobile: false,
     })
     for (const site of sites) {
-        const url = `https://${site}.hovanhoa.net/`
+        const url = origins[site] || `https://${site}.hovanhoa.net/`
         for (const theme of ['light', 'dark']) {
             // every family site reads this shared cookie before first paint
             await send('Network.setCookie', {
                 name: 'theme',
                 value: theme,
-                domain: '.hovanhoa.net',
-                path: '/',
+                url,
             })
             await send('Emulation.setEmulatedMedia', {
                 features: [{ name: 'prefers-color-scheme', value: theme }],
