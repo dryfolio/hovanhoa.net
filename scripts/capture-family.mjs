@@ -73,8 +73,10 @@ async function withChrome(fn) {
         await fn(send)
         ws.close()
     } finally {
+        const exited = new Promise((r) => proc.once('exit', r))
         proc.kill()
-        rmSync(profile, { recursive: true, force: true })
+        await exited
+        rmSync(profile, { recursive: true, force: true, maxRetries: 5 })
     }
 }
 

@@ -130,7 +130,6 @@ export function FamilyShowcase() {
     }
 
     const current = FAMILY[active]
-    const CurrentIcon = current.icon
 
     return (
         <div
@@ -241,52 +240,88 @@ export function FamilyShowcase() {
 
             {/* showcase panel */}
             <div className="relative w-full max-[899px]:order-first min-[900px]:sticky min-[900px]:top-[calc(var(--rd-nav-h)+1rem)]">
-                {/* every preview stays mounted so switching is an instant
-                    crossfade; light/dark shots follow the site theme */}
+                {/* every preview stays mounted so switching is a crossfade.
+                    Each one is the site's screenshot floating as a browser
+                    window over its own generated dither art; the light/dark
+                    shot follows the page theme */}
                 <a
                     href={current.href}
                     aria-label={`Open ${current.name}`}
-                    style={{ '--tone': current.tone } as CSSProperties}
-                    className="group relative block aspect-[16/10] overflow-hidden rounded-[var(--rd-r-lg)] border border-[var(--rd-border)] bg-[var(--rd-surface)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--rd-text)]"
+                    className="group relative block aspect-[16/10] overflow-hidden rounded-[var(--rd-r-lg)] bg-[var(--rd-surface-2)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--rd-text)]"
                 >
-                    {FAMILY.map((app, i) => (
-                        <span
-                            key={app.name}
-                            aria-hidden={i !== active}
-                            className={`absolute inset-0 transition-opacity duration-500 ${
-                                i === active ? 'opacity-100' : 'opacity-0'
-                            }`}
-                        >
-                            {(['light', 'dark'] as const).map((theme) => (
-                                // eslint-disable-next-line @next/next/no-img-element
+                    {FAMILY.map((app, i) => {
+                        const Icon = app.icon
+                        return (
+                            <span
+                                key={app.name}
+                                aria-hidden={i !== active}
+                                className={`absolute inset-0 transition-opacity duration-500 ${
+                                    i === active ? 'opacity-100' : 'opacity-0'
+                                }`}
+                            >
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
                                 <img
-                                    key={theme}
-                                    src={`/family/${app.name}-${theme}.webp`}
-                                    alt={
-                                        i === active
-                                            ? `${host(app.href)} preview`
-                                            : ''
-                                    }
-                                    width={1440}
-                                    height={900}
+                                    src={`/family/${app.name}-art.webp`}
+                                    alt=""
+                                    width={1600}
+                                    height={1000}
                                     loading="lazy"
                                     decoding="async"
-                                    className={`h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.015] ${
-                                        theme === 'light'
-                                            ? 'block dark:hidden'
-                                            : 'hidden dark:block'
-                                    }`}
+                                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.04]"
                                 />
-                            ))}
-                        </span>
-                    ))}
-                    <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full border border-[var(--rd-border)] bg-[color-mix(in_srgb,var(--rd-bg)_88%,transparent)] px-2.5 py-1 font-[family-name:var(--font-mono)] text-[0.72rem] text-[var(--rd-text)] backdrop-blur">
-                        <CurrentIcon
-                            size={13}
-                            className="shrink-0 text-[var(--tone)]"
-                        />
-                        {host(current.href)}
-                    </span>
+                                <span
+                                    className={`absolute left-[7%] top-[11%] flex h-[100%] w-[86%] flex-col overflow-hidden rounded-[12px] bg-[var(--rd-surface)] shadow-[0_24px_60px_-18px_rgb(0_0_0/0.55),0_0_0_1px_rgb(255_255_255/0.14)] transition-transform duration-700 ease-out group-hover:-translate-y-1.5 ${
+                                        i === active
+                                            ? 'translate-y-0'
+                                            : 'translate-y-4'
+                                    }`}
+                                >
+                                    {/* window chrome */}
+                                    <span className="flex h-7 shrink-0 items-center gap-1.5 border-b border-[var(--rd-border)] bg-[var(--rd-bg-sub)] px-3">
+                                        <i className="h-2 w-2 rounded-full bg-[#ff5f57]" />
+                                        <i className="h-2 w-2 rounded-full bg-[#febc2e]" />
+                                        <i className="h-2 w-2 rounded-full bg-[#28c840]" />
+                                        <span className="mx-auto inline-flex min-w-0 items-center gap-1 rounded-md bg-[var(--rd-surface-2)] px-2 py-0.5 font-[family-name:var(--font-mono)] text-[0.65rem] text-[var(--rd-text-3)]">
+                                            <Icon
+                                                size={11}
+                                                className="shrink-0"
+                                                style={{ color: app.tone }}
+                                            />
+                                            <span className="truncate">
+                                                {host(app.href)}
+                                            </span>
+                                        </span>
+                                        <span className="w-[2.6rem]" />
+                                    </span>
+                                    <span className="relative min-h-0 flex-1">
+                                        {(['light', 'dark'] as const).map(
+                                            (theme) => (
+                                                // eslint-disable-next-line @next/next/no-img-element
+                                                <img
+                                                    key={theme}
+                                                    src={`/family/${app.name}-${theme}.webp`}
+                                                    alt={
+                                                        i === active
+                                                            ? `${host(app.href)} preview`
+                                                            : ''
+                                                    }
+                                                    width={1440}
+                                                    height={900}
+                                                    loading="lazy"
+                                                    decoding="async"
+                                                    className={`absolute inset-0 h-full w-full object-cover object-top ${
+                                                        theme === 'light'
+                                                            ? 'block dark:hidden'
+                                                            : 'hidden dark:block'
+                                                    }`}
+                                                />
+                                            )
+                                        )}
+                                    </span>
+                                </span>
+                            </span>
+                        )
+                    })}
                 </a>
                 <div className="flex flex-col items-start gap-[0.45rem] px-[0.1rem] pt-[0.85rem]">
                     <p className="m-0 line-clamp-3 max-w-[38rem] text-[0.8125rem] leading-[1.45] text-[var(--rd-text-2)]">
