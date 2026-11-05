@@ -29,6 +29,7 @@ import {
     useNodesState,
     useReactFlow,
     useStore,
+    useStoreApi,
     type Edge,
     type Node,
     type NodeProps,
@@ -406,14 +407,172 @@ const NodeCard = memo(NodeCardImpl)
 const nodeTypes = { card: NodeCard }
 const edgeTypes = { floating: FloatingEdge }
 
+/* ----------------------------------------------------------- dither field */
+
+// 4×4 Bayer thresholds, 0..1
+const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5].map(
+    (v) => (v + 0.5) / 16
+)
+const CELL = 4 // css px per dither dot
+const NODE_GLOW: Record<NodeKind, { r: number; w: number }> = {
+    app: { r: 70, w: 0.72 },
+    service: { r: 52, w: 0.5 },
+    platform: { r: 60, w: 0.42 },
+}
+
+// Ordered-dither "heat" behind the graph: each node radiates a soft ember
+// field, the hub hottest, with a slow drifting current across the pane. Drawn
+// one cell per dot on a small canvas and scaled up pixelated, like the family
+// art. Reads node positions straight from the React Flow store each frame, so
+// it follows panning, dragging and hover without re-rendering React.
+function DitherField({ theme }: { theme: 'light' | 'dark' }) {
+    const ref = useRef<HTMLCanvasElement>(null)
+    const store = useStoreApi()
+
+    useEffect(() => {
+        const canvas = ref.current
+        const ctx = canvas?.getContext('2d')
+        if (!canvas || !ctx) return
+
+        // resolve the theme tokens to rgb via the canvas parser
+        const css = getComputedStyle(canvas)
+        const rgb = (token: string, fallback: string) => {
+            ctx.fillStyle = fallback
+            ctx.fillStyle = css.getPropertyValue(token).trim() || fallback
+            const h = ctx.fillStyle
+            return h.startsWith('#')
+                ? [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16))
+                : (h.match(/\d+/g) ?? ['0', '0', '0']).slice(0, 3).map(Number)
+        }
+        const base = rgb('--rd-surface', theme === 'dark' ? '#141414' : '#ffffff')
+        const ember = rgb('--rd-orange', '#d8602f')
+        const mix = (t: number) => base.map((b, i) => Math.round(b + (ember[i] - b) * t))
+        const ramp = theme === 'dark' ? [mix(0.16), mix(0.34), mix(0.6)] : [mix(0.1), mix(0.24), mix(0.46)]
+        const levels = ramp.length
+
+        let img: ImageData | null = null
+        let raf = 0
+        let last = 0
+        let visible = true
+        const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+        const draw = (t: number) => {
+            const { width, height, transform, nodeLookup } = store.getState()
+            if (!width || !height) return
+            const w = Math.ceil(width / CELL)
+            const h = Math.ceil(height / CELL)
+            if (canvas.width !== w || canvas.height !== h || !img) {
+                canvas.width = w
+                canvas.height = h
+                img = ctx.createImageData(w, h)
+            }
+            const [tx, ty, zoom] = transform
+
+            const glows: { x: number; y: number; r2: number; w: number }[] = []
+            let anyDim = false
+            nodeLookup.forEach((n) => anyDim ||= !!(n.data as GNodeData).dim)
+            nodeLookup.forEach((n) => {
+                const d = n.data as GNodeData
+                if (!n.measured?.width) return
+                const p = n.internals.positionAbsolute
+                const g = NODE_GLOW[d.kind]
+                const r = (d.hub ? 120 : g.r) * zoom
+                let wt = d.hub ? 1 : g.w
+                if (anyDim) wt *= d.dim ? 0.2 : 1.35
+                glows.push({
+                    x: ((p.x + n.measured.width / 2) * zoom + tx) / CELL,
+                    y: ((p.y + (n.measured.height ?? 0) / 2) * zoom + ty) / CELL,
+                    r2: 2 * (r / CELL) ** 2,
+                    w: wt,
+                })
+            })
+
+            const data = img.data
+            const ph = t * 0.00035
+            for (let y = 0; y < h; y++) {
+                for (let x = 0; x < w; x++) {
+                    // glows blend like light (1 − Π(1 − g)) so overlaps
+                    // brighten without flattening into one solid blob
+                    let dark = 1
+                    for (const g of glows) {
+                        const dx = x - g.x
+                        const dy = y - g.y
+                        const d2 = dx * dx + dy * dy
+                        if (d2 < g.r2 * 4)
+                            dark *= 1 - Math.min(1, g.w * Math.exp(-d2 / g.r2))
+                    }
+                    // slow current: two crossing sine bands, faint everywhere
+                    const v =
+                        0.62 * (1 - dark) +
+                        0.1 *
+                            (1 +
+                                Math.sin(x * 0.06 + y * 0.027 + ph) *
+                                    Math.sin(y * 0.08 - x * 0.016 - ph * 0.7))
+                    const lvl = Math.min(
+                        levels,
+                        Math.floor(v * levels + BAYER[(y & 3) * 4 + (x & 3)] - 0.35)
+                    )
+                    const i = (y * w + x) * 4
+                    if (lvl <= 0) {
+                        data[i + 3] = 0
+                    } else {
+                        const c = ramp[lvl - 1]
+                        data[i] = c[0]
+                        data[i + 1] = c[1]
+                        data[i + 2] = c[2]
+                        data[i + 3] = 255
+                    }
+                }
+            }
+            ctx.putImageData(img, 0, 0)
+        }
+
+        // ~12fps is plenty for a slow drift and keeps phones cool
+        const loop = (t: number) => {
+            raf = requestAnimationFrame(loop)
+            if (!visible || document.hidden || t - last < 80) return
+            last = t
+            draw(t)
+        }
+        const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting))
+        io.observe(canvas)
+
+        let unsub = () => {}
+        if (still) {
+            draw(0)
+            unsub = store.subscribe(() => {
+                cancelAnimationFrame(raf)
+                raf = requestAnimationFrame(() => draw(0))
+            })
+        } else {
+            raf = requestAnimationFrame(loop)
+        }
+        return () => {
+            cancelAnimationFrame(raf)
+            unsub()
+            io.disconnect()
+        }
+    }, [store, theme])
+
+    return (
+        <canvas
+            ref={ref}
+            aria-hidden
+            className="pointer-events-none absolute inset-0 h-full w-full [image-rendering:pixelated]"
+        />
+    )
+}
+
 /* ------------------------------------------------------------------- graph */
 
 function Graph({
     compact,
     vertical,
+    theme,
 }: {
     compact: boolean
     vertical: boolean
+    theme: 'light' | 'dark'
 }) {
     const adjacency = useMemo(() => {
         const m = new Map<string, Set<string>>()
@@ -512,6 +671,8 @@ function Graph({
     focusRef.current = focus
 
     return (
+        <>
+        <DitherField theme={theme} />
         <ReactFlow
             nodes={nodes}
             edges={edges}
@@ -536,6 +697,7 @@ function Graph({
             elementsSelectable={false}
             proOptions={{ hideAttribution: true }}
             nodesConnectable={false}
+            style={{ background: 'transparent' }}
             className={compact ? '' : 'cursor-grab active:cursor-grabbing'}
         >
             {!compact && (
@@ -550,6 +712,7 @@ function Graph({
                 </>
             )}
         </ReactFlow>
+        </>
     )
 }
 
@@ -603,7 +766,7 @@ export function EcosystemGraph({ compact = false }: { compact?: boolean }) {
                 data-theme={theme}
             >
                 <ReactFlowProvider>
-                    <Graph compact vertical={vertical} />
+                    <Graph compact vertical={vertical} theme={theme} />
                 </ReactFlowProvider>
             </div>
         )
@@ -624,7 +787,7 @@ export function EcosystemGraph({ compact = false }: { compact?: boolean }) {
                 data-theme={theme}
             >
                 <ReactFlowProvider>
-                    <Graph compact={false} vertical={vertical} />
+                    <Graph compact={false} vertical={vertical} theme={theme} />
                 </ReactFlowProvider>
 
                 {/* legend */}
