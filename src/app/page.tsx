@@ -3,7 +3,7 @@ import { BlogBento } from '@/components/blog-bento'
 import { type PostExcerpt } from '@/lib/types'
 import { FamilyShowcase } from '@/components/family-showcase'
 import { SectionHead } from '@/components/section-head'
-import EcosystemGraph from '@/components/redesign/ecosystem-graph-lazy'
+import { EcosystemFigure } from '@/components/ecosystem-figure'
 
 import { Metadata } from 'next'
 import {
@@ -127,9 +127,7 @@ export default async function Home() {
                         The sites in the family and the services they run on.
                     </p>
                 </SectionHead>
-                <div className="overflow-hidden rounded-[var(--rd-r-lg)] border border-[var(--rd-border)] bg-[var(--rd-surface)] p-2">
-                    <EcosystemGraph compact />
-                </div>
+                <EcosystemFigure />
             </section>
         </main>
     )
