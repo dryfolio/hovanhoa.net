@@ -6,6 +6,10 @@ const nextConfig = {
                 protocol: 'https',
                 hostname: 'hovanhoa.net',
             },
+            {
+                protocol: 'https',
+                hostname: 'blog.hovanhoa.net',
+            },
         ],
     },
     // Posts moved to blog.hovanhoa.net — keep old links working.

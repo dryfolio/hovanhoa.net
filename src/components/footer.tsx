@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import React from 'react'
 import {
     BASE_URL,
     BLOG_URL,
@@ -43,83 +42,73 @@ const SECTIONS: FooterSection[] = [
         title: 'more',
         links: [
             { label: 'connect', href: INFO_URL },
+            { label: 'ls', href: `${BASE_URL}/ls` },
             { label: 'llms.txt', href: `${BASE_URL}/llms.txt` },
+            { label: 'sitemap', href: `${BASE_URL}/sitemap.xml` },
         ],
     },
 ]
 
 const linkClass =
-    'font-[family-name:var(--font-mono)] text-sm text-[var(--rd-text-2)] transition-colors duration-200 hover:text-[var(--rd-orange-ink)]'
+    'block py-1 text-sm text-[var(--rd-text-2)] transition-colors duration-150 hover:text-[var(--rd-orange-ink)]'
 
 function Section({ title, links }: FooterSection) {
     return (
         <div>
-            <h3 className="font-[family-name:var(--font-mono)] text-[11.5px] font-medium uppercase tracking-[0.14em] text-[var(--rd-orange-ink)]">
+            <h4 className="mb-[13px] font-[family-name:var(--font-mono)] text-[11px] font-medium uppercase tracking-[0.14em] text-[var(--rd-orange-ink)]">
                 {title}
-            </h3>
-            <ul className="mt-4 space-y-2.5">
-                {links.map((l) => (
-                    <li key={l.label}>
-                        <a href={l.href} className={linkClass}>
-                            {l.label}
-                        </a>
-                    </li>
-                ))}
-            </ul>
+            </h4>
+            {links.map((l) => (
+                <a key={l.label} href={l.href} className={linkClass}>
+                    {l.label}
+                </a>
+            ))}
         </div>
     )
 }
 
 export function Footer() {
     return (
-        <footer
-            className="mt-28 border-t border-[var(--rd-border)]"
-            style={{
-                background:
-                    'radial-gradient(100% 140% at 0% 0%, var(--rd-orange-bg), transparent 55%), var(--rd-surface-2)',
-            }}
-        >
-            <div className="mx-auto max-w-[var(--rd-maxw)] px-[var(--rd-pad)] py-16 sm:py-20">
-                <div className="grid gap-12 lg:grid-cols-[1.3fr_2fr]">
-                    {/* wordmark + blurb */}
-                    <div>
+        <footer className="border-t border-[var(--rd-border)] bg-[var(--rd-bg-sub)]">
+            <div className="mx-auto max-w-[var(--rd-maxw)] px-[var(--rd-pad)] pb-10 pt-[54px]">
+                <div className="flex flex-wrap justify-between gap-x-16 gap-y-10">
+                    <div className="max-w-[300px]">
+                        <div className="mb-3 flex items-center gap-3">
+                            <SocialIcon
+                                kind="github"
+                                href={GITHUB_URL}
+                                className="h-3.5 w-3.5"
+                            />
+                            <SocialIcon
+                                kind="twitter"
+                                href={TWITTER_URL}
+                                className="h-3.5 w-3.5"
+                            />
+                            <SocialIcon
+                                kind="linkedin"
+                                href={LINKEDIN_URL}
+                                className="h-3.5 w-3.5"
+                            />
+                        </div>
                         <Link
                             href={BASE_URL}
-                            className="block text-2xl font-bold tracking-tight text-[var(--rd-text)] sm:text-3xl"
+                            className="text-[22px] font-semibold tracking-[-0.03em] text-[var(--rd-text)]"
                         >
                             hovanhoa
                             <span className="text-[var(--rd-orange)]">
                                 .net
                             </span>
                         </Link>
-                        <p className="rd-lead mt-4">
-                            software engineer — building, writing, and shipping.
-                            one small corner of the internet, a few sites deep.
+                        <p className="mt-2 font-[family-name:var(--font-mono)] text-xs text-[var(--rd-text-3)]">
+                            © {new Date().getFullYear()} · built in vietnam
                         </p>
-                        <div className="mt-5 flex items-center gap-4">
-                            <SocialIcon kind="github" href={GITHUB_URL} />
-                            <SocialIcon kind="twitter" href={TWITTER_URL} />
-                            <SocialIcon kind="linkedin" href={LINKEDIN_URL} />
-                        </div>
                     </div>
 
-                    {/* sectioned links */}
-                    <div className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3">
+                    <div className="flex flex-wrap gap-14">
                         {SECTIONS.map((s) => (
                             <Section key={s.title} {...s} />
                         ))}
                     </div>
-                </div>
-
-                {/* bottom row */}
-                <div className="mt-14 flex flex-col gap-3 border-t border-[var(--rd-border)] pt-6 font-[family-name:var(--font-mono)] text-xs text-[var(--rd-text-3)] sm:flex-row sm:items-center sm:justify-between">
-                    <p>© 2026 hovanhoa</p>
-                    <p>
-                        crafted &amp; maintained by{' '}
-                        <a href={BASE_URL} className="text-[var(--rd-orange-ink)]">
-                            hovanhoa
-                        </a>
-                    </p>
                 </div>
             </div>
         </footer>

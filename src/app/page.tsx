@@ -1,15 +1,10 @@
 import Hero from '@/components/hero'
-import Navbar from '@/components/nav'
 import { BlogBento } from '@/components/blog-bento'
 import { type PostExcerpt } from '@/lib/types'
-import { Footer } from '@/components/footer'
-import { Eyebrow } from '@/components/redesign/eyebrow'
+import { FamilyShowcase } from '@/components/family-showcase'
+import { SectionHead } from '@/components/section-head'
 import EcosystemGraph from '@/components/redesign/ecosystem-graph-lazy'
-import { Sparkline } from '@/components/redesign/sparkline'
-import { formatNumber, computeTrend } from '@/lib/utils'
 
-const WAKA_CODING =
-    'https://wakatime.com/share/@hovanhoa/0d76f73e-d398-4c07-9bc6-781f52986fd8.json'
 import { Metadata } from 'next'
 import {
     BASE_URL,
@@ -21,8 +16,11 @@ import {
     TWITTER,
     GITHUB,
     LINKEDIN,
-    INFO_URL,
+    STATUS_URL,
 } from '@/constants'
+
+const SECTION =
+    'mx-auto max-w-[var(--rd-maxw)] px-[var(--rd-pad)] py-[clamp(48px,6vw,80px)]'
 
 const OG_IMAGE = `${BASE_URL}/api/og?title=${encodeURIComponent(NAME)}`
 
@@ -74,111 +72,18 @@ export default async function Home() {
     // latest posts — pulled from blog.hovanhoa.net's own feed, same pattern
     // as the WakaTime/status fetches below
     let feedPosts: PostExcerpt[] = []
-    let totalPosts: number | null = null
     try {
         const res = await fetch(`${BLOG_URL}/api/feed.json?limit=5`, {
             next: { revalidate: 3600 },
         })
-        const data: { total: number; posts: PostExcerpt[] } = await res.json()
+        const data: { posts: PostExcerpt[] } = await res.json()
         feedPosts = data.posts ?? []
-        totalPosts = data.total ?? null
     } catch {
-        // ignore — bento quietly disappears, stat tile falls back below
+        // ignore — the blog section quietly disappears
     }
-
-    // coding hours — pulled live from WakaTime (real chart, the "insight" metric)
-    let coding: {
-        hours: number
-        spark: number[]
-        trend: string
-        avg: number
-    } | null = null
-    try {
-        const res = await fetch(WAKA_CODING, { next: { revalidate: 86400 } })
-        const data: { grand_total: { total_seconds: number } }[] =
-            (await res.json())?.data ?? []
-        const spark = data.map(
-            (x) => (x.grand_total?.total_seconds ?? 0) / 3600
-        )
-        const hours = spark.reduce((a, b) => a + b, 0)
-        const active = spark.filter((h) => h > 0).length
-        if (hours > 0)
-            coding = {
-                hours,
-                spark,
-                trend: computeTrend(spark),
-                avg: active ? hours / active : 0,
-            }
-    } catch {
-        // ignore — falls back to a static tile
-    }
-
-    // heartbeat — how many monitored services are currently up (status page logs)
-    let heartbeat: { up: number; total: number } | null = null
-    try {
-        const RAW =
-            'https://raw.githubusercontent.com/dryfolio/status.hovanhoa.net/main/public'
-        const cfg = await (
-            await fetch(`${RAW}/urls.cfg`, { next: { revalidate: 3600 } })
-        ).text()
-        const keys = cfg
-            .split('\n')
-            .map((l) => l.split('=')[0].trim())
-            .filter(Boolean)
-        const ups = await Promise.all(
-            keys.map(async (key) => {
-                try {
-                    const txt = await (
-                        await fetch(`${RAW}/status/${key}_report.log`, {
-                            next: { revalidate: 3600 },
-                        })
-                    ).text()
-                    const lines = txt.trim().split('\n').filter(Boolean)
-                    return /,\s*success/i.test(lines[lines.length - 1] || '')
-                } catch {
-                    return false
-                }
-            })
-        )
-        if (keys.length)
-            heartbeat = { up: ups.filter(Boolean).length, total: keys.length }
-    } catch {
-        // ignore
-    }
-
-    const tiles: {
-        k: string
-        v: string
-        sub: string
-        dot?: boolean
-        spark?: number[]
-        trend?: string
-    }[] = [
-        totalPosts !== null
-            ? { k: 'writing', v: String(totalPosts), sub: 'blog posts' }
-            : { k: 'writing', v: '—', sub: 'blog posts' },
-        coding
-            ? {
-                  k: 'coding',
-                  v: `${formatNumber(coding.hours)}h`,
-                  sub: `${formatNumber(coding.avg)}h avg / active day`,
-                  spark: coding.spark,
-                  trend: coding.trend,
-              }
-            : { k: 'coding', v: '4+', sub: 'years shipping' },
-        { k: 'backend', v: 'go·py', sub: 'services at scale' },
-        heartbeat
-            ? {
-                  k: 'heartbeat',
-                  v: `${heartbeat.up}/${heartbeat.total}`,
-                  sub: 'services live',
-                  dot: true,
-              }
-            : { k: 'shipping', v: '5', sub: 'live apps' },
-    ]
 
     return (
-        <main className="min-h-screen relative">
+        <main className="relative min-h-screen bg-[var(--rd-bg)] text-[var(--rd-text)]">
             <script
                 type="application/ld+json"
                 suppressHydrationWarning
@@ -199,122 +104,33 @@ export default async function Home() {
                     }),
                 }}
             />
-            {/* sticky header */}
-            <header className="sticky top-0 z-50 border-b border-[var(--rd-border-2)] bg-[var(--rd-bg-sub)] shadow-[0_1px_3px_rgba(0,0,0,0.03)]">
-                <div className="mx-auto w-full max-w-[var(--rd-maxw)] px-[var(--rd-pad)] py-3">
-                    <Navbar />
-                </div>
-            </header>
-            {/* hero — fills the first screen; blog lives below the fold */}
-            <div className="flex min-h-screen flex-col border-b border-[var(--rd-border)]">
-                <div className="mx-auto w-full max-w-[var(--rd-maxw)] px-[var(--rd-pad)] pb-16 pt-12">
-                    <div className="grid items-center gap-10 lg:grid-cols-2">
-                        <div>
-                            <Hero />
+            <Hero />
 
-                            {/* action links */}
-                            <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3 font-[family-name:var(--font-mono)] text-sm">
-                                <a
-                                    href="#blog"
-                                    className="inline-flex items-center gap-1.5 font-medium text-[var(--rd-accent-ink)] transition-colors hover:text-[var(--rd-orange-ink)]"
-                                >
-                                    read the blog <span aria-hidden>↓</span>
-                                </a>
-                                <a
-                                    href={INFO_URL}
-                                    className="inline-flex items-center rounded-full bg-[var(--rd-orange)] px-4 py-1.5 font-medium text-white transition-colors hover:bg-[var(--rd-orange-ink)]"
-                                >
-                                    connect
-                                </a>
-                            </div>
-                        </div>
+            <section className="mx-auto max-w-[var(--rd-maxw)] px-[var(--rd-pad)] pb-[clamp(48px,6vw,80px)] pt-[clamp(1rem,3vw,2rem)]">
+                <FamilyShowcase />
+            </section>
 
-                        {/* ecosystem map — the apps and the services they run on */}
-                        <EcosystemGraph compact />
-                    </div>
+            <section id="blog" className={`${SECTION} scroll-mt-20`}>
+                <SectionHead
+                    title="From the blog"
+                    links={[{ label: 'blog.hovanhoa.net', href: BLOG_URL }]}
+                />
+                <BlogBento posts={feedPosts} />
+            </section>
 
-                    {/* quiet line */}
-                    <div className="mt-8 font-[family-name:var(--font-mono)] text-xs text-[var(--rd-text-3)]">
-                        based in vietnam · open to interesting problems
-                    </div>
-
-                    {/* themed tiles */}
-                    <div className="mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-[var(--rd-r)] border border-[var(--rd-border)] bg-[var(--rd-border)] sm:grid-cols-4">
-                        {tiles.map((t) => {
-                            const up = t.trend?.startsWith('+')
-                            return (
-                                <div
-                                    key={t.k}
-                                    className="flex min-h-[150px] flex-col bg-[var(--rd-surface)] p-4"
-                                >
-                                    <div className="flex items-center justify-between gap-2">
-                                        <span className="rd-eyebrow text-[10px]">
-                                            {t.k}
-                                        </span>
-                                        {t.trend && (
-                                            <span
-                                                className={`font-[family-name:var(--font-mono)] text-[10.5px] ${
-                                                    up
-                                                        ? 'text-[var(--rd-orange-ink)]'
-                                                        : 'text-[var(--rd-text-3)]'
-                                                }`}
-                                            >
-                                                {t.trend}
-                                            </span>
-                                        )}
-                                    </div>
-                                    <div className="mt-2 flex items-center gap-2 text-[1.5rem] font-semibold lowercase leading-none tracking-[-0.03em] text-[var(--rd-text)]">
-                                        {t.dot && (
-                                            <span className="inline-block h-2.5 w-2.5 shrink-0 animate-pulse rounded-full bg-[var(--rd-ok)] motion-reduce:animate-none" />
-                                        )}
-                                        {t.v}
-                                    </div>
-                                    {t.spark && (
-                                        <div className="mt-3">
-                                            <Sparkline
-                                                data={t.spark}
-                                                h={26}
-                                                stroke="var(--rd-orange)"
-                                            />
-                                        </div>
-                                    )}
-                                    <div className="mt-auto pt-3 font-[family-name:var(--font-mono)] text-[10.5px] text-[var(--rd-text-3)]">
-                                        {t.sub}
-                                    </div>
-                                </div>
-                            )
-                        })}
-                    </div>
-                </div>
-            </div>
-            {/* body */}
-            <div className="mx-auto max-w-[var(--rd-maxw)] px-[var(--rd-pad)] pt-16">
-                <div id="blog" className="mb-12 scroll-mt-8">
-                    <Eyebrow>blog</Eyebrow>
-                    <h2 className="rd-h-sec mt-3 text-[var(--rd-text)]">
-                        latest writing
-                    </h2>
-                    <p className="rd-lead mt-3">
-                        notes on software engineering, distributed systems, and
-                        lessons from building things — with the occasional life
-                        update in between.
+            <section className={SECTION}>
+                <SectionHead
+                    title="How it fits together"
+                    links={[{ label: 'status.hovanhoa.net', href: STATUS_URL }]}
+                >
+                    <p className="m-0 mt-2 max-w-[58ch] text-[0.95rem] leading-[1.6] text-[var(--rd-text-2)]">
+                        The sites in the family and the services they run on.
                     </p>
+                </SectionHead>
+                <div className="overflow-hidden rounded-[var(--rd-r-lg)] border border-[var(--rd-border)] bg-[var(--rd-surface)] p-2">
+                    <EcosystemGraph compact />
                 </div>
-                <section className="relative">
-                    <BlogBento posts={feedPosts} />
-                    {feedPosts.length > 0 && (
-                        <div className="mt-8">
-                            <a
-                                href={BLOG_URL}
-                                className="inline-flex items-center gap-1.5 font-[family-name:var(--font-mono)] text-sm font-medium text-[var(--rd-orange-ink)] transition-colors hover:opacity-80"
-                            >
-                                view all posts <span aria-hidden>→</span>
-                            </a>
-                        </div>
-                    )}
-                </section>
-            </div>
-            <Footer />
+            </section>
         </main>
     )
 }
