@@ -25,7 +25,10 @@ import {
     getBezierPath,
     useEdgesState,
     useInternalNode,
+    useNodesInitialized,
     useNodesState,
+    useReactFlow,
+    useStore,
     type Edge,
     type Node,
     type NodeProps,
@@ -405,7 +408,13 @@ const edgeTypes = { floating: FloatingEdge }
 
 /* ------------------------------------------------------------------- graph */
 
-function Graph({ compact }: { compact: boolean }) {
+function Graph({
+    compact,
+    vertical,
+}: {
+    compact: boolean
+    vertical: boolean
+}) {
     const adjacency = useMemo(() => {
         const m = new Map<string, Set<string>>()
         RAW_NODES.forEach((n) => m.set(n.id, new Set()))
@@ -425,14 +434,16 @@ function Graph({ compact }: { compact: boolean }) {
             RAW_NODES.map((n) => ({
                 id: n.id,
                 type: 'card',
-                position: { x: n.x, y: n.y },
+                // narrow screens get the same map turned on its side, so it
+                // fills a tall frame instead of shrinking to fit a wide one
+                position: vertical ? { x: n.y, y: n.x } : { x: n.x, y: n.y },
                 data: {
                     ...n.data,
                     compact,
                     onTrace: (id: string | null) => focusRef.current(id),
                 },
             })),
-        [compact]
+        [compact, vertical]
     )
 
     const initialEdges: Edge[] = useMemo(
@@ -457,6 +468,18 @@ function Graph({ compact }: { compact: boolean }) {
 
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
+    useEffect(() => setNodes(initialNodes), [initialNodes, setNodes])
+
+    // refit whenever the pane is resized or the layout flips, not just once
+    // on mount — otherwise a late-measured container leaves the map clipped
+    const { fitView } = useReactFlow()
+    const paneW = useStore((st) => st.width)
+    const paneH = useStore((st) => st.height)
+    const measured = useNodesInitialized()
+    const padding = compact ? 0.06 : 0.18
+    useEffect(() => {
+        if (measured && paneW && paneH) fitView({ padding })
+    }, [measured, paneW, paneH, vertical, padding, fitView])
 
     const focus = useCallback(
         (id: string | null) => {
@@ -499,8 +522,8 @@ function Graph({ compact }: { compact: boolean }) {
             onNodeMouseEnter={(_, n) => focus(n.id)}
             onNodeMouseLeave={() => focus(null)}
             fitView
-            fitViewOptions={{ padding: compact ? 0.06 : 0.18 }}
-            minZoom={0.3}
+            fitViewOptions={{ padding }}
+            minZoom={0.15}
             maxZoom={1.6}
             zoomOnScroll={false}
             zoomOnDoubleClick={false}
@@ -541,6 +564,14 @@ const LEGEND: { kind: Kind; label: string }[] = [
 
 export function EcosystemGraph({ compact = false }: { compact?: boolean }) {
     const [theme, setTheme] = useState<'light' | 'dark'>('light')
+    const [vertical, setVertical] = useState(false)
+    useEffect(() => {
+        const mq = window.matchMedia('(max-width: 640px)')
+        const read = () => setVertical(mq.matches)
+        read()
+        mq.addEventListener('change', read)
+        return () => mq.removeEventListener('change', read)
+    }, [])
     useEffect(() => {
         const read = () =>
             setTheme(
@@ -564,11 +595,15 @@ export function EcosystemGraph({ compact = false }: { compact?: boolean }) {
             <div
                 role="group"
                 aria-label="map of the hovanhoa.net apps and the services they run on"
-                className="relative h-[clamp(360px,52vh,520px)] w-full select-none"
+                className={`relative w-full select-none ${
+                    vertical
+                        ? 'h-[clamp(440px,125vw,600px)]'
+                        : 'h-[clamp(360px,52vh,520px)]'
+                }`}
                 data-theme={theme}
             >
                 <ReactFlowProvider>
-                    <Graph compact />
+                    <Graph compact vertical={vertical} />
                 </ReactFlowProvider>
             </div>
         )
@@ -581,11 +616,15 @@ export function EcosystemGraph({ compact = false }: { compact?: boolean }) {
             className="overflow-hidden rounded-[var(--rd-r-lg)] border border-[var(--rd-border)] bg-[var(--rd-bg-sub)]"
         >
             <div
-                className="relative h-[clamp(420px,68vh,640px)] w-full"
+                className={`relative w-full ${
+                    vertical
+                        ? 'h-[clamp(480px,135vw,640px)]'
+                        : 'h-[clamp(420px,68vh,640px)]'
+                }`}
                 data-theme={theme}
             >
                 <ReactFlowProvider>
-                    <Graph compact={false} />
+                    <Graph compact={false} vertical={vertical} />
                 </ReactFlowProvider>
 
                 {/* legend */}

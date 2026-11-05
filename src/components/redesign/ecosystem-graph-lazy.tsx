@@ -14,7 +14,7 @@ const EcosystemGraph = dynamic(
         loading: () => (
             <div
                 aria-hidden
-                className="h-[clamp(360px,52vh,520px)] w-full"
+                className="h-[clamp(440px,125vw,600px)] w-full sm:h-[clamp(360px,52vh,520px)]"
             />
         ),
     }
