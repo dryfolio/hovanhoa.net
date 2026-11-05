@@ -89,11 +89,6 @@ function host(href: string) {
     return href.replace(/^https?:\/\//, '').replace(/\/$/, '')
 }
 
-function dither(tone: string) {
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="8" height="8"><circle cx="1.2" cy="2" r=".7" fill="${tone}"/><circle cx="5" cy="5.2" r=".55" fill="${tone}" opacity=".7"/><circle cx="4.5" cy="1.2" r=".45" fill="${tone}" opacity=".5"/></svg>`
-    return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`
-}
-
 function ArrowUpRight({ size = 15 }: { size?: number }) {
     return (
         <svg
@@ -246,31 +241,51 @@ export function FamilyShowcase() {
 
             {/* showcase panel */}
             <div className="relative w-full max-[899px]:order-first min-[900px]:sticky min-[900px]:top-[calc(var(--rd-nav-h)+1rem)]">
+                {/* every preview stays mounted so switching is an instant
+                    crossfade; light/dark shots follow the site theme */}
                 <a
-                    key={current.name}
                     href={current.href}
-                    style={
-                        {
-                            '--tone': current.tone,
-                            '--dither': dither(current.tone),
-                        } as CSSProperties
-                    }
-                    className="rd-rise group relative grid aspect-[16/10] place-items-center overflow-hidden rounded-[var(--rd-r-lg)] bg-[color-mix(in_srgb,var(--tone)_12%,var(--rd-surface))] outline-none focus-visible:ring-2 focus-visible:ring-[var(--rd-text)]"
+                    aria-label={`Open ${current.name}`}
+                    style={{ '--tone': current.tone } as CSSProperties}
+                    className="group relative block aspect-[16/10] overflow-hidden rounded-[var(--rd-r-lg)] border border-[var(--rd-border)] bg-[var(--rd-surface)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--rd-text)]"
                 >
-                    <span
-                        aria-hidden
-                        className="absolute inset-0 bg-[image:var(--dither)] bg-repeat opacity-40 [mask-image:radial-gradient(circle_at_70%_30%,black,transparent_75%)]"
-                    />
-                    <span className="relative flex flex-col items-center gap-3 text-center">
-                        <span className="flex h-14 w-14 items-center justify-center rounded-[var(--rd-r)] border border-[color-mix(in_srgb,var(--tone)_35%,transparent)] bg-[var(--rd-surface)] text-[var(--tone)] transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110">
-                            <CurrentIcon size={26} />
+                    {FAMILY.map((app, i) => (
+                        <span
+                            key={app.name}
+                            aria-hidden={i !== active}
+                            className={`absolute inset-0 transition-opacity duration-500 ${
+                                i === active ? 'opacity-100' : 'opacity-0'
+                            }`}
+                        >
+                            {(['light', 'dark'] as const).map((theme) => (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img
+                                    key={theme}
+                                    src={`/family/${app.name}-${theme}.webp`}
+                                    alt={
+                                        i === active
+                                            ? `${host(app.href)} preview`
+                                            : ''
+                                    }
+                                    width={1440}
+                                    height={900}
+                                    loading="lazy"
+                                    decoding="async"
+                                    className={`h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.015] ${
+                                        theme === 'light'
+                                            ? 'block dark:hidden'
+                                            : 'hidden dark:block'
+                                    }`}
+                                />
+                            ))}
                         </span>
-                        <span className="font-[family-name:var(--font-display)] text-[clamp(2.2rem,6vw,4rem)] leading-none tracking-[-0.035em] text-[var(--rd-text)]">
-                            {current.name}
-                        </span>
-                        <span className="font-[family-name:var(--font-mono)] text-[0.75rem] text-[var(--rd-text-3)]">
-                            {host(current.href)}
-                        </span>
+                    ))}
+                    <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full border border-[var(--rd-border)] bg-[color-mix(in_srgb,var(--rd-bg)_88%,transparent)] px-2.5 py-1 font-[family-name:var(--font-mono)] text-[0.72rem] text-[var(--rd-text)] backdrop-blur">
+                        <CurrentIcon
+                            size={13}
+                            className="shrink-0 text-[var(--tone)]"
+                        />
+                        {host(current.href)}
                     </span>
                 </a>
                 <div className="flex flex-col items-start gap-[0.45rem] px-[0.1rem] pt-[0.85rem]">
