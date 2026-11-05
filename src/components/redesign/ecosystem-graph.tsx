@@ -271,12 +271,12 @@ function FloatingEdgeImpl({ id, source, target, markerEnd, data }: EdgeProps) {
             fill="none"
             markerEnd={active ? markerEnd : undefined}
             stroke={KIND_COLOR[kind]}
-            strokeWidth={active ? 2.2 : 1.3}
+            strokeWidth={active ? 2.2 : 1.5}
             strokeDasharray={kind === 'host' ? '5 5' : kind === 'link' ? '1 6' : '7 6'}
             strokeLinecap="round"
             className={flowing && active ? 'eg-flow' : undefined}
             style={{
-                opacity: faded ? 0.06 : active ? 0.95 : flowing ? 0.4 : 0.28,
+                opacity: faded ? 0.06 : active ? 0.95 : flowing ? 0.6 : 0.38,
                 transition: 'opacity .2s, stroke-width .2s',
             }}
         />
@@ -315,9 +315,9 @@ function NodeDither({
             const ember = tokenRgb(ctx, css, '--rd-orange', '#d8602f')
             const grey = tokenRgb(ctx, css, '--rd-text-3', '#8a8a8a')
             const ink = kind === 'platform' ? grey : ember
-            const rim = mixRgb(surface, ink, hub ? 0.95 : 0.5)
-            const glow = mixRgb(surface, ink, hub ? 0.4 : dark ? 0.32 : 0.24)
-            const core = hub ? mixRgb(surface, ember, dark ? 0.12 : 0.08) : surface
+            const rim = mixRgb(surface, ink, hub ? 1 : 0.7)
+            const shadow = mixRgb(surface, ink, hub ? 0.7 : 0.4)
+            const core = hub ? mixRgb(surface, ember, dark ? 0.16 : 0.1) : surface
 
             const w = Math.max(1, Math.round(box.offsetWidth / NODE_CELL))
             const h = Math.max(1, Math.round(box.offsetHeight / NODE_CELL))
@@ -325,30 +325,31 @@ function NodeDither({
             canvas.height = h
             const img = ctx.createImageData(w, h)
             const data = img.data
-            const r = Math.min(h / 2, radius / NODE_CELL)
-            const rimW = hub ? 1.6 : 1
+            // the pill fills all but the last cell row/column, which holds
+            // a one-dot hard shadow offset down-right
+            const pw = w - 1
+            const ph = h - 1
+            const r = Math.min(ph / 2, radius / NODE_CELL)
+            const rimW = hub ? 2 : 1
+            const sdf = (x: number, y: number) => {
+                const qx = Math.abs(x + 0.5 - pw / 2) - (pw / 2 - r)
+                const qy = Math.abs(y + 0.5 - ph / 2) - (ph / 2 - r)
+                return (
+                    Math.hypot(Math.max(qx, 0), Math.max(qy, 0)) +
+                    Math.min(Math.max(qx, qy), 0) -
+                    r
+                )
+            }
 
             for (let y = 0; y < h; y++) {
                 for (let x = 0; x < w; x++) {
-                    // signed distance to the rounded rect, in cells
-                    const qx = Math.abs(x + 0.5 - w / 2) - (w / 2 - r)
-                    const qy = Math.abs(y + 0.5 - h / 2) - (h / 2 - r)
-                    const sd =
-                        Math.hypot(Math.max(qx, 0), Math.max(qy, 0)) +
-                        Math.min(Math.max(qx, qy), 0) -
-                        r
-                    if (sd > 0) continue // outside: leave transparent
-                    const th = BAYER[(y & 3) * 4 + (x & 3)]
-                    let c = core
-                    if (sd > -rimW) {
-                        c = rim
-                    } else {
-                        // glow from the icon side, plus a soft inner edge
-                        const fromIcon = 1 - (x / w) * (hub ? 1.4 : 2.6)
-                        const edge = Math.max(0, 1 + sd / 3)
-                        const t = Math.max(fromIcon, 0) * 0.85 + edge * 0.45
-                        if (t > th) c = glow
-                    }
+                    const sd = sdf(x, y)
+                    let c: number[]
+                    if (sd <= -rimW) c = core
+                    else if (sd <= 0) c = rim
+                    else if (sdf(x - 1, y - 1) <= 0 && (hub || (x + y) % 2 === 0))
+                        c = shadow
+                    else continue // outside: leave transparent
                     const i = (y * w + x) * 4
                     data[i] = c[0]
                     data[i + 1] = c[1]
@@ -553,7 +554,7 @@ function DitherField({ theme }: { theme: 'light' | 'dark' }) {
         const base = tokenRgb(ctx, css, '--rd-surface', theme === 'dark' ? '#141414' : '#ffffff')
         const ember = tokenRgb(ctx, css, '--rd-orange', '#d8602f')
         const mix = (t: number) => mixRgb(base, ember, t)
-        const ramp = theme === 'dark' ? [mix(0.16), mix(0.34), mix(0.6)] : [mix(0.1), mix(0.24), mix(0.46)]
+        const ramp = theme === 'dark' ? [mix(0.12), mix(0.24)] : [mix(0.07), mix(0.15)]
         const levels = ramp.length
 
         let img: ImageData | null = null
@@ -574,7 +575,7 @@ function DitherField({ theme }: { theme: 'light' | 'dark' }) {
             }
             const [tx, ty, zoom] = transform
 
-            const glows: { x: number; y: number; r2: number; w: number }[] = []
+            const glows: { x: number; y: number; r2: number; w: number; hw: number; hh: number }[] = []
             let anyDim = false
             nodeLookup.forEach((n) => anyDim ||= !!(n.data as GNodeData).dim)
             nodeLookup.forEach((n) => {
@@ -590,6 +591,8 @@ function DitherField({ theme }: { theme: 'light' | 'dark' }) {
                     y: ((p.y + (n.measured.height ?? 0) / 2) * zoom + ty) / CELL,
                     r2: 2 * (r / CELL) ** 2,
                     w: wt,
+                    hw: (n.measured.width * zoom) / 2 / CELL,
+                    hh: ((n.measured.height ?? 0) * zoom) / 2 / CELL,
                 })
             })
 
@@ -600,20 +603,28 @@ function DitherField({ theme }: { theme: 'light' | 'dark' }) {
                     // glows blend like light (1 − Π(1 − g)) so overlaps
                     // brighten without flattening into one solid blob
                     let dark = 1
+                    let clear = 1
                     for (const g of glows) {
                         const dx = x - g.x
                         const dy = y - g.y
                         const d2 = dx * dx + dy * dy
                         if (d2 < g.r2 * 4)
                             dark *= 1 - Math.min(1, g.w * Math.exp(-d2 / g.r2))
+                        // keep a quiet margin around every node
+                        const gap = Math.hypot(
+                            Math.max(Math.abs(dx) - g.hw, 0),
+                            Math.max(Math.abs(dy) - g.hh, 0)
+                        )
+                        if (gap < 4) clear = Math.min(clear, gap / 4)
                     }
                     // slow current: two crossing sine bands, faint everywhere
                     const v =
-                        0.62 * (1 - dark) +
-                        0.1 *
-                            (1 +
-                                Math.sin(x * 0.06 + y * 0.027 + ph) *
-                                    Math.sin(y * 0.08 - x * 0.016 - ph * 0.7))
+                        clear *
+                        (0.5 * (1 - dark) +
+                            0.05 *
+                                (1 +
+                                    Math.sin(x * 0.06 + y * 0.027 + ph) *
+                                        Math.sin(y * 0.08 - x * 0.016 - ph * 0.7)))
                     const lvl = Math.min(
                         levels,
                         Math.floor(v * levels + BAYER[(y & 3) * 4 + (x & 3)] - 0.35)
