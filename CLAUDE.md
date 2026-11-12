@@ -24,7 +24,7 @@ All blog content lives in `content/posts/<slug>.md` and is parsed by `src/lib/po
 
 - `content/posts/` — Source-of-truth Markdown files for blog posts. Each `.md` has frontmatter (`title`, `brief`, `publishedAt`, `tags`, `coverImage`).
 - `public/posts/<slug>/` — Static assets (images) referenced by a post's markdown.
-- `src/app/` — Next.js App Router pages. Dynamic blog post routes are at `src/app/[post]/page.tsx` and use `generateStaticParams` to prerender every post. API routes include `/api/og` for dynamic Open Graph image generation.
+- `src/app/` — Next.js App Router pages. Dynamic blog post routes are at `src/app/[post]/page.tsx` and use `generateStaticParams` to prerender every post. The site is a static export (`output: 'export'` → `out/`) served from Cloudflare Workers static assets (`wrangler.jsonc`), so nothing may read the request at runtime: `/og.png` is the Open Graph image rendered at build time, and redirects for posts moved to blog.hovanhoa.net live in `public/_redirects`.
 - `src/components/` — React components. `article-content.tsx` renders the post HTML.
 - `src/lib/` — `posts.ts` (Markdown loader), shared types, and Cloudflare analytics client.
 - `src/constants/index.tsx` — Central config for site metadata and social links. **Start here when customizing the site identity.**

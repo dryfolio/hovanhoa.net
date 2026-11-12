@@ -22,7 +22,7 @@ import {
 const SECTION =
     'mx-auto max-w-[var(--rd-maxw)] px-[var(--rd-pad)] py-[clamp(48px,6vw,80px)]'
 
-const OG_IMAGE = `${BASE_URL}/api/og?title=${encodeURIComponent(NAME)}`
+const OG_IMAGE = `${BASE_URL}/og.png`
 
 export const metadata: Metadata = {
     title: NAME,
@@ -73,9 +73,7 @@ export default async function Home() {
     // as the WakaTime/status fetches below
     let feedPosts: PostExcerpt[] = []
     try {
-        const res = await fetch(`${BLOG_URL}/api/feed.json?limit=5`, {
-            next: { revalidate: 3600 },
-        })
+        const res = await fetch(`${BLOG_URL}/api/feed.json`)
         const data: { posts: PostExcerpt[] } = await res.json()
         feedPosts = data.posts ?? []
     } catch {

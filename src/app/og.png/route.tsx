@@ -1,11 +1,18 @@
+import fs from 'fs'
+import path from 'path'
 import { ImageResponse } from '@vercel/og'
+import { NAME } from '@/constants'
 
-export const runtime = 'edge'
+// Rendered once at build time to /og.png so the site can be exported as
+// static files.
+export const dynamic = 'force-static'
 
-export async function GET(request: Request) {
-    const { searchParams } = new URL(request.url)
-    const title = searchParams.get('title')
-    const bgImageUrl = new URL('/og-bg.jpg', request.url).toString()
+export async function GET() {
+    const title = NAME
+    const bgImage = fs.readFileSync(
+        path.join(process.cwd(), 'public', 'og-bg.jpg')
+    )
+    const bgImageUrl = `data:image/jpeg;base64,${bgImage.toString('base64')}`
 
     return new ImageResponse(
         (

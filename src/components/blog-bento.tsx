@@ -1,8 +1,32 @@
+'use client'
+
+import { useEffect, useState } from 'react'
 import { FeaturedPostCard } from '@/components/featured-post-card'
 import { PostRow } from '@/components/post-row'
 import { type PostExcerpt } from '@/lib/types'
+import { BLOG_URL } from '@/constants'
 
-export function BlogBento({ posts }: { posts: PostExcerpt[] }) {
+// Rendered with the feed from build time, then refreshed in the browser from
+// blog.hovanhoa.net's static feed (which allows cross-origin reads, see the
+// blog's public/_headers), so new posts show up without rebuilding this site.
+export function BlogBento({ posts: initial }: { posts: PostExcerpt[] }) {
+    const [posts, setPosts] = useState(initial)
+
+    useEffect(() => {
+        let cancelled = false
+        fetch(`${BLOG_URL}/api/feed.json`)
+            .then((res) => (res.ok ? res.json() : null))
+            .then((data: { posts?: PostExcerpt[] } | null) => {
+                if (!cancelled && data?.posts?.length) setPosts(data.posts)
+            })
+            .catch(() => {
+                // keep showing what we have
+            })
+        return () => {
+            cancelled = true
+        }
+    }, [])
+
     const [featured, ...rest] = posts
     if (!featured) return null
 

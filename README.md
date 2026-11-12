@@ -13,7 +13,7 @@ Welcome to hovanhoa.net, a personal portfolio website built with Next.js, TypeSc
 - **Framework:** Next.js
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS
-- **Deployment:** Vercel
+- **Deployment:** Cloudflare Workers (static export, `npm run build && npx wrangler deploy`)
 - **CMS:** Hashnode Headless CMS
 
 ## Getting Started
