@@ -22,7 +22,7 @@ import {
 const SECTION =
     'mx-auto max-w-[var(--rd-maxw)] px-[var(--rd-pad)] py-[clamp(48px,6vw,80px)]'
 
-const OG_IMAGE = `${BASE_URL}/api/og?title=${encodeURIComponent(NAME)}`
+const OG_IMAGE = `${BASE_URL}/og.png`
 
 export const metadata: Metadata = {
     title: NAME,
