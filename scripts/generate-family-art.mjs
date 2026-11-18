@@ -2,7 +2,8 @@
 // page's "The family" showcase. Pixels are drawn on a canvas inside headless
 // Chrome (no npm deps), so the art is reproducible from the palettes below.
 //
-//   node scripts/generate-family-art.mjs
+//   node scripts/generate-family-art.mjs            # every site
+//   node scripts/generate-family-art.mjs movie      # just these
 //
 // Output: public/family/<name>-art.webp (1600×1000)
 
@@ -37,6 +38,10 @@ const ART = {
     book: {
         seed: 5,
         ramp: ['#e6f2e1', '#a9d3ab', '#68a77a', '#3e7a55', '#163222'],
+    },
+    movie: {
+        seed: 23,
+        ramp: ['#fbe7e2', '#f0ab9c', '#d4664f', '#9a3626', '#3d1610'],
     },
     status: {
         seed: 13,
@@ -208,7 +213,9 @@ try {
         })
 
     mkdirSync(OUT, { recursive: true })
+    const only = process.argv.slice(2)
     for (const [name, opts] of Object.entries(ART)) {
+        if (only.length && !only.includes(name)) continue
         const args = JSON.stringify({ ...opts, w: 1600, h: 1000 })
         const url = await evaluate(`(${paint.toString()})(${args})`)
         const file = join(OUT, `${name}-art.webp`)

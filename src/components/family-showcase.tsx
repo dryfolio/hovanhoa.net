@@ -4,6 +4,7 @@ import { type CSSProperties, useEffect, useState } from 'react'
 import {
     RiBookOpenLine,
     RiBookShelfLine,
+    RiFilmLine,
     RiImageLine,
     RiMusic2Line,
     RiPulseLine,
@@ -16,6 +17,7 @@ import {
     BOOK_URL,
     GALLERY_URL,
     INSIGHT_URL,
+    MOVIE_URL,
     MUSIC_URL,
     STATUS_URL,
 } from '@/constants'
@@ -74,6 +76,14 @@ const FAMILY: FamilyApp[] = [
         href: BOOK_URL,
         tone: '#2f6a4c',
         icon: RiBookShelfLine,
+    },
+    {
+        name: 'movie',
+        tag: 'Film',
+        desc: 'A watch log of every saga I follow — seen, up next, and coming soon.',
+        href: MOVIE_URL,
+        tone: '#a24a3c',
+        icon: RiFilmLine,
     },
     {
         name: 'status',

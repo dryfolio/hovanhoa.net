@@ -122,6 +122,12 @@ const Book = (p: IconProps) => (
         <path d="M20 5.5c0-.8-.7-1.5-1.5-1.5H13a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20V5.5Z" />
     </svg>
 )
+const Film = (p: IconProps) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}>
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <path d="M7 3v18M17 3v18M3 8h4M3 12h18M3 16h4M17 8h4M17 16h4" />
+    </svg>
+)
 const Library = (p: IconProps) => (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}>
         <path d="M3 21h18M4 21V10l8-6 8 6v11M9 21v-7h6v7" />
@@ -167,18 +173,20 @@ const RAW_NODES: { id: string; x: number; y: number; data: GNodeData }[] = [
     { id: 'music', x: 150, y: 450, data: { label: 'music', sub: 'now playing', kind: 'app', Icon: Note, href: 'https://music.hovanhoa.net', live: true } },
     { id: 'info', x: 360, y: 350, data: { label: 'info', sub: 'contact card', kind: 'app', Icon: Card, href: 'https://info.hovanhoa.net', live: true } },
     { id: 'book', x: 620, y: 30, data: { label: 'book', sub: 'bookshelf', kind: 'app', Icon: Book, href: 'https://book.hovanhoa.net', live: true } },
+    { id: 'movie', x: 690, y: 300, data: { label: 'movie', sub: 'watch log', kind: 'app', Icon: Film, href: 'https://movie.hovanhoa.net', live: true } },
     // external services
     { id: 'wakatime', x: 380, y: 30, data: { label: 'wakatime', sub: 'coding stats', kind: 'service', Icon: Clock } },
     { id: 'github', x: 560, y: 250, data: { label: 'github', sub: 'actions / repos', kind: 'service', Icon: GitHub } },
     { id: 'cloudinary', x: 30, y: 350, data: { label: 'cloudinary', sub: 'image cdn', kind: 'service', Icon: Box } },
     { id: 'spotify', x: 330, y: 500, data: { label: 'spotify', sub: 'listening api', kind: 'service', Icon: Note2 } },
+    { id: 'wikipedia', x: 720, y: 430, data: { label: 'wikipedia', sub: 'film posters', kind: 'service', Icon: Library } },
     { id: 'openlibrary', x: 680, y: 150, data: { label: 'openlibrary', sub: 'book covers', kind: 'service', Icon: Library } },
     // platform (used by everything)
     { id: 'vercel', x: 470, y: 360, data: { label: 'vercel', sub: 'hosting · ci', kind: 'platform', Icon: Vercel } },
     { id: 'cloudflare', x: 560, y: 440, data: { label: 'cloudflare', sub: 'dns · analytics', kind: 'platform', Icon: Cloud } },
 ]
 
-const APPS = ['home', 'blog', 'insight', 'status', 'gallery', 'music', 'info', 'book']
+const APPS = ['home', 'blog', 'insight', 'status', 'gallery', 'music', 'info', 'book', 'movie']
 
 const RAW_EDGES: { s: string; t: string; kind: Kind; dir?: boolean }[] = [
     // every app is hosted on vercel + fronted by cloudflare
@@ -199,6 +207,7 @@ const RAW_EDGES: { s: string; t: string; kind: Kind; dir?: boolean }[] = [
     { s: 'gallery', t: 'cloudinary', kind: 'data', dir: true },
     { s: 'music', t: 'spotify', kind: 'data', dir: true },
     { s: 'book', t: 'openlibrary', kind: 'data', dir: true },
+    { s: 'movie', t: 'wikipedia', kind: 'data', dir: true },
     { s: 'status', t: 'github', kind: 'data', dir: true },
     // home cross-links to every app (the nav)
     ...APPS.filter((a) => a !== 'home').map((a) => ({
