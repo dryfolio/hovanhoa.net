@@ -14,7 +14,7 @@ import { mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
-const SITES = ['blog', 'insight', 'gallery', 'music', 'book', 'status']
+const SITES = ['blog', 'insight', 'gallery', 'music', 'book', 'movie', 'status']
 const CHROME =
     process.env.CHROME ||
     '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
@@ -103,11 +103,17 @@ await withChrome(async (send) => {
     for (const site of sites) {
         const url = origins[site] || `https://${site}.hovanhoa.net/`
         for (const theme of ['light', 'dark']) {
-            // every family site reads this shared cookie before first paint
+            // every family site reads this shared cookie before first paint —
+            // on *.hovanhoa.net it must be the .hovanhoa.net one: the boot
+            // script deletes a host-only `theme` cookie as a leftover
+            const { hostname } = new URL(url)
             await send('Network.setCookie', {
                 name: 'theme',
                 value: theme,
-                url,
+                path: '/',
+                ...(/(^|\.)hovanhoa\.net$/.test(hostname)
+                    ? { domain: '.hovanhoa.net' }
+                    : { url }),
             })
             await send('Emulation.setEmulatedMedia', {
                 features: [{ name: 'prefers-color-scheme', value: theme }],
