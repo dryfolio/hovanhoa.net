@@ -77,11 +77,6 @@ const Card = (p: IconProps) => (
         <path d="M3 10h18M7 15h4" strokeLinecap="round" />
     </svg>
 )
-const Vercel = (p: IconProps) => (
-    <svg viewBox="0 0 24 24" fill="currentColor" {...p}>
-        <path d="M12 3 22 20H2L12 3Z" />
-    </svg>
-)
 const Cloud = (p: IconProps) => (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" {...p}>
         <path d="M6.5 19a4.5 4.5 0 0 1-.5-8.97A6 6 0 0 1 17.7 9.2 3.9 3.9 0 0 1 18 19H6.5Z" />
@@ -182,18 +177,14 @@ const RAW_NODES: { id: string; x: number; y: number; data: GNodeData }[] = [
     { id: 'wikipedia', x: 720, y: 430, data: { label: 'wikipedia', sub: 'film posters', kind: 'service', Icon: Library } },
     { id: 'openlibrary', x: 680, y: 150, data: { label: 'openlibrary', sub: 'book covers', kind: 'service', Icon: Library } },
     // platform (used by everything)
-    { id: 'vercel', x: 470, y: 360, data: { label: 'vercel', sub: 'hosting · ci', kind: 'platform', Icon: Vercel } },
-    { id: 'cloudflare', x: 560, y: 440, data: { label: 'cloudflare', sub: 'dns · analytics', kind: 'platform', Icon: Cloud } },
+    { id: 'cloudflare', x: 470, y: 360, data: { label: 'cloudflare', sub: 'hosting · dns · analytics', kind: 'platform', Icon: Cloud } },
 ]
 
 const APPS = ['home', 'blog', 'insight', 'status', 'gallery', 'music', 'info', 'book', 'movie']
 
 const RAW_EDGES: { s: string; t: string; kind: Kind; dir?: boolean }[] = [
-    // every app is hosted on vercel + fronted by cloudflare
-    ...APPS.flatMap((a) => [
-        { s: a, t: 'vercel', kind: 'host' as Kind },
-        { s: a, t: 'cloudflare', kind: 'host' as Kind },
-    ]),
+    // every app is hosted on cloudflare workers
+    ...APPS.map((a) => ({ s: a, t: 'cloudflare', kind: 'host' as Kind })),
     // status watches every other app (and the health check from home)
     ...APPS.filter((a) => a !== 'status').map((a) => ({
         s: 'status',
